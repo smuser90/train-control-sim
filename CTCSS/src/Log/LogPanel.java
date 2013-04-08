@@ -51,7 +51,7 @@ public class LogPanel extends JPanel {
 			c = Color.RED;
 			break;
 		default:
-			c = Color.BLACK;
+			c = Color.GREEN;
 		}
 		StyleContext sc = StyleContext.getDefaultStyleContext();
 		AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);

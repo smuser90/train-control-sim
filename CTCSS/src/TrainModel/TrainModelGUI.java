@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.*;
 import java.awt.Color;
+import javax.swing.JScrollPane;
 
 public class TrainModelGUI extends JFrame {
 
@@ -53,14 +54,13 @@ public class TrainModelGUI extends JFrame {
 		comboBox.setBounds(6, 6, 638, 20);
 		contentPane.add(comboBox);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setEditable(false);
-		textPane.setBounds(16, 38, 239, 284);
-		contentPane.add(textPane);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(16, 38, 239, 284);
+		contentPane.add(scrollPane);
 		
-		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setBounds(255, 38, 15, 284);
-		contentPane.add(scrollBar);
+		JTextPane textPane = new JTextPane();
+		scrollPane.setViewportView(textPane);
+		textPane.setEditable(false);
 		
 		JButton btnEngineFailur = new JButton("Engine Failure");
 		btnEngineFailur.setBounds(282, 38, 117, 29);
