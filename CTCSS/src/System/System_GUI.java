@@ -28,7 +28,7 @@ public class System_GUI {
 	private static CTCModule ctc;
 	private static Graphics2D g = null;
 	private static SplashScreen splash = null;
-	private static TrainModelModule TM;
+	private static TrainModelModule tm;
 	private static SystemTime st;
 	
 	static void renderSplashFrame(int frame) {
@@ -87,7 +87,7 @@ public class System_GUI {
 		ctc = new CTCModule();
 		log.append(0, "CTCModule Loaded\n");
 		updateSplash(5);
-		TM = new TrainModelModule();
+		tm = new TrainModelModule();
 		log.append(0,  "Train Model Module Loaded\n");
 		for(int i = 0; i < 5; i++)
 			updateSplash(7);
@@ -160,7 +160,7 @@ public class System_GUI {
 		JPanel panel_3 = new TCPanel();
 		tabbedPane.addTab("Track Controller", null, panel_3, null);
 		
-		JPanel panel_4 = new TMPanel();
+		JPanel panel_4 = tm.getPanel();
 		panel_4.setBackground(Color.WHITE);
 		tabbedPane.addTab("Train Model", null, panel_4, null);
 		
