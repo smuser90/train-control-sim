@@ -8,6 +8,6 @@ public class CTCModule {
 	}
 		
 	public CTCPanel getPanel() {
-		return gui;
+		return this.gui;
 	}
 }
