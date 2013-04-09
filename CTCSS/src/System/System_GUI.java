@@ -15,10 +15,10 @@ import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import Log.Log;
 import Log.LogPanel;
 import TrackController.TCPanel;
 import CTC.CTCModule;
+import TrainModel.TMPanel;
 import CTC.CTCPanel;
 
 public class System_GUI {
@@ -156,7 +156,7 @@ public class System_GUI {
 		JPanel panel_3 = new TCPanel();
 		tabbedPane.addTab("Track Controller", null, panel_3, null);
 		
-		JPanel panel_4 = new JPanel();
+		JPanel panel_4 = new TMPanel();
 		panel_4.setBackground(Color.WHITE);
 		tabbedPane.addTab("Train Model", null, panel_4, null);
 		
