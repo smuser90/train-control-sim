@@ -28,14 +28,18 @@ public class System_GUI {
 	private static CTCModule ctc = null;
 	private static Graphics2D g = null;
 	private static SplashScreen splash = null;
+	private static SystemTime st;
 	
 	static void renderSplashFrame(int frame) {
-        final String[] comps = {"Log", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Finalizer"};
+        final String[] comps = {"Log", "SystemTime", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Finalizer"};
         g.setComposite(AlphaComposite.Clear);
         g.fillRect(120,140,200,40);
         g.setPaintMode();
         g.setColor(Color.BLACK);
-        g.drawString("Loading "+comps[frame]+"...", 120, 150);
+        if(frame != comps.length - 1)
+        	g.drawString("Loading "+comps[frame]+"...", 120, 150);
+        else
+        	g.drawString("Preparing System...", 120, 150);
     }
 	
 	private static void setGUILAndF() {
@@ -75,12 +79,17 @@ public class System_GUI {
 		log.append(0, "Log Loaded\n");
 		log.append(0, "Look and Feel set to " + UIManager.getLookAndFeel().getName() + "\n");
 		updateSplash(1);
+		st = new SystemTime();
+		log.setSysTime(st);
+		log.append(0, "SystemTime started\n");
+		updateSplash(2);
 		ctc = new CTCModule();
 		log.append(0, "CTCModule Loaded\n");
 		for(int i = 0; i < 5; i++)
-			updateSplash(6);
-		log.append(0, "\nSystem Ready\n");
+			updateSplash(7);
+		log.append(0, "System Ready\n");
 	}
+	
 	/**
 	 * Launch the application.
 	 */

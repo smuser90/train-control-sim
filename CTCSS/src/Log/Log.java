@@ -2,12 +2,16 @@ package Log;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
+
+import System.SystemTime;
 
 public class Log {
 	
 	private static Log _instance = null;
 	public LogPanel logPanel = null;
 	private static StringBuilder log;
+	private SystemTime st = null;
 	
 	private Log() {
 		logPanel = new LogPanel();
@@ -29,6 +33,11 @@ public class Log {
 	}
 	
 	public void append(int severity, String text) {
+		if(st != null) {
+			log.append(st.getTime() + " | ");
+			System.out.print(st.getTime() + " | ");
+			logPanel.append(severity, st.getTime() + " | ");
+		}
 		log.append("Severity: " + Integer.toString(severity) + " | " + text);
 		System.out.print("Severity: " + Integer.toString(severity) + " | " + text);
 		logPanel.append(severity, text);
@@ -42,6 +51,10 @@ public class Log {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setSysTime(SystemTime sysTime) {
+		st = sysTime;
 	}
 	
 	public String getLog() {
