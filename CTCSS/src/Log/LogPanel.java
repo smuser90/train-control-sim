@@ -57,11 +57,13 @@ public class LogPanel extends JPanel {
 		default:
 			c = Color.BLACK;
 		}
+		textPane.setEditable(true);
 		StyleContext sc = StyleContext.getDefaultStyleContext();
 		AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 		int len = textPane.getDocument().getLength();
 		textPane.setCaretPosition(len); // place caret at the end (with no selection)
 		textPane.setCharacterAttributes(aset, false);
 		textPane.replaceSelection(s); // there is no selection, so inserts at caret
+		textPane.setEditable(false);
 	}
 }
