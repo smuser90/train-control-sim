@@ -2,8 +2,6 @@ package TrackController;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
