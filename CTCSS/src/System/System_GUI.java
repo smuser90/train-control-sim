@@ -30,6 +30,7 @@ public class System_GUI {
 	private static SplashScreen splash = null;
 	private static TrainModelModule TM;
 	private static SystemTime st;
+	private static boolean loggedIn = false;
 	
 	static void renderSplashFrame(int frame) {
         final String[] comps = {"Log", "SystemTime", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Finalizer"};
