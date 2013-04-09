@@ -51,7 +51,7 @@ public class TrackControllerModule extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 00, 650, 350);
 		currentPanel = new TrackControllerPanel();
-		this.setContentPane(currentPanel);
+		//this.setContentPane(currentPanel);
 
 		// Create a list of 100 blocks for stand alone testing *TESTING*
 		for (int blockCount = 1; blockCount < 101; blockCount++) {
