@@ -15,64 +15,90 @@ import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import Log.Log;
 import Log.LogPanel;
 import TrackController.TCPanel;
+import CTC.CTCModule;
 import CTC.CTCPanel;
 
 public class System_GUI {
 
 	private JFrame frmCtcss;
+	private static Log log = null;
+	private static CTCModule ctc = null;
+	private static Graphics2D g = null;
+	private static SplashScreen splash = null;
 	
-	static void renderSplashFrame(Graphics2D g, int frame) {
-        final String[] comps = {"foo", "bar", "baz"};
+	static void renderSplashFrame(int frame) {
+        final String[] comps = {"Log", "Look and Feel", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Finalizer"};
         g.setComposite(AlphaComposite.Clear);
         g.fillRect(120,140,200,40);
         g.setPaintMode();
         g.setColor(Color.BLACK);
-        g.drawString("Loading "+comps[(frame/5)%3]+"...", 120, 150);
+        g.drawString("Loading "+comps[frame]+"...", 120, 150);
     }
 	
+	private static void setGUILAndF() {
+		try {
+            	// Set System L&F
+			UIManager.setLookAndFeel(
+			UIManager.getSystemLookAndFeelClassName());
+	    } 
+	    catch (UnsupportedLookAndFeelException e) {
+	    	// handle exception
+	    }
+	    catch (ClassNotFoundException e) {
+	    	// handle exception
+	    }
+	    catch (InstantiationException e) {
+	    	// handle exception
+	    }
+	    catch (IllegalAccessException e) {
+	    	// handle exception
+	    }
+	}
+	
+	private static void updateSplash(int frame) {
+		renderSplashFrame(frame);
+        splash.update();
+        try {
+            Thread.sleep(180);
+        }
+        catch(InterruptedException e) {
+        }
+	}
+	
+	private static void setup() {
+		updateSplash(0);
+		log = Log.Instance();
+		log.append(0, "Log Loaded\n");
+		updateSplash(1);
+		setGUILAndF();
+		log.append(0, "Look and Feel set\n");
+		updateSplash(2);
+		ctc = new CTCModule();
+		log.append(0, "CTCModule Loaded\n");
+		for(int i = 0; i < 10; i++)
+			updateSplash(7);
+		log.append(0, "\nSystem Ready\n");
+		
+	}
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		try {
-	            // Set System L&F
-	        UIManager.setLookAndFeel(
-	            UIManager.getSystemLookAndFeelClassName());
-	    } 
-	    catch (UnsupportedLookAndFeelException e) {
-	       // handle exception
-	    }
-	    catch (ClassNotFoundException e) {
-	       // handle exception
-	    }
-	    catch (InstantiationException e) {
-	       // handle exception
-	    }
-	    catch (IllegalAccessException e) {
-	       // handle exception
-	    }
 		
-		final SplashScreen splash = SplashScreen.getSplashScreen();
+		splash = SplashScreen.getSplashScreen();
         if (splash == null) {
             System.out.println("SplashScreen.getSplashScreen() returned null");
             return;
         }
-        Graphics2D g = splash.createGraphics();
+        g = splash.createGraphics();
         if (g == null) {
             System.out.println("g is null");
             return;
         }
-        for(int i=0; i<50; i++) {
-            renderSplashFrame(g, i);
-            splash.update();
-            try {
-                Thread.sleep(90);
-            }
-            catch(InterruptedException e) {
-            }
-        }
+        setup();
         splash.close();
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -80,6 +106,7 @@ public class System_GUI {
 				try {
 					System_GUI window = new System_GUI();
 					window.frmCtcss.setVisible(true);
+					window.frmCtcss.toFront();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -104,7 +131,7 @@ public class System_GUI {
 		frmCtcss.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmCtcss.getContentPane().setLayout(null);
 		
-		JPanel panel = new LogPanel();
+		JPanel panel = log.getPanel();
 		panel.setBounds(10, 400, 964, 130);
 		frmCtcss.getContentPane().add(panel);
 		
@@ -129,7 +156,7 @@ public class System_GUI {
 		panel_5.setBackground(Color.WHITE);
 		tabbedPane.addTab("Train Controller", null, panel_5, null);
 		
-		JPanel panel_1 = new CTCPanel();
+		JPanel panel_1 = ctc.getPanel();
 		panel_1.setBounds(10, 11, 300, 378);
 		frmCtcss.getContentPane().add(panel_1);
 		
