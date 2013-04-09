@@ -112,6 +112,7 @@ public class System_GUI {
 			public void run() {
 				try {
 					System_GUI window = new System_GUI();
+					window.frmCtcss.setResizable(false);
 					window.frmCtcss.setVisible(true);
 					window.frmCtcss.toFront();
 				} catch (Exception e) {

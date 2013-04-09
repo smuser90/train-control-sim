@@ -37,6 +37,7 @@ public class LogPanel extends JPanel {
 		panel.add(scrollPane);
 		
 		textPane = new JTextPane();
+		textPane.setEditable(false);
 		scrollPane.setViewportView(textPane);
 
 	}
