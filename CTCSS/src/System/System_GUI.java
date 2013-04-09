@@ -30,7 +30,7 @@ public class System_GUI {
 	private static SplashScreen splash = null;
 	
 	static void renderSplashFrame(int frame) {
-        final String[] comps = {"Log", "Look and Feel", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Finalizer"};
+        final String[] comps = {"Log", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Finalizer"};
         g.setComposite(AlphaComposite.Clear);
         g.fillRect(120,140,200,40);
         g.setPaintMode();
@@ -62,7 +62,7 @@ public class System_GUI {
 		renderSplashFrame(frame);
         splash.update();
         try {
-            Thread.sleep(180);
+            Thread.sleep(360);
         }
         catch(InterruptedException e) {
         }
@@ -70,18 +70,16 @@ public class System_GUI {
 	
 	private static void setup() {
 		updateSplash(0);
+		setGUILAndF();
 		log = Log.Instance();
 		log.append(0, "Log Loaded\n");
+		log.append(0, "Look and Feel set to " + UIManager.getLookAndFeel().getName() + "\n");
 		updateSplash(1);
-		setGUILAndF();
-		log.append(0, "Look and Feel set\n");
-		updateSplash(2);
 		ctc = new CTCModule();
 		log.append(0, "CTCModule Loaded\n");
-		for(int i = 0; i < 10; i++)
-			updateSplash(7);
+		for(int i = 0; i < 5; i++)
+			updateSplash(6);
 		log.append(0, "\nSystem Ready\n");
-		
 	}
 	/**
 	 * Launch the application.

@@ -51,7 +51,7 @@ public class LogTester {
 		JButton btnNewButton = new JButton("Normal");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				l.append(0, textField.getText() + "\n");
+				l.append(1, textField.getText() + "\n");
 				textField.setText(null);
 			}
 		});
@@ -61,7 +61,7 @@ public class LogTester {
 		JButton btnNewButton_1 = new JButton("Medium");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				l.append(1, textField.getText() + "\n");
+				l.append(2, textField.getText() + "\n");
 				textField.setText(null);
 			}
 		});
@@ -71,7 +71,7 @@ public class LogTester {
 		JButton btnNewButton_2 = new JButton("High");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				l.append(2, textField.getText() + "\n");
+				l.append(3, textField.getText() + "\n");
 				textField.setText(null);
 			}
 		});
