@@ -17,8 +17,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import Log.Log;
 import TrackController.TCPanel;
+import TrackModel.TrackModelModule;
 import CTC.CTCModule;
-import TrainModel.TMPanel;
 import TrainModel.TrainModelModule;
 
 public class System_GUI {
@@ -29,6 +29,7 @@ public class System_GUI {
 	private static Graphics2D g = null;
 	private static SplashScreen splash = null;
 	private static TrainModelModule tm;
+	private static TrackModelModule trm;
 	private static SystemTime st;
 	private static boolean loggedIn = false;
 	
@@ -86,7 +87,10 @@ public class System_GUI {
 		log.append(0, "SystemTime started\n");
 		updateSplash(2);
 		ctc = new CTCModule();
-		log.append(0, "CTCModule Loaded\n");
+		log.append(0, "CTC Module Loaded\n");
+		updateSplash(3);
+		trm = new TrackModelModule();
+		log.append(0,  "Track Model Module Loaded\n");
 		updateSplash(5);
 		tm = new TrainModelModule();
 		log.append(0,  "Train Model Module Loaded\n");
@@ -153,7 +157,7 @@ public class System_GUI {
 		tabbedPane.setBounds(320, 11, 654, 378);
 		frmCtcss.getContentPane().add(tabbedPane);
 		
-		JPanel panel_2 = new JPanel();
+		JPanel panel_2 = trm.getPanel();
 		panel_2.setBackground(Color.WHITE);
 		tabbedPane.addTab("Track Model", null, panel_2, null);
 		panel_2.setLayout(null);
