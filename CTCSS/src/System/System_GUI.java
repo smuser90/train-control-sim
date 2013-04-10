@@ -33,8 +33,9 @@ public class System_GUI {
 	private static TrainModelModule tm;
 	private static TrackModelModule trm;
 	private static TrackControllerModule trc;
-	private static SystemTime st;
+	private static Simulator sim;
 	private static boolean loggedIn = false;
+	
 	private JPanel panel_1;
 	private JTabbedPane tabbedPane;
 	private JMenuItem mntmLogout;
@@ -42,12 +43,12 @@ public class System_GUI {
 	private JMenuItem mntmLogin;
 	
 	static void renderSplashFrame(int frame) {
-        final String[] comps = {"Log", "SystemTime", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Finalizer"};
+        final String[] comps = {"Log", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Simulator"};
         g.setComposite(AlphaComposite.Clear);
         g.fillRect(120,140,200,40);
         g.setPaintMode();
         g.setColor(Color.BLACK);
-        if(frame != comps.length - 1)
+        if(frame != comps.length)
         	g.drawString("Loading "+comps[frame]+"...", 120, 150);
         else
         	g.drawString("Preparing System...", 120, 150);
@@ -90,21 +91,20 @@ public class System_GUI {
 		log.append(0, "Log Loaded\n");
 		log.append(0, "Look and Feel set to " + UIManager.getLookAndFeel().getName() + "\n");
 		updateSplash(1);
-		st = new SystemTime();
-		log.setSysTime(st);
-		log.append(0, "SystemTime started\n");
-		updateSplash(2);
 		ctc = new CTCModule();
 		log.append(0, "CTC Module Loaded\n");
-		updateSplash(3);
+		updateSplash(2);
 		trm = new TrackModelModule();
 		log.append(0,  "Track Model Module Loaded\n");
-		updateSplash(4);
+		updateSplash(3);
 		trc = new TrackControllerModule();
 		log.append(0,  "Track Controller Module Loaded\n");
-		updateSplash(5);
+		updateSplash(4);
 		tm = new TrainModelModule();
 		log.append(0,  "Train Model Module Loaded\n");
+		updateSplash(6);
+		sim = new Simulator();
+		log.append(0, "Simulatior Started\n");
 		for(int i = 0; i < 5; i++)
 			updateSplash(7);
 		log.append(0, "System Ready\n");
@@ -136,6 +136,8 @@ public class System_GUI {
 					window.frmCtcss.setResizable(false);
 					window.frmCtcss.setVisible(true);
 					window.frmCtcss.toFront();
+					Thread t = new Thread(sim);
+					t.start();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

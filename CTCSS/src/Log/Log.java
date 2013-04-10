@@ -2,20 +2,20 @@ package Log;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Date;
-
-import System.SystemTime;
 
 public class Log {
 	
 	private static Log _instance = null;
 	public LogPanel logPanel = null;
 	private static StringBuilder log;
-	private SystemTime st = null;
+	private String st = null;
+	private int limit = 100;
+	private int size;
 	
 	private Log() {
 		logPanel = new LogPanel();
 		log = new StringBuilder();
+		size = 0;
 	}
 	
 	public static Log Instance() {
@@ -34,9 +34,9 @@ public class Log {
 	
 	public void append(int severity, String text) {
 		if(st != null) {
-			log.append(st.getTime() + " | ");
-			System.out.print(st.getTime() + " | ");
-			logPanel.append(severity, st.getTime() + " | ");
+			log.append(st + " | ");
+			System.out.print(st + " | ");
+			logPanel.append(severity, st + " | ");
 		}
 		log.append("Severity: " + Integer.toString(severity) + " | " + text);
 		System.out.print("Severity: " + Integer.toString(severity) + " | " + text);
@@ -53,11 +53,12 @@ public class Log {
 		}
 	}
 	
-	public void setSysTime(SystemTime sysTime) {
+	public void setSysTime(String sysTime) {
 		st = sysTime;
 	}
 	
 	public String getLog() {
 		return log.toString();
 	}
+	
 }
