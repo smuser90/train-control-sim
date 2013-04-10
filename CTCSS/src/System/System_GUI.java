@@ -253,6 +253,9 @@ public class System_GUI {
 		JMenuItem mntmSetSpeed = new JMenuItem("Set Speed");
 		mntmSetSpeed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(loggedIn) {
+					sim.getSpeedDialog().setVisible(true);
+				}
 			}
 		});
 		mnSimulation.add(mntmSetSpeed);
@@ -268,6 +271,7 @@ public class System_GUI {
 		mnFile.remove(0);
 		mnFile.insert(mntmLogout, 0);
 		frmCtcss.repaint();
+		loggedIn = true;
 	}
 	
 	// Simply to show functionality for now will be fleshed out more later
@@ -277,5 +281,6 @@ public class System_GUI {
 		mnFile.remove(0);
 		mnFile.insert(mntmLogin, 0);
 		frmCtcss.repaint();
+		loggedIn = false;
 	}
 }

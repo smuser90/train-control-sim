@@ -9,14 +9,15 @@ import Log.Log;
 public class Simulator implements Runnable{
 	
 	// Fields
-	Log log = null;
-	boolean paused = true;
-	int realTime = 1000;
-	int timeStep = 1;
-	long sysTimeNum;
-	Date sysTime;
-	DateFormat df;
-	CTCModule ctc;
+	private Log log = null;
+	private boolean paused = true;
+	private int realTime = 1000;
+	private int timeStep = 1;
+	private long sysTimeNum;
+	private Date sysTime;
+	private DateFormat df;
+	private CTCModule ctc;
+	private SpeedDialog sd;
 	
 	public void run() {
 		try {
@@ -32,6 +33,7 @@ public class Simulator implements Runnable{
 	
 	public Simulator(CTCModule c) {
 		ctc = c;
+		sd = new SpeedDialog(this);
 		sysTimeNum = System.currentTimeMillis();
 		sysTime = new Date(sysTimeNum);
 		df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
@@ -45,5 +47,14 @@ public class Simulator implements Runnable{
 	
 	public void setSimSpeed(int speed) {
 		timeStep = speed;
+		if(speed == -1) {
+			log.append(3, "Speed must be a number 'x' s.t. 1 <= x <= 10\n");
+		} else {
+			log.append(1, "Speed set to " + Integer.toString(timeStep) + "*real time\n" );
+		}
+	}
+	
+	public SpeedDialog getSpeedDialog() {
+		return this.sd;
 	}
 }
