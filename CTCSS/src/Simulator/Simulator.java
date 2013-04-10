@@ -1,12 +1,14 @@
-package System;
+package Simulator;
 
 import java.text.DateFormat;
 import java.util.Date;
 
+import CTC.CTCModule;
 import Log.Log;
 
 public class Simulator implements Runnable{
 	
+	// Fields
 	Log log = null;
 	boolean paused = true;
 	int realTime = 1000;
@@ -14,6 +16,7 @@ public class Simulator implements Runnable{
 	long sysTimeNum;
 	Date sysTime;
 	DateFormat df;
+	CTCModule ctc;
 	
 	public void run() {
 		try {
@@ -27,7 +30,8 @@ public class Simulator implements Runnable{
 		this.run();
 	}
 	
-	public Simulator() {
+	public Simulator(CTCModule c) {
+		ctc = c;
 		sysTimeNum = System.currentTimeMillis();
 		sysTime = new Date(sysTimeNum);
 		df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
@@ -37,5 +41,9 @@ public class Simulator implements Runnable{
 	
 	public void loadLogTime() {
 		log.setSysTime(df.format(sysTime));
+	}
+	
+	public void setSimSpeed(int speed) {
+		timeStep = speed;
 	}
 }

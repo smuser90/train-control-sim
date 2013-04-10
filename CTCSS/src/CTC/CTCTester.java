@@ -13,7 +13,7 @@ public class CTCTester {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		ctc = new CTCModule();
+		ctc = new CTCModule(null);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

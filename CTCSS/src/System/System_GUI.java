@@ -16,6 +16,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import Log.Log;
+import Simulator.Simulator;
 import TrackController.TrackControllerModule;
 import TrackModel.TrackModelModule;
 import CTC.CTCModule;
@@ -91,7 +92,7 @@ public class System_GUI {
 		log.append(0, "Log Loaded\n");
 		log.append(0, "Look and Feel set to " + UIManager.getLookAndFeel().getName() + "\n");
 		updateSplash(1);
-		ctc = new CTCModule();
+		ctc = new CTCModule(sim);
 		log.append(0, "CTC Module Loaded\n");
 		updateSplash(2);
 		trm = new TrackModelModule();
@@ -103,7 +104,7 @@ public class System_GUI {
 		tm = new TrainModelModule();
 		log.append(0,  "Train Model Module Loaded\n");
 		updateSplash(6);
-		sim = new Simulator();
+		sim = new Simulator(ctc);
 		log.append(0, "Simulatior Started\n");
 		for(int i = 0; i < 5; i++)
 			updateSplash(7);
@@ -250,6 +251,10 @@ public class System_GUI {
 		mnSimulation.add(mntmPause);
 		
 		JMenuItem mntmSetSpeed = new JMenuItem("Set Speed");
+		mntmSetSpeed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		mnSimulation.add(mntmSetSpeed);
 		
 		JMenuItem mntmMetrics = new JMenuItem("Metrics");
