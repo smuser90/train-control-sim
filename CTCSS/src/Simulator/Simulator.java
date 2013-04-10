@@ -46,11 +46,11 @@ public class Simulator implements Runnable{
 	}
 	
 	public void setSimSpeed(int speed) {
-		timeStep = speed;
 		if(speed == -1) {
 			log.append(3, "Speed must be a number 'x' s.t. 1 <= x <= 10\n");
 		} else {
 			log.append(1, "Speed set to " + Integer.toString(timeStep) + "*real time\n" );
+			timeStep = speed;
 		}
 	}
 	
