@@ -1,6 +1,7 @@
 package Simulator;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import CTC.CTCModule;
@@ -10,7 +11,7 @@ public class Simulator implements Runnable{
 	
 	// Fields
 	private Log log = null;
-	private boolean paused = true;
+	private boolean paused = false;
 	private int realTime = 1000;
 	private int timeStep = 1;
 	private long sysTimeNum;
@@ -21,10 +22,15 @@ public class Simulator implements Runnable{
 	
 	public void run() {
 		try {
-			Thread.sleep(realTime*timeStep);
-			sysTimeNum += realTime*timeStep;
-			sysTime.setTime(sysTimeNum);
-			loadLogTime();
+			if(!paused) {
+				Thread.sleep(realTime*timeStep);
+				sysTimeNum += realTime*timeStep;
+				sysTime.setTime(sysTimeNum);
+				loadLogTime();
+			} else {
+				Thread.sleep(1000);
+			}
+				
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -54,7 +60,48 @@ public class Simulator implements Runnable{
 		}
 	}
 	
+	public void togglePause() {
+		paused = !paused;
+		if(paused) {
+			log.append(1, "Simulation Paused\n");
+		} else {
+			log.append(1, "Simulation Unpaused\n");
+		}
+	}
+	
 	public SpeedDialog getSpeedDialog() {
 		return this.sd;
+	}
+	
+	public ArrayList<Integer> getTrainIDs() {
+		return null;
+	}
+	
+	public ArrayList<Integer >getBlockIDs() {
+		return null;
+	}
+	
+	public void routTrain(int TrainID, int StationID) {
+		
+	}
+	
+	public void scheduleTrain() {
+		
+	}
+	
+	public void closeBlock(int blockID) {
+		
+	}
+	
+	public void openBlock(int blockID) {
+		
+	}
+	
+	public void setAuthority(int trainID) {
+		
+	}
+	
+	public void setSpeedLimit(int blockID) {
+		
 	}
 }

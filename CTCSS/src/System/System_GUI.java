@@ -42,6 +42,9 @@ public class System_GUI {
 	private JMenuItem mntmLogout;
 	private JMenu mnFile;
 	private JMenuItem mntmLogin;
+	private JMenuItem mntmRun;
+	private JMenuItem mntmPause;
+	private JMenu mnSimulation;
 	
 	static void renderSplashFrame(int frame) {
         final String[] comps = {"Log", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Simulator"};
@@ -241,13 +244,22 @@ public class System_GUI {
 		mnFile.add(mntmExit);
 		
 		// Simulation Menu
-		JMenu mnSimulation = new JMenu("Simulation");
+		mnSimulation = new JMenu("Simulation");
 		menuBar.add(mnSimulation);
 		
-		JMenuItem mntmRun = new JMenuItem("Run");
-		mnSimulation.add(mntmRun);
+		mntmRun = new JMenuItem("Run");
+		mntmRun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				unPause();
+			}
+		});
 		
-		JMenuItem mntmPause = new JMenuItem("Pause");
+		mntmPause = new JMenuItem("Pause");
+		mntmPause.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pause();
+			}
+		});
 		mnSimulation.add(mntmPause);
 		
 		JMenuItem mntmSetSpeed = new JMenuItem("Set Speed");
@@ -265,7 +277,7 @@ public class System_GUI {
 	}
 	
 	// Simply to show functionality for now will be fleshed out more later
-	public void login() {
+	private void login() {
 		frmCtcss.getContentPane().add(panel_1);
 		frmCtcss.getContentPane().add(tabbedPane);
 		mnFile.remove(0);
@@ -275,12 +287,26 @@ public class System_GUI {
 	}
 	
 	// Simply to show functionality for now will be fleshed out more later
-	public void logout() {
+	private void logout() {
 		frmCtcss.remove(panel_1);
 		frmCtcss.remove(tabbedPane);
 		mnFile.remove(0);
 		mnFile.insert(mntmLogin, 0);
 		frmCtcss.repaint();
 		loggedIn = false;
+	}
+	
+	private void pause() {
+		sim.togglePause();
+		mnSimulation.remove(0);
+		mnSimulation.insert(mntmRun, 0);
+		frmCtcss.repaint();
+	}
+	
+	private void unPause() {
+		sim.togglePause();
+		mnSimulation.remove(0);
+		mnSimulation.insert(mntmPause, 0);
+		frmCtcss.repaint();
 	}
 }
