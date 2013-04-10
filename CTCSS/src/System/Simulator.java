@@ -9,7 +9,7 @@ public class Simulator implements Runnable{
 	
 	Log log = null;
 	boolean paused = true;
-	int realTime = 100;
+	int realTime = 1000;
 	int timeStep = 1;
 	long sysTimeNum;
 	Date sysTime;
@@ -21,7 +21,6 @@ public class Simulator implements Runnable{
 			sysTimeNum += realTime*timeStep;
 			sysTime.setTime(sysTimeNum);
 			loadLogTime();
-			log.append(2, "New Time\n");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
