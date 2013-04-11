@@ -43,7 +43,7 @@ public class TrackControllerPanel extends JPanel {
 	public TrackControllerPanel() {
 		setLayout(null);
 		
-		blockList = TrackControllerTester.getBlockList();
+		blockList = TrackControllerModule.getBlockList();
 
 		JLabel lblNewLabel_3 = new JLabel("Properties");
 		lblNewLabel_3.setBounds(10, 111, 77, 14);
@@ -74,7 +74,7 @@ public class TrackControllerPanel extends JPanel {
 				TrackControllerModule.getTrack();
 				TrackControllerModule.runPLC();
 				//displayChange();
-				TrackControllerTester.myBlocks.get(2).occupied = true;
+				blockList.get(2).occupied = true;
 				//TrackControllerTester.myBlocks.get(0).occupied = false;
 				//TrackControllerTester.myBlocks.get(1).occupied = false;
 				// TrackControllerModule.nextTC();

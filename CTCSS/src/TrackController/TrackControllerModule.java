@@ -85,7 +85,12 @@ public class TrackControllerModule extends JFrame {
 		/***********************************************************************************
 		 * GET BLOCKS HERE 
 		 ***********************************************************************************/
-		myBlocks = TrackControllerTester.getBlockList();
+		//myBlocks = TrackControllerTester.getBlockList();
+		
+		for (int blockCount = 0; blockCount < 4; blockCount++) {
+			Block blk = new Block(blockCount, false, false);
+			myBlocks.add(blk);
+		}
 		//myBlocks.get(0).occupied = true;
 		// Create lists depending on the block properties
 		for (int listCount = 0; listCount < myBlocks.size(); listCount++) {
@@ -181,5 +186,9 @@ public class TrackControllerModule extends JFrame {
 	public static void runPLC(){
 		//currentPanel.test2();
 		TrackController.runPLC(trackControllerList);
+	}
+
+	public static ArrayList<Block> getBlockList() {
+		return myBlocks;
 	}
 }
