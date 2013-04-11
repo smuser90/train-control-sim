@@ -15,7 +15,6 @@ public class TMPanel extends JPanel
 	{
 		setLayout(null);
 		setBounds(100, 100, 650, 350);
-		setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(6, 6, 638, 20);
