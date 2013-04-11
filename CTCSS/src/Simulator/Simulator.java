@@ -6,6 +6,8 @@ import java.util.Date;
 
 import CTC.CTCModule;
 import Log.Log;
+import TrackController.TrackControllerModule;
+import TrackModel.Block;
 
 public class Simulator implements Runnable{
 	
@@ -18,13 +20,15 @@ public class Simulator implements Runnable{
 	private Date sysTime;
 	private DateFormat df;
 	private CTCModule ctc;
+	private TrackControllerModule tcm;
 	private SpeedDialog sd;
+	public ArrayList<Block> myBlocks;
 	
 	public void run() {
 		try {
 			if(!paused) {
 				Thread.sleep(realTime/timeStep);
-				sysTimeNum += realTime*timeStep;
+				sysTimeNum += realTime;
 				sysTime.setTime(sysTimeNum);
 				loadLogTime();
 			} else {
@@ -37,8 +41,19 @@ public class Simulator implements Runnable{
 		this.run();
 	}
 	
-	public Simulator(CTCModule c) {
+	public Simulator(CTCModule c, TrackControllerModule TcM) {
+		myBlocks = new ArrayList<Block>();
+		for (int blockCount = 0; blockCount < 5; blockCount++) {
+			Block blk = new Block(blockCount);
+			//blk.setBlockNumber(blockCount);
+			if(blockCount == 1)
+				blk.setType(1);
+			if(blockCount == 2)
+				blk.setType(2);
+			myBlocks.add(blk);
+		}
 		ctc = c;
+		tcm = TcM;
 		sd = new SpeedDialog(this);
 		sysTimeNum = System.currentTimeMillis();
 		sysTime = new Date(sysTimeNum);
@@ -103,5 +118,10 @@ public class Simulator implements Runnable{
 	
 	public void setSpeedLimit(int blockID) {
 		
+	}
+	
+	public void loadTrack() {
+		tcm.getTrack(myBlocks);
+		log.append(1, "Track Loaded\n");
 	}
 }

@@ -1,5 +1,6 @@
 package TrackController;
 
+import TrackModel.Block;
 /*************************************
  * For block.type
  * 0 regular
@@ -7,64 +8,46 @@ package TrackController;
  * 2 crossing
  */
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class TrackControllerModule extends JFrame {
-
-	private JPanel contentPane;
-	static TrackControllerPanel currentPanel;
-	JLabel lblNewLabel = new JLabel("New label");
-	static ArrayList<TrackController> trackControllerList = new ArrayList<TrackController>();
-	static ArrayList<Block> myBlocks = new ArrayList<Block>();//new ArrayList<Block>();
-	static ArrayList<Integer> switchList = new ArrayList<Integer>();
-	static ArrayList<Integer> trainList = new ArrayList<Integer>();
-	static ArrayList<Integer> crossingList = new ArrayList<Integer>();
-	static int upperLimit;
-	static int lowerLimit;
-	static int index = 1;
-	static int count = 0;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TrackControllerModule frame = new TrackControllerModule();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+public class TrackControllerModule {
+	
+	private TrackControllerPanel currentPanel;
+	private ArrayList<TrackController> trackControllerList;
+	private ArrayList<Block> myBlocks;//new ArrayList<Block>();
+	private ArrayList<Integer> switchList;
+	private ArrayList<Integer> trainList;
+	private ArrayList<Integer> crossingList;
+	private int upperLimit;
+	private int lowerLimit;
+	private int index = 1;
+	private int count = 0;
+	private boolean hasTrack = false;
 	/**
 	 * Create the frame.
 	 */
 	public TrackControllerModule() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 00, 650, 350);
-		currentPanel = new TrackControllerPanel();
-		//this.setContentPane(currentPanel);
-
-
+		myBlocks = new ArrayList<Block>();
+		switchList = new ArrayList<Integer>();
+		trainList = new ArrayList<Integer>();
+		crossingList = new ArrayList<Integer>();
+		trackControllerList = new ArrayList<TrackController>();
+		currentPanel = new TrackControllerPanel(this);
 	}
 	/************************************************************************************************
 	 CALL THIS TO WAKE ME UP************************************************************************/
-	public static void getTrack(){
+	public void getTrack(ArrayList<Block> track){
+		myBlocks = track;
+		for (int listCount = 0; listCount < myBlocks.size(); listCount++) {
+			if (myBlocks.get(listCount).getType() == 1) {
+				switchList.add(listCount);
+			}
+			if (myBlocks.get(listCount).getOccupied()) {
+				trainList.add(listCount);
+			}
+			if (myBlocks.get(listCount).getType() == 2)
+				crossingList.add(listCount);
+		}
 		// Set some of the blocks as switches *TESTING*
 //		myBlocks.get(8).isSwitch = true;
 //		myBlocks.get(17).isSwitch = true;
@@ -87,50 +70,41 @@ public class TrackControllerModule extends JFrame {
 		 ***********************************************************************************/
 		//myBlocks = TrackControllerTester.getBlockList();
 		
-		for (int blockCount = 0; blockCount < 4; blockCount++) {
-			Block blk = new Block(blockCount, false, false);
-			myBlocks.add(blk);
-		}
+		
 		//myBlocks.get(0).occupied = true;
 		// Create lists depending on the block properties
-		for (int listCount = 0; listCount < myBlocks.size(); listCount++) {
-			if (myBlocks.get(listCount).type == 1) {
-				switchList.add(listCount + 1);
-			}
-			if (myBlocks.get(listCount).occupied) {
-				trainList.add(listCount + 1);
-			}
-			if (myBlocks.get(listCount).type == 2)
-				crossingList.add(listCount + 1);
-		}
-
+		
+		
+		//TrackControllerPanel.test3();
 		// Here we go through and create all the track controllers and assign
 		// them their blocks
 		if (switchList.size() != 0) {
 			for (index = 0; index < switchList.size(); index++) {
 				TrackController tc = new TrackController(index + 1, 0, 0, 0);
 
-				if (index == 0) {
+				if (index == 0 && index != switchList.size() - 1) {
 					upperLimit = switchList.get(switchList.size() - 1);
 					lowerLimit = (switchList.get((index + 1)));
-					for (count = 1; count < lowerLimit; count++) {
+					//lowerLimit = (switchList.get((index)));
+					for (count = 0; count < lowerLimit; count++) {
 						tc.blocksControlled.add(count);
 					}
 
-					for (count = upperLimit + 1; count < 101; count++) {
-						tc.blocksControlled.add(count);
-					}
+					//for (count = upperLimit + 1; count < 101; count++) {
+					//	tc.blocksControlled.add(count);
+					//}
 				}
 
 				else if (index == switchList.size() - 1) {
 					lowerLimit = switchList.get(0);
-					upperLimit = switchList.get(index - 1);
+					//upperLimit = switchList.get(index - 1);
+					upperLimit = switchList.get(index);
 
-					for (count = 1; count < lowerLimit; count++) {
+					for (count = 0; count < lowerLimit + 1; count++) {
 						tc.blocksControlled.add(count);
 					}
 
-					for (count = upperLimit + 1; count < 101; count++) {
+					for (count = upperLimit + 1; count < myBlocks.size(); count++) {
 						tc.blocksControlled.add(count);
 					}
 				}
@@ -141,7 +115,7 @@ public class TrackControllerModule extends JFrame {
 					for (count = lowerLimit + 1; count < upperLimit; count++)
 						tc.blocksControlled.add(count);
 				}
-				tc.blocks = tc.blocksControlled.size();
+				tc.setNumBlocks(tc.blocksControlled.size());
 				trackControllerList.add(tc);
 			}
 		}
@@ -151,9 +125,12 @@ public class TrackControllerModule extends JFrame {
 				tc.blocksControlled.add(count);
 				//tc.blocksControlled.add(count + 1);
 			}
-			tc.blocks = tc.blocksControlled.size();
+			tc.setNumBlocks(tc.blocksControlled.size());
 			trackControllerList.add(tc);
 		}
+		hasTrack = true;
+		PLC.setup(myBlocks, crossingList);
+		currentPanel.displayChange();
 
 		// For the initial list, set up any trains that are placed on the track
 //		for (index = 0; index < trackControllerList.size(); index++) {
@@ -171,24 +148,45 @@ public class TrackControllerModule extends JFrame {
 //			}
 //		}
 		//if(currentPanel != null)
-		currentPanel.displayChange();
 		
-		currentPanel.test(trackControllerList, trainList);
+		
+		//currentPanel.test(trackControllerList, trainList);
 	}
 
 	public TrackControllerPanel getPanel() {
 		return this.currentPanel;
 	}
 	
+	public void receiveTick() {
+		if(hasTrack) {
+			runPLC();
+			currentPanel.displayChange();
+		}
+	}
 	
 	/**************************************************************************************
 	 * CALL ME ONCE PER TICK**************************************************************/
-	public static void runPLC(){
-		//currentPanel.test2();
+	public void runPLC(){
+		
 		TrackController.runPLC(trackControllerList);
 	}
 
-	public static ArrayList<Block> getBlockList() {
+	protected ArrayList<Block> getBlockList() {
 		return myBlocks;
+	}
+	
+	protected ArrayList<Integer> getTrainList() {
+		return trainList;
+	}
+	
+	protected ArrayList<Integer> getSwitchList() {
+		return switchList;
+	}
+	
+	protected ArrayList<TrackController> getTrCList() {
+		return trackControllerList;
+	}
+	protected ArrayList<Integer> getCrossingList() {
+		return crossingList;
 	}
 }

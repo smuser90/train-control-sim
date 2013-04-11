@@ -17,4 +17,8 @@ public class CTCModule {
 	public CTCPanel getPanel() {
 		return this.gui;
 	}
+	
+	protected void scheduleTrain() {
+		sim.scheduleTrain();
+	}
 }

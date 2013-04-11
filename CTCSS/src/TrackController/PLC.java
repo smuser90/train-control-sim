@@ -1,35 +1,42 @@
 package TrackController;
 
+import TrackModel.Block;
+
 import java.util.ArrayList;
 
 public class PLC {
 
-	static ArrayList<Block> myBlocks = new ArrayList<Block>();//TrackControllerModule.myBlocks;
-	static ArrayList<TrackController> trackControllerList = TrackControllerModule.trackControllerList;
-	static ArrayList<Integer> crossingList = TrackControllerModule.crossingList;
+	private static ArrayList<Block> myBlocks = new ArrayList<Block>();//TrackControllerModule.myBlocks;
+	private static ArrayList<Integer> crossingList;
 	
 	static int index = 0;
 	static int index_2 = 0;
 	
 	public static void runPLC(TrackController trackController) {
-		myBlocks = TrackControllerTester.getBlockList();
 		detectTrains(trackController);
+		crossings();
 		
 	}
+	
+	public static void setup(ArrayList<Block> blocks, ArrayList<Integer> cList) {
+		myBlocks = blocks;
+		crossingList = cList;
+	}
+	
 	//Method cycles through all the track controllers and sets the number of trains on each block to zero
 	//It then cycles through all the blocks and checks if they are owned by that controller and are occupied
 	//If so, the number of trains is increased for that controller
 	public static void detectTrains(TrackController trackController){
-		trackController.trains = 0;
+		int temp = 0;
 		for(index = 0; index < myBlocks.size(); index++)
 		{
-			if(trackController.blocksControlled.contains(myBlocks.get(index).blockNumber) && myBlocks.get(index).occupied)
+			if(trackController.blocksControlled.contains(myBlocks.get(index).getBlockNumber()) && myBlocks.get(index).getOccupied())
 			{
-				trackController.trains++;
+				temp++;
 				//TrackControllerPanel.test3();
 			}
 		}
-		TrackControllerPanel.displayChange();
+		trackController.setNumTrains(temp);
 		//TrackControllerPanel.updateTrainDisplay(trackController);
 //		for(index = 0; index < trackControllerList.size();index++){
 //			trackControllerList.get(index).trains = 0;
@@ -44,13 +51,13 @@ public class PLC {
 	public static void crossings(){
 		for(index = 0; index <crossingList.size(); index++)
 		{
-			if(myBlocks.get(crossingList.get(index) - 1).occupied || myBlocks.get(crossingList.get(index) + 1).occupied)
+			if(myBlocks.get(crossingList.get(index) - 1).getOccupied() || myBlocks.get(crossingList.get(index) + 1).getOccupied())
 			{
-				myBlocks.get(crossingList.get(index)).crossingActive = false;
+				myBlocks.get(crossingList.get(index)).setCrossing(true);
 			}
 			
 			else
-				myBlocks.get(crossingList.get(index)).crossingActive = true;
+				myBlocks.get(crossingList.get(index)).setCrossing(false);
 		}
 	}
 	
@@ -61,7 +68,7 @@ public class PLC {
 	public static void detectBrokenRail(TrackController trackController){
 		for(index = 0; index < trackController.blocksControlled.size(); index++)
 		{
-			if(myBlocks.get(trackController.blocksControlled.get(index)).failure)
+			if(myBlocks.get(trackController.blocksControlled.get(index)).getFailure())
 			{
 				//if not the yard, and train within one block of the broken rail it needs to hit EBrake
 				if(index > 0)
