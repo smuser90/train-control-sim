@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
+import Log.Log;
 import TrackModel.Block;
 
 import java.awt.event.ActionListener;
@@ -44,6 +45,7 @@ public class CTCPanel extends JPanel {
 	private String [] trainsADef= new String[] {"Train Actions", "Schedule Train", "Route Train"};
 	private String [] stationsDef= new String[] {"Stations"};
 	private String [] lineDef= new String[] {"Lines"};
+	private Log log = Log.Instance();
 	/**
 	 * Create the panel.
 	 */
@@ -143,17 +145,19 @@ public class CTCPanel extends JPanel {
 		lineBox.setModel(new DefaultComboBoxModel(lineDef));
 		lineBox.setBounds(10, 29, 275, 20);
 		panel.add(lineBox);
-
+		
+		toggle(false);
 	}
 	
 	protected void update() {
 		if(lineBox.getSelectedItem().equals("Lines")) {
 			reset();
 		} else if(lineBox.getSelectedItem().equals("Green")) {
-			System.out.println("Adding green line blocks");
 			ArrayList<Block> t = _ctc.getGreenLine();
 			ArrayList<String> t2 = new ArrayList<String>();
 			ArrayList<String> t3 = new ArrayList<String>();
+			ArrayList<Integer> t4 = _ctc.getGLTrains();
+			ArrayList<String> t5 = new ArrayList<String>();
 			t3.add("Stations");
 			for(int i = 0; i < t.size(); i++) {
 				if(i == 0) {
@@ -165,7 +169,10 @@ public class CTCPanel extends JPanel {
 						t2.add(Integer.toString(t.get(i).getBlockNumber()));
 					}
 				}
-				
+			}
+			t5.add("Trains");
+			for(int i = 0; i < t4.size(); i++) {
+				t5.add(t4.get(i).toString());
 			}
 			String [] temp = new String [t2.size()];
 			t2.toArray(temp);
@@ -173,6 +180,10 @@ public class CTCPanel extends JPanel {
 			temp = new String [t3.size()];
 			t3.toArray(temp);
 			stationBox.setModel(new DefaultComboBoxModel(temp));
+			temp = new String [t5.size()];
+			t5.toArray(temp);
+			trainBox.setModel(new DefaultComboBoxModel(temp));
+			toggle(true);
 		}
 	}
 	
@@ -186,25 +197,41 @@ public class CTCPanel extends JPanel {
 		String [] temp = new String [t.size()];
 		t.toArray(temp);
 		lineBox.setModel(new DefaultComboBoxModel(temp));
+		toggle(false);
 	}
 	
 	public void trainActions() {
-		if(!trainBox.getSelectedItem().equals("Trains") && !trainBox.getSelectedItem().equals("Train Actions")) {
-			if(trainBox.getSelectedItem().equals("Schedule Train")) {
-				System.out.println("Schedule");
+		if(!trainActionsBox.getSelectedItem().equals("Train Actions")) {
+			if(trainActionsBox.getSelectedItem().equals("Schedule Train")) {
+				if(lineBox.getSelectedItem().equals("Green"))
+					_ctc.scheduleTrain(0);
+				else
+					_ctc.scheduleTrain(1);
 			} else {
-				System.out.println("Not Supported Yet");
+				log.append(3, "Not Yet Supported\n");
 			}
 		} else {
-			System.out.println("Must Select a train and a train action");
+			log.append(3, "Must Select a a train action");
 		}	
 	}
 	
 	public void blockActions() {
 		if(!blocksBox.getSelectedItem().equals("Blocks") && !blocksBox.getSelectedItem().equals("Block Actions")) {
-			System.out.println("Nothing Supported");
+			log.append(3, "Not Yet Supported\n");
 		} else {
-			System.out.println("Not Yet Supported");
+			log.append(3, "Not Yet Supported\n");
 		}	
+	}
+	
+	public void toggle(boolean onoff) {
+		blockActionsBox.setEnabled(onoff);
+		trainBox.setEnabled(onoff);
+		stationBox.setEnabled(onoff);
+		trainActionsBox.setEnabled(onoff);
+		blocksBox.setEnabled(onoff);
+		trainButton.setEnabled(onoff);
+		blockButton.setEnabled(onoff);
+		speedField.setEnabled(onoff);
+		authorityField.setEnabled(onoff);
 	}
 }

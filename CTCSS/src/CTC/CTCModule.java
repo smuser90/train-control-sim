@@ -2,6 +2,7 @@ package CTC;
 
 import java.util.ArrayList;
 
+import Log.Log;
 import Simulator.Simulator;
 import TrackModel.Block;
 
@@ -10,13 +11,16 @@ public class CTCModule {
 	private CTCPanel gui;
 	private Simulator sim;
 	private ArrayList<Block> greenLine = null;
+	private ArrayList<Integer> gTrainIDs = null;
 	private ArrayList<String> lines = null;
+	private Log log = Log.Instance();
 	
 	public CTCModule(Simulator s) {
 		gui = new CTCPanel(this);
 		sim = s;
 		lines = new ArrayList<String>();
 		lines.add("Lines");
+		gTrainIDs = new ArrayList<Integer>();
 	}
 		
 	public CTCPanel getPanel() {
@@ -24,7 +28,13 @@ public class CTCModule {
 	}
 	
 	protected void scheduleTrain(int line) {
-		sim.scheduleTrain(line);
+		if(sim != null)
+			sim.scheduleTrain(line);
+		if(line == 0) {
+			log.append(0, "Train added to Green Line\n");
+		} else {
+			log.append(0, "Train added to Red Line\n");
+		}
 	}
 	
 	public void setGLine(ArrayList<Block> gLine) {
@@ -41,5 +51,14 @@ public class CTCModule {
 	
 	protected ArrayList<Block> getGreenLine() {
 		return greenLine;
+	}
+	
+	public void setGLTrains(ArrayList<Integer> tids) {
+		gTrainIDs = tids;
+		gui.update();
+	}
+	
+	public ArrayList<Integer> getGLTrains() {
+		return gTrainIDs;
 	}
 }

@@ -10,18 +10,22 @@ import TrackModel.Block;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Random;
 
 public class CTCTester {
 
 	private JFrame frame;
 	private static CTCModule ctc;
-	public static ArrayList<Block> myBlocks;
+	private static ArrayList<Block> myBlocks;
+	private static ArrayList<Integer> tids;
+	private Random r = new Random();
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		ctc = new CTCModule(null);
 		myBlocks = new ArrayList<Block>();
+		tids = new ArrayList<Integer>();
 		for (int blockCount = 0; blockCount < 5; blockCount++) {
 			Block blk = new Block(blockCount);
 			//blk.setBlockNumber(blockCount);
@@ -73,5 +77,15 @@ public class CTCTester {
 		});
 		btnGetTrack.setBounds(10, 473, 89, 23);
 		frame.getContentPane().add(btnGetTrack);
+		
+		JButton btnAddTrain = new JButton("Add Train");
+		btnAddTrain.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tids.add(r.nextInt(10));
+				ctc.setGLTrains(tids);
+			}
+		});
+		btnAddTrain.setBounds(109, 473, 89, 23);
+		frame.getContentPane().add(btnAddTrain);
 	}
 }
