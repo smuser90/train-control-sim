@@ -29,6 +29,8 @@ public class CTCTester {
 				blk.setType(1);
 			if(blockCount == 2)
 				blk.setType(2);
+			if(blockCount == 4)
+				blk.setType(3);
 			myBlocks.add(blk);
 		}
 		EventQueue.invokeLater(new Runnable() {

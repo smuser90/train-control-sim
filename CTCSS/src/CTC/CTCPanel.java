@@ -99,7 +99,7 @@ public class CTCPanel extends JPanel {
 		blockButton = new JButton("Perform Block Action");
 		blockButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				blockActions();
 			}
 		});
 		blockButton.setBounds(10, 140, 275, 23);
@@ -153,17 +153,26 @@ public class CTCPanel extends JPanel {
 			System.out.println("Adding green line blocks");
 			ArrayList<Block> t = _ctc.getGreenLine();
 			ArrayList<String> t2 = new ArrayList<String>();
+			ArrayList<String> t3 = new ArrayList<String>();
+			t3.add("Stations");
 			for(int i = 0; i < t.size(); i++) {
 				if(i == 0) {
 					t2.add("Blocks");
 				} else {
-					t2.add(Integer.toString(t.get(i).getBlockNumber()));
+					if(t.get(i).getType() == 3) {
+						t3.add(Integer.toString(t.get(i).getBlockNumber()));
+					} else {
+						t2.add(Integer.toString(t.get(i).getBlockNumber()));
+					}
 				}
 				
 			}
 			String [] temp = new String [t2.size()];
 			t2.toArray(temp);
 			blocksBox.setModel(new DefaultComboBoxModel(temp));
+			temp = new String [t3.size()];
+			t3.toArray(temp);
+			stationBox.setModel(new DefaultComboBoxModel(temp));
 		}
 	}
 	
@@ -181,9 +190,21 @@ public class CTCPanel extends JPanel {
 	
 	public void trainActions() {
 		if(!trainBox.getSelectedItem().equals("Trains") && !trainBox.getSelectedItem().equals("Train Actions")) {
-			
+			if(trainBox.getSelectedItem().equals("Schedule Train")) {
+				System.out.println("Schedule");
+			} else {
+				System.out.println("Not Supported Yet");
+			}
 		} else {
-		
+			System.out.println("Must Select a train and a train action");
+		}	
+	}
+	
+	public void blockActions() {
+		if(!blocksBox.getSelectedItem().equals("Blocks") && !blocksBox.getSelectedItem().equals("Block Actions")) {
+			System.out.println("Nothing Supported");
+		} else {
+			System.out.println("Not Yet Supported");
 		}	
 	}
 }
