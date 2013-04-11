@@ -37,6 +37,7 @@ public class TrackControllerPanel extends JPanel {
 	static int up = TrackControllerModule.upperLimit;
 	static int index = 0;
 	static String myTrainList = "";
+	static String mySwitchList = "";
 	/**
 	 * Create the panel.
 	 */
@@ -73,6 +74,7 @@ public class TrackControllerPanel extends JPanel {
 				
 				TrackControllerModule.getTrack();
 				TrackControllerModule.runPLC();
+				//currentController++;
 				//displayChange();
 				blockList.get(2).occupied = true;
 				//TrackControllerTester.myBlocks.get(0).occupied = false;
@@ -251,6 +253,7 @@ public class TrackControllerPanel extends JPanel {
 		//	}
 			
 		//	else if(blockList.get(trackControllerList.get(currentController).blocksControlled.get(index)) == occupied)
+
 			if(trackControllerList.get(currentController).blocksControlled.contains(blockList.get(index).blockNumber) && blockList.get(index).occupied)
 			{
 				myTrainList = myTrainList + "Train on Block: " + blockList.get(index).blockNumber + "\n";
@@ -258,12 +261,21 @@ public class TrackControllerPanel extends JPanel {
 				//myTrainList = myTrainList + "Train on Block: " + (trackControllerList.get(currentController).blocksControlled.get(index) + 1 ) + "\n";
 				
 			}
-			
 			//else{}
 		}
 		txtrTrainId.setText(myTrainList);
 		myTrainList = "";
-		
+		for(index = 0; index < numberSwitch.size(); index++)
+		{
+			if(trackControllerList.get(currentController).blocksControlled.contains(numberSwitch.get(index)))
+			{
+				mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + (numberSwitch.get(index).intValue() + 1) +"\n";
+			}
+		}
+		//txtrSwitchAtBlock.setText("Here i am "+ numberSwitch.size());
+		txtrSwitchAtBlock.setText(mySwitchList);
+		mySwitchList = "";
+			
 		
 		//Goes through each controlled block for each track controller
 		//for(Iterator<Integer> i = trackControllerList.get(currentController).blocksControlled.iterator();i.hasNext();)
@@ -274,16 +286,16 @@ public class TrackControllerPanel extends JPanel {
 		//lblNewLabel.setText("Howdy " + up);
 	}
 	
-	public void test(ArrayList<TrackController> me, ArrayList<Integer> trainList){
-		txtrSwitchAtBlock.setText("" + me.get(0).blocksControlled);//blockList.get(trackControllerList.get(6).blocksControlled.get(14)).occupied);
+	/*public void test(ArrayList<TrackController> me, ArrayList<Integer> trainList){
+		txtrSwitchAtBlock.setText("" + numberSwitch.toString());//blockList.get(trackControllerList.get(6).blocksControlled.get(14)).occupied);
 		
 	}
 
 
-public static void test3() {
-	txtrSwitchAtBlock.setText("Trains were detected");
-	
-}
+	public static void test3() {
+		txtrSwitchAtBlock.setText("" + blockList.size());
+		
+	}*/
 
 
 }

@@ -12,7 +12,7 @@ public class PLC {
 	static int index_2 = 0;
 	
 	public static void runPLC(TrackController trackController) {
-		myBlocks = TrackControllerTester.getBlockList();
+		myBlocks = TrackControllerModule.getBlockList();
 		detectTrains(trackController);
 		
 	}
