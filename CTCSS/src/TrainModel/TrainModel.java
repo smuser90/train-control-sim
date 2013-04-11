@@ -11,10 +11,13 @@ public class TrainModel
 	private ArrayList<Block>	m_routeInfo;
 	private int					m_blockIndex;
 	private int 				m_trainID;
-	private int 				m_length;
-	private int 				m_height;
-	private int 				m_width;
-	private int 				m_mass;
+	private int					m_line;
+	private double 				m_length;
+	private double 				m_height;
+	private double 				m_width;
+	private double 				m_mass;
+	private double				m_massEmpty;	
+	private double				m_massFull;
 	private int 				m_cars;
 	private int 				m_crew;
 	private int 				m_passengers;
@@ -37,15 +40,19 @@ public class TrainModel
 	
 	
 	
-	public TrainModel(int ID, TrainController tc)
+	public TrainModel(int ID, int line, TrainController tc)
 	{
 		m_trainController = tc;
 		m_routeInfo = null;
+		m_line = line;
 		m_trainID = ID;
-		m_length = 32; //meters
-		
-		m_mass = 3000; //KGram
-		m_powerLimit = 300; //KWatt
+		m_length = 32.2; 
+		m_width = 2.65;
+		m_height = 3.42;
+		m_mass = 37103.9;
+		m_massEmpty = m_mass;
+		m_massFull = 51437.4;
+		m_powerLimit = 300; 
 	}
 	
 	public void setTrainController(TrainModel tm)
@@ -85,42 +92,13 @@ public class TrainModel
 		m_trainID = trainID;
 	}
 	
-	public int getLength()
-	{
-		return m_length;
-	}
 	
-	public void setLength(int length)
-	{
-		m_length = length;
-	}
-	
-	public int getHeight()
-	{
-		return m_height;
-	}
-	
-	public void setHeight(int height)
-	{
-		m_height = height;
-	}
-	
-	public int getWidth()
-	{
-		return m_width;
-	}
-	
-	public void setWidth(int width)
-	{
-		m_width = width;
-	}
-	
-	public int getMass()
+	public double getMass()
 	{
 		return m_mass;
 	}
 	
-	public void setMass(int mass)
+	public void setMass(double mass)
 	{
 		m_mass = mass;
 	}
