@@ -28,18 +28,20 @@ public class TrackControllerPanel extends JPanel {
 	private JLabel lblNewLabel = new JLabel("");
 	private JLabel lblNewLabel_1 = new JLabel("");
 	private JLabel lblNewLabel_2 = new JLabel("");
-	
+	private JButton btnNewButton_1;
+	private JButton btnNewButton;
 	// Fields
 	private TrackControllerModule _tcm;
 	private int currentController = 0;
 	private int trackID = 0;
 	private ArrayList<TrackController> trackControllerList;
-	private ArrayList<Block> blockList;;
+	private ArrayList<Block> blockList;
 	private ArrayList<Integer> numberSwitch;
 	private ArrayList<Integer> trainList;
 	private int index = 0;
 	private String myTrainList = "";
 	private String mySwitchList = "";
+	private boolean hasInfo = false;
 	/**
 	 * Create the panel.
 	 */
@@ -54,7 +56,8 @@ public class TrackControllerPanel extends JPanel {
 		lblNewLabel_3.setBounds(10, 111, 77, 14);
 		add(lblNewLabel_3);
 
-		JButton btnNewButton = new JButton("Prev TC");
+		btnNewButton = new JButton("Prev TC");
+		btnNewButton.setEnabled(false);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//currentController--;
@@ -66,7 +69,8 @@ public class TrackControllerPanel extends JPanel {
 		btnNewButton.setBounds(10, 250, 125, 23);
 		add(btnNewButton);
 
-		JButton btnNewButton_1 = new JButton("Next TC");
+		btnNewButton_1 = new JButton("Next TC");
+		btnNewButton_1.setEnabled(false);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//currentController++;
@@ -75,12 +79,9 @@ public class TrackControllerPanel extends JPanel {
 				//blockList.get(7).occupied = false;
 				//blockList.get(28).occupied = true;
 				//PLC.detectTrains();
-				
-				_tcm.getTrack();
-				_tcm.runPLC();
 				//currentController++;
 				//displayChange();
-				blockList.get(2).occupied = true;
+				
 				//TrackControllerTester.myBlocks.get(0).occupied = false;
 				//TrackControllerTester.myBlocks.get(1).occupied = false;
 				// TrackControllerModule.nextTC();
@@ -194,6 +195,16 @@ public class TrackControllerPanel extends JPanel {
 	protected void displayChange() {
 		// txtrCrossingAtBlock.setText("Crossing at Block 17: INACTIVE\r\nCrossing at Block 20: ACTIVE\r\nCrossing at Block 17: INACTIVE");
 		//for (int i = 0; i < trackControllerList.size(); i++) {
+		//System.out.println(trackControllerList.toString());
+		if(!hasInfo) {
+			blockList = _tcm.getBlockList();
+			trainList = _tcm.getTrainList();
+			numberSwitch = _tcm.getSwitchList();
+			trackControllerList = _tcm.getTrCList();
+			hasInfo = true;
+			btnNewButton_1.setEnabled(true);
+			btnNewButton.setEnabled(true);
+		}
 			if (currentController == trackControllerList.size())
 				currentController = 0;
 			else if(currentController == -1)
@@ -234,7 +245,7 @@ public class TrackControllerPanel extends JPanel {
 		
 		//For each of the controlled blocks of the current Track Controller, printing out the occupied blocks
 		//currentController = 0;
-		for(index = 0; index < (trackControllerList.get(currentController).blocksControlled.size()); index++)
+		for(index = 0; index < trackControllerList.get(currentController).blocksControlled.size(); index++)
 		{
         //	if(trainList.contains(trackControllerList.get(currentController).blocksControlled.get(index)))
 	    //	{
@@ -257,7 +268,6 @@ public class TrackControllerPanel extends JPanel {
 		//	}
 			
 		//	else if(blockList.get(trackControllerList.get(currentController).blocksControlled.get(index)) == occupied)
-
 			if(trackControllerList.get(currentController).blocksControlled.contains(blockList.get(index).blockNumber) && blockList.get(index).occupied)
 			{
 				myTrainList = myTrainList + "Train on Block: " + blockList.get(index).blockNumber + "\n";
@@ -300,6 +310,5 @@ public class TrackControllerPanel extends JPanel {
 		txtrSwitchAtBlock.setText("" + blockList.size());
 		
 	}*/
-
 
 }

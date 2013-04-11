@@ -12,49 +12,41 @@ import java.util.ArrayList;
 public class TrackControllerModule {
 	
 	private TrackControllerPanel currentPanel;
-	private ArrayList<TrackController> trackControllerList = new ArrayList<TrackController>();
-	private ArrayList<Block> myBlocks = new ArrayList<Block>();//new ArrayList<Block>();
-	private ArrayList<Integer> switchList = new ArrayList<Integer>();
-	private ArrayList<Integer> trainList = new ArrayList<Integer>();
-	private ArrayList<Integer> crossingList = new ArrayList<Integer>();
+	private ArrayList<TrackController> trackControllerList;
+	private ArrayList<Block> myBlocks;//new ArrayList<Block>();
+	private ArrayList<Integer> switchList;
+	private ArrayList<Integer> trainList;
+	private ArrayList<Integer> crossingList;
 	private int upperLimit;
 	private int lowerLimit;
 	private int index = 1;
 	private int count = 0;
-
+	private boolean hasTrack = false;
 	/**
 	 * Create the frame.
 	 */
 	public TrackControllerModule() {
+		myBlocks = new ArrayList<Block>();
+		switchList = new ArrayList<Integer>();
+		trainList = new ArrayList<Integer>();
+		crossingList = new ArrayList<Integer>();
+		trackControllerList = new ArrayList<TrackController>();
 		currentPanel = new TrackControllerPanel(this);
-		
-		for (int blockCount = 0; blockCount < 5; blockCount++) {
-			Block blk = new Block(blockCount, false, false);
-			if(blockCount == 1)
-				blk.type = 1;
-			if(blockCount == 3)
-				blk.type = 2;
-			myBlocks.add(blk);
-			
-				
-		}
+	}
+	/************************************************************************************************
+	 CALL THIS TO WAKE ME UP************************************************************************/
+	public void getTrack(ArrayList<Block> track){
+		myBlocks = track;
 		for (int listCount = 0; listCount < myBlocks.size(); listCount++) {
 			if (myBlocks.get(listCount).type == 1) {
 				switchList.add(listCount);
 			}
 			if (myBlocks.get(listCount).occupied) {
-				trainList.add(listCount );
+				trainList.add(listCount);
 			}
 			if (myBlocks.get(listCount).type == 2)
 				crossingList.add(listCount);
 		}
-		//this.setContentPane(currentPanel);
-
-
-	}
-	/************************************************************************************************
-	 CALL THIS TO WAKE ME UP************************************************************************/
-	public void getTrack(){
 		// Set some of the blocks as switches *TESTING*
 //		myBlocks.get(8).isSwitch = true;
 //		myBlocks.get(17).isSwitch = true;
@@ -135,6 +127,9 @@ public class TrackControllerModule {
 			tc.setNumBlocks(tc.blocksControlled.size());
 			trackControllerList.add(tc);
 		}
+		hasTrack = true;
+		PLC.setup(myBlocks, crossingList);
+		currentPanel.displayChange();
 
 		// For the initial list, set up any trains that are placed on the track
 //		for (index = 0; index < trackControllerList.size(); index++) {
@@ -152,7 +147,7 @@ public class TrackControllerModule {
 //			}
 //		}
 		//if(currentPanel != null)
-		currentPanel.displayChange();
+		
 		
 		//currentPanel.test(trackControllerList, trainList);
 	}
@@ -161,11 +156,17 @@ public class TrackControllerModule {
 		return this.currentPanel;
 	}
 	
+	public void receiveTick() {
+		if(hasTrack) {
+			runPLC();
+			currentPanel.displayChange();
+		}
+	}
 	
 	/**************************************************************************************
 	 * CALL ME ONCE PER TICK**************************************************************/
 	public void runPLC(){
-		//currentPanel.test2();
+		
 		TrackController.runPLC(trackControllerList);
 	}
 
