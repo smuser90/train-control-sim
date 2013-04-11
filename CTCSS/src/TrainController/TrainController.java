@@ -23,9 +23,9 @@ public class TrainController
 	private TNCPanel panel;
 //	private routeInfo ;
 	
-	public TrainController(TNCPanel gui, TrainModel tnm){
+	public TrainController(TNCPanel gui){
 		panel = gui;
-		train = tnm;
+		//train = tnm;
 		trainID = 000;
 		currSpeed = 100;
 		speedLimit = 120;
@@ -37,6 +37,11 @@ public class TrainController
 		eBrake = false;
 	}
 	
+	public void setTrainModel(TrainModel tm)
+	{
+		train = tm;
+//		panel.comboBox.addItem(0);
+	}
 	public void setSpeed(double s){
 		setPointSpeed = s;
 //		if (setPointSpeed>train.speedLimit){

@@ -54,14 +54,15 @@ public class TNCPanel extends JPanel {
 	public TNCPanel(TrainControllerModule tcm, ArrayList<TrainController> l) {
 		_tcm = tcm;
 		list = l;
-//		tnc = list.get(0);
-		tnc = new TrainController(this, null);
-		list.add(tnc);
-		tnc1 = new TrainController(this, null);
+		tnc = list.get(0);
+//		tnc = new TrainController(this);
+//		tnc.setTrainModel(null);
+//		list.add(tnc);
+//		tnc1 = new TrainController(this, null);
 		
-		tnc1.trainID=1;
-		tnc1.currSpeed=50;
-		list.add(tnc1);
+//		tnc1.trainID=1;
+//		tnc1.currSpeed=50;
+//		list.add(tnc1);
 		
 		
 		setBorder(UIManager.getBorder("Button.border"));
@@ -90,7 +91,12 @@ public class TNCPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				double setPointSpeed = Double.parseDouble(txtSetSpeed.getText());
 				System.out.println("setSpeed = " + setPointSpeed);
-				tnc.setSpeed(setPointSpeed);
+				if (tnc!=null){
+					tnc.setSpeed(setPointSpeed);
+				}
+				else {
+					setPointSpeed =0;
+				}
 				table.setValueAt(setPointSpeed, 1, 1);
 			}
 		});
@@ -250,8 +256,8 @@ public class TNCPanel extends JPanel {
 		
 		// comboBox
 		comboBox = new JComboBox();	
-		comboBox.addItem(tnc.trainID);
-		comboBox.addItem(tnc1.trainID);
+		comboBox.addItem(0);
+		comboBox.addItem(1);
 		comboBox.setBounds(25, 6, 236, 28);
 		add(comboBox);
 		comboBox.addItemListener(new ItemListener(){
@@ -259,8 +265,10 @@ public class TNCPanel extends JPanel {
 				if(event.getStateChange()==ItemEvent.SELECTED){
 					int ID;
 					ID = comboBox.getSelectedIndex();
-					System.out.println("Selected ID: "+ID);
-					tnc = list.get(ID);
+//					System.out.println("Selected ID: "+ID);
+					if (list.get(ID) != null){
+						tnc = list.get(ID);
+					}
 					table.setValueAt(tnc.currSpeed, 0, 1);
 					table.setValueAt(tnc.setPointSpeed, 1, 1);
 					table.setValueAt(tnc.authority, 2, 1);
