@@ -68,4 +68,11 @@ public class LogPanel extends JPanel {
 		textPane.replaceSelection(s); // there is no selection, so inserts at caret
 		textPane.setEditable(false);
 	}
+	
+	public void clear() {
+		textPane = new JTextPane();
+		textPane.setEditable(false);
+		textPane.setBounds(new Rectangle(0, 0, 960, 102));
+		scrollPane.setViewportView(textPane);
+	}
 }
