@@ -112,7 +112,7 @@ public class System_GUI {
 		tnc = new TrainControllerModule();
 		log.append(0,  "Train Controller Module Loaded\n");
 		updateSplash(6);
-		sim = new Simulator(ctc);
+		sim = new Simulator(ctc, trc);
 		log.append(0, "Simulatior Started\n");
 		for(int i = 0; i < 5; i++)
 			updateSplash(7);
@@ -236,6 +236,7 @@ public class System_GUI {
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mntmAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				sim.loadTrack();
 			}
 		});
 		mnFile.add(mntmAbout);
@@ -307,7 +308,7 @@ public class System_GUI {
 		frmCtcss.repaint();
 		loggedIn = false;
 		mnSimulation.setEnabled(false);
-		
+		Login.logout();
 	}
 	
 	private void pause() {
