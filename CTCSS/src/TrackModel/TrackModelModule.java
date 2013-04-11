@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class TrackModelModule {
 	private TrackModelPanel gui = null;
 	private Track tr;
+	private boolean hasTrack = false;
 	
 	public TrackModelModule() 
 	{
@@ -22,10 +23,18 @@ public class TrackModelModule {
 	
 	public void getLineFile(File f)
 	{
-		tr.getLineFile(f);
+		hasTrack = tr.getLineFile(f);
 	}
 	
 	public ArrayList<Block> getGLine() {
 		return this.tr.getGLine();
+	}
+	
+	public boolean hasTrack() {
+		return hasTrack;
+	}
+	
+	public void gotTrack() {
+		hasTrack = false;
 	}
 }
