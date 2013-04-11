@@ -46,10 +46,7 @@ public class Block {
 	
 	// add getType, getBlockNumber, getFailure, setType, getOccupied, setCrossingActive, getCrossingActive
 	// prototype methods
-	public int getType()
-	{
-		return this.type;
-	}
+
 	
 	public int getBlockNumber()
 	{
@@ -61,14 +58,29 @@ public class Block {
 		return this.failure;
 	}
 	
+	public void setFailure(boolean v)
+	{
+		this.failure = v;
+	}
+	
 	public void setType(int t)
 	{
 		this.type = t;
 	}
 	
+	public int getType()
+	{
+		return this.type;
+	}
+	
 	public boolean getOccupied()
 	{
 		return this.occupied;
+	}
+	
+	public void setOccupied(boolean g)
+	{
+		this.occupied = g;
 	}
 	
 	public boolean getCrossing()
@@ -80,6 +92,7 @@ public class Block {
 	{
 		this.crossingUp = b;
 	}
+	
 	
 	
 	
