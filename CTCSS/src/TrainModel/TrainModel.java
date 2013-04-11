@@ -2,13 +2,14 @@ package TrainModel;
 
 import java.util.ArrayList;
 
-import TrackController.Block;
+import TrackModel.Block;
 import TrainController.TrainController;
 
 public class TrainModel 
 {
 	private TrainController		m_trainController;
 	private ArrayList<Block>	m_routeInfo;
+	private int					m_blockIndex;
 	private int 				m_trainID;
 	private int 				m_length;
 	private int 				m_height;
@@ -22,6 +23,7 @@ public class TrainModel
 	private int 				m_temperature;
 	private int 				m_brake;
 	private int 				m_powerLimit;
+	private int					m_speedLimit;
 	private int[] 				m_accelRange;
 	private int[] 				m_velocityRange;
 	private double 				m_power;
@@ -35,13 +37,20 @@ public class TrainModel
 	
 	
 	
-	public TrainModel(int ID)
+	public TrainModel(int ID, TrainController tc)
 	{
-		m_trainController = new TrainController();
+		m_trainController = tc;
 		m_routeInfo = null;
 		m_trainID = ID;
+		m_length = 32; //meters
+		
 		m_mass = 3000; //KGram
 		m_powerLimit = 300; //KWatt
+	}
+	
+	public void setTrainController(TrainModel tm)
+	{
+		m_trainController.setTrainModel(tm);
 	}
 	
 	public void tick(double timeLapse)
@@ -52,6 +61,18 @@ public class TrainModel
 		m_accel = ((m_power / m_velocity) / m_mass);
 		m_velocity = m_velocity + m_accel*timeLapse;
 		m_position = m_position + m_velocity*timeLapse;
+		
+		m_trainController.tick();
+	}
+	
+	public double getVelocity()
+	{
+		return m_velocity;
+	}
+	
+	public void setSpeedLimit(int speedLimit)
+	{
+		m_speedLimit = speedLimit;
 	}
 	
 	public int getTrainID()
