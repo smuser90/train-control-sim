@@ -20,6 +20,7 @@ import TrackController.TrackControllerModule;
 import TrackModel.TrackModelModule;
 import CTC.CTCModule;
 import TrainModel.TrainModelModule;
+import TrainController.TrainControllerModule;
 
 public class System_GUI {
 
@@ -31,6 +32,7 @@ public class System_GUI {
 	private static TrainModelModule tm;
 	private static TrackModelModule trm;
 	private static TrackControllerModule trc;
+	private static TrainControllerModule tnc;
 	private static SystemTime st;
 	private static boolean loggedIn = false;
 	
@@ -98,6 +100,8 @@ public class System_GUI {
 		updateSplash(5);
 		tm = new TrainModelModule();
 		log.append(0,  "Train Model Module Loaded\n");
+		tnc = new TrainControllerModule();
+		log.append(0,  "Train Controller Module Loaded\n");
 		for(int i = 0; i < 5; i++)
 			updateSplash(7);
 		log.append(0, "System Ready\n");
@@ -173,7 +177,7 @@ public class System_GUI {
 		panel_4.setBackground(Color.WHITE);
 		tabbedPane.addTab("Train Model", null, panel_4, null);
 		
-		JPanel panel_5 = new JPanel();
+		JPanel panel_5 = tnc.getPanel();
 		panel_5.setBackground(Color.WHITE);
 		tabbedPane.addTab("Train Controller", null, panel_5, null);
 		

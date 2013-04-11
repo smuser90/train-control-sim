@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.UIManager;
+import Log.Log;
 
 public class TNCPanel extends JPanel {
 	private JTextField txtSetSpeed;
@@ -64,14 +65,17 @@ public class TNCPanel extends JPanel {
 		});
 		
 		JButton setSpeed = new JButton("Apply speed");
+		setSpeed.setBounds(510, 28, 117, 29);
+		add(setSpeed);
 		setSpeed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int setPointSpeed = Integer.parseInt(setSpeedInput);
 				tnc.setSpeed(setPointSpeed);
+				System.out.println("setSpeed" + setPointSpeed);
+	//			log.append(0,  "Train Controller Module Loaded\n");
 			}
 		});
-		setSpeed.setBounds(510, 28, 117, 29);
-		add(setSpeed);
+		
 		
 		JLabel lblSetSpeed = new JLabel("Set speed");
 		lblSetSpeed.setBounds(365, 33, 61, 16);

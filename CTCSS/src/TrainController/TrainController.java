@@ -1,6 +1,6 @@
 package TrainController;
 
-import TrainModel.TrainModel;
+import TrainModel.*;
 
 public class TrainController 
 {
