@@ -114,6 +114,7 @@ public class Simulator implements Runnable{
 	}
 	
 	public void scheduleTrain(int line) {
+		System.out.println("scheduleTrain called");
 		tm.addTrain(line);
 		Set<Integer> trains = tm.getTrainIDS();
 		Integer [] trs = new Integer[trains.size()];

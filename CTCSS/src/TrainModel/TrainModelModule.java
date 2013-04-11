@@ -1,7 +1,7 @@
 package TrainModel;
 
 import TrainController.TrainControllerModule;
-
+import Log.Log;
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.Integer;
@@ -12,12 +12,14 @@ public class TrainModelModule
 	private static TMPanel m_gui = null;
 	private Map<Integer, TrainModel> m_trainList;
 	private TrainControllerModule m_tcModule = null;
+	private Log	log = null;
 	private int m_trainID;
 	
 	
 	public TrainModelModule()
 	{
 		m_gui = new TMPanel(this);
+		log = Log.Instance();
 		m_trainID = 1;
 		m_trainList = new HashMap<Integer, TrainModel>();
 	}
@@ -44,10 +46,15 @@ public class TrainModelModule
 	
 	public void addTrain(int line)
 	{
+		System.out.println("addTrain called");
 		TrainModel train = new TrainModel(m_trainID, line, m_tcModule.getTrainController());
 		train.setTrainController();
 		m_trainList.put( new Integer(m_trainID), train);
 		m_trainID++;
+		if(line == 0)
+			log.append(0, "Train Added on Green Line\n");
+		else
+			log.append(0,  "Train Added on Red Line\n");
 		m_gui.update();
 	}
 	

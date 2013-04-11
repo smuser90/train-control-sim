@@ -128,42 +128,52 @@ public class TMPanel extends JPanel
 		add(eBrakeStatus);
 		
 		position = new JButton("Position: ");
+		position.setEnabled(false);
 		position.setBounds(282, 145, 126, 61);
 		add(position);
 		
 		velocity = new JButton("Velocity: ");
+		velocity.setEnabled(false);
 		velocity.setBounds(405, 145, 126, 61);
 		add(velocity);
 		
 		setpoint = new JButton("Setpoint: ");
+		setpoint.setEnabled(false);
 		setpoint.setBounds(527, 145, 117, 61);
 		add(setpoint);
 		
 		doors = new JButton("Doors: ");
+		doors.setEnabled(false);
 		doors.setBounds(527, 202, 117, 61);
 		add(doors);
 		
 		lights = new JButton("Lights: ");
+		lights.setEnabled(false);
 		lights.setBounds(527, 261, 117, 61);
 		add(lights);
 		
 		grade = new JButton("Grade: ");
+		grade.setEnabled(false);
 		grade.setBounds(404, 202, 127, 61);
 		add(grade);
 		
 		crew = new JButton("Crew: ");
+		crew.setEnabled(false);
 		crew.setBounds(404, 261, 127, 61);
 		add(crew);
 		
 		acceleration = new JButton("Accel: ");
+		acceleration.setEnabled(false);
 		acceleration.setBounds(282, 202, 126, 61);
 		add(acceleration);
 		
 		passengers = new JButton("Passengers: ");
+		passengers.setEnabled(false);
 		passengers.setBounds(282, 261, 126, 61);
 		add(passengers);
 		
 		mass = new JButton("Mass: ");
+		mass.setEnabled(false);
 		mass.setBounds(282, 85, 126, 61);
 		add(mass);
 	}

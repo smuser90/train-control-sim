@@ -29,7 +29,6 @@ public class CTCModule {
 	
 	protected void scheduleTrain(int line) {
 		if(sim != null) {
-			sim.scheduleTrain(line);
 			if(line == 0) {
 				sim.scheduleTrain(line);
 				log.append(0, "Train added to Green Line\n");
