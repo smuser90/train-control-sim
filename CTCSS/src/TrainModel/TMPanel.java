@@ -2,102 +2,225 @@ package TrainModel;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Set;
+import java.util.Iterator;
+import java.util.Map;
 import javax.swing.JScrollPane;
 
 public class TMPanel extends JPanel
 {
-	public TMPanel()
+	private TrainModelModule m_tm;
+	
+	private JComboBox comboBox;
+	private JScrollPane scrollPane;
+	private JTextPane textPane;
+	private JButton btnEngineFailure;
+	private JLabel engineStatus;
+	private JButton btnSignalFailure;
+	private JLabel signalStatus;
+	private JButton btnBrakeFailure;
+	private JLabel brakeStatus;
+	private JButton btnEmergencyBrake;
+	private JLabel eBrakeStatus;
+	private JButton position;
+	private JButton velocity;
+	private JButton setpoint;
+	private JButton acceleration;
+	private JButton lights;
+	private JButton grade;
+	private JButton crew;
+	private JButton doors;
+	private JButton passengers;
+	private JButton mass;
+	
+	public TMPanel(TrainModelModule tm)
 	{
+		m_tm = tm;
+		
 		setLayout(null);
 		setBounds(100, 100, 650, 350);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(6, 6, 638, 20);
+		comboBox = new JComboBox();
+		comboBox.setBounds(6, 6, 638, 20);	
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Trains"}));
 		add(comboBox);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(16, 38, 239, 284);
 		add(scrollPane);
 		
-		JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
 		
-		JButton btnEngineFailur = new JButton("Engine Failure");
-		btnEngineFailur.setBounds(282, 38, 117, 29);
-		add(btnEngineFailur);
+		btnEngineFailure = new JButton("Engine Failure");
+		btnEngineFailure.setBounds(282, 38, 117, 29);
+		btnEngineFailure.setEnabled(false);
+		btnEngineFailure.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+			}
+		});
+		add(btnEngineFailure);
 		
-		JLabel engineStatus = new JLabel("Status - ");
+		engineStatus = new JLabel("Status - ");
 		engineStatus.setBounds(292, 63, 61, 16);
 		add(engineStatus);
 		
-		JButton btnSignalFailure = new JButton("Signal Failure");
+		btnSignalFailure = new JButton("Signal Failure");
 		btnSignalFailure.setBounds(394, 38, 117, 29);
+		btnSignalFailure.setEnabled(false);
+		btnSignalFailure.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+				
+			}
+		});
 		add(btnSignalFailure);
 		
-		JLabel signalStatus = new JLabel("Status - ");
+		signalStatus = new JLabel("Status - ");
 		signalStatus.setBounds(404, 63, 61, 16);
 		add(signalStatus);
 		
-		JButton btnBrakeFailure = new JButton("Brake Failure");
+		btnBrakeFailure = new JButton("Brake Failure");
 		btnBrakeFailure.setBounds(505, 38, 117, 29);
+		btnBrakeFailure.setEnabled(false);
+		btnBrakeFailure.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+				
+			}
+		});
 		add(btnBrakeFailure);
 		
-		JLabel lblStatus = new JLabel("Status - ");
-		lblStatus.setBounds(515, 63, 61, 16);
-		add(lblStatus);
+		brakeStatus = new JLabel("Status - ");
+		brakeStatus.setBounds(515, 63, 61, 16);
+		add(brakeStatus);
 		
-		JButton btnEmergencyBrake = new JButton("Emergency Brake");
+		btnEmergencyBrake = new JButton("Emergency Brake");
 		btnEmergencyBrake.setBounds(452, 90, 142, 29);
+		btnEmergencyBrake.setEnabled(false);
+		btnEmergencyBrake.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+				
+			}
+		});
 		add(btnEmergencyBrake);
 		
-		JLabel lblStatus_1 = new JLabel("Status - ");
-		lblStatus_1.setBounds(486, 116, 61, 16);
-		add(lblStatus_1);
+		eBrakeStatus = new JLabel("Status - ");
+		eBrakeStatus.setBounds(486, 116, 61, 16);
+		add(eBrakeStatus);
 		
-		JButton Position = new JButton("Position: 12.1m");
-		Position.setBounds(282, 145, 126, 61);
-		add(Position);
+		position = new JButton("Position: ");
+		position.setBounds(282, 145, 126, 61);
+		add(position);
 		
-		JButton btnVelocityms = new JButton("Velocity: 2.1m/s");
-		btnVelocityms.setBackground(Color.CYAN);
-		btnVelocityms.setBounds(405, 145, 126, 61);
-		add(btnVelocityms);
+		velocity = new JButton("Velocity: ");
+		velocity.setBounds(405, 145, 126, 61);
+		add(velocity);
 		
-		JButton btnSetpointms = new JButton("Setpoint: 2.5m/s");
-		btnSetpointms.setBounds(527, 145, 117, 61);
-		add(btnSetpointms);
+		setpoint = new JButton("Setpoint: ");
+		setpoint.setBounds(527, 145, 117, 61);
+		add(setpoint);
 		
-		JButton btnAccelMs = new JButton("Doors: CLOSED");
-		btnAccelMs.setBounds(527, 202, 117, 61);
-		add(btnAccelMs);
+		doors = new JButton("Doors: ");
+		doors.setBounds(527, 202, 117, 61);
+		add(doors);
 		
-		JButton btnLightsOn = new JButton("Lights: ON");
-		btnLightsOn.setBounds(527, 261, 117, 61);
-		add(btnLightsOn);
+		lights = new JButton("Lights: ");
+		lights.setBounds(527, 261, 117, 61);
+		add(lights);
 		
-		JButton btnGrade = new JButton("Grade: 0.2");
-		btnGrade.setBounds(404, 202, 127, 61);
-		add(btnGrade);
+		grade = new JButton("Grade: ");
+		grade.setBounds(404, 202, 127, 61);
+		add(grade);
 		
-		JButton btnCrew = new JButton("Crew: 4");
-		btnCrew.setBounds(404, 261, 127, 61);
-		add(btnCrew);
+		crew = new JButton("Crew: ");
+		crew.setBounds(404, 261, 127, 61);
+		add(crew);
 		
-		JButton btnAccelms = new JButton("Accel: 0.8m/s2");
-		btnAccelms.setBounds(282, 202, 126, 61);
-		add(btnAccelms);
+		acceleration = new JButton("Accel: ");
+		acceleration.setBounds(282, 202, 126, 61);
+		add(acceleration);
 		
-		JButton btnPassengers = new JButton("Passengers: 28");
-		btnPassengers.setBounds(282, 261, 126, 61);
-		add(btnPassengers);
+		passengers = new JButton("Passengers: ");
+		passengers.setBounds(282, 261, 126, 61);
+		add(passengers);
 		
-		JButton btnMasskg = new JButton("Mass: 8000Kg");
-		btnMasskg.setBounds(282, 85, 126, 61);
-		add(btnMasskg);
+		mass = new JButton("Mass: ");
+		mass.setBounds(282, 85, 126, 61);
+		add(mass);
+	}
+	
+	public void update()
+	{
+		Set<Integer> keys = m_tm.getTrainIDS();
+		Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+		int numKeys = keys.size();
+		
+		Iterator<Integer> it = keys.iterator();
+		for(int i = 0; i < numKeys; i++)
+		{
+			comboBox.addItem(it.next().toString());
+		}
+		
+		if(comboBox.getSelectedItem().equals("Trains"))
+			reset();
+		else
+		{
+			int trainID = Integer.parseInt(comboBox.getSelectedItem().toString());
+			TrainModel train = trainList.get(new Integer(trainID));
+			position.setText("Position: "+train.getPosition());
+			velocity.setText("Velocity: "+train.getVelocity());
+			setpoint.setText("Setpoint: "+train.getSetpointSpeed());
+			acceleration.setText("Acceleration: "+train.getAcceleration());
+			lights.setText("Lights: "+train.getLights());
+			grade.setText("Grade: "+train.getGrade());
+			crew.setText("Crew: "+train.getCrew());
+			doors.setText("Doors: "+train.getDoors());
+			passengers.setText("Passengers: "+train.getPassengers());
+			mass.setText("Mass: "+train.getMass());
+			engineStatus.setText("Status - "+train.getEngineStatus());
+			signalStatus.setText("Status - "+train.getEngineStatus());
+			brakeStatus.setText("Status - "+train.getBrakeStatus());
+			btnEngineFailure.setEnabled(true);
+			btnSignalFailure.setEnabled(true);
+			btnBrakeFailure.setEnabled(true);
+			btnEmergencyBrake.setEnabled(true);
+		}
+		
+	}
+	
+	public void reset()
+	{
+		position.setText("Position: ");
+		velocity.setText("Velocity: ");
+		setpoint.setText("Setpoint: ");
+		acceleration.setText("Acceleration: ");
+		lights.setText("Lights: ");
+		grade.setText("Grade: ");
+		crew.setText("Crew: ");
+		doors.setText("Doors: ");
+		passengers.setText("Passengers: ");
+		mass.setText("Mass: ");
+		engineStatus.setText("Status - ");
+		signalStatus.setText("Status - ");
+		brakeStatus.setText("Status - ");
 	}
 }

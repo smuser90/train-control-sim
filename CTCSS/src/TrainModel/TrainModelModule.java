@@ -1,10 +1,10 @@
 package TrainModel;
 
-import TrackModel.Block;
 import TrainController.TrainControllerModule;
 
 import java.util.Map;
 import java.lang.Integer;
+import java.util.Set;
 
 public class TrainModelModule 
 {
@@ -16,7 +16,7 @@ public class TrainModelModule
 	
 	public TrainModelModule()
 	{
-		m_gui = new TMPanel();
+		m_gui = new TMPanel(this);
 		m_trainID = 1;
 	}
 	
@@ -35,12 +35,18 @@ public class TrainModelModule
 		return m_gui;
 	}
 	
+	public Set<Integer> getTrainIDS()
+	{
+		return m_trainList.keySet();
+	}
+	
 	public void addTrain(int line)
 	{
 		TrainModel train = new TrainModel(m_trainID, line, m_tcModule.getTrainController());
-		train.setTrainController(train);
+		train.setTrainController();
 		m_trainList.put( new Integer(m_trainID), train);
 		m_trainID++;
+		m_gui.update();
 	}
 	
 	public void modifyTrain(int ID, int field, int value)
@@ -71,5 +77,7 @@ public class TrainModelModule
 			if(tm != null)
 				tm.tick(timeLapse);
 		}
+		
+		m_gui.update();
 	}
 }

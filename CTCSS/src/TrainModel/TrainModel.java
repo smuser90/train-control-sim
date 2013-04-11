@@ -21,22 +21,28 @@ public class TrainModel
 	private int 				m_cars;
 	private int 				m_crew;
 	private int 				m_passengers;
+	private int					m_passengersMax;
 	private int 				m_authority;
 	private int 				m_authorityRemaining;
 	private int 				m_temperature;
 	private int 				m_brake;
 	private int 				m_powerLimit;
 	private int					m_speedLimit;
-	private int[] 				m_accelRange;
-	private int[] 				m_velocityRange;
+	private double				m_grade;
+	private double 				m_accelMin;
+	private double				m_accelMax;
+	private double				m_velocityMax;
 	private double 				m_power;
 	private double 				m_accel;
 	private double 				m_velocity;
+	private double				m_setpointVelocity;
 	private double 				m_position;
 	private boolean 			m_emergencyBrake;
 	private boolean 			m_engineFailure;
 	private boolean 			m_signalFailure;
 	private boolean 			m_brakeFailure;
+	private boolean				m_lights;
+	private boolean				m_doors;
 	
 	
 	
@@ -52,12 +58,26 @@ public class TrainModel
 		m_mass = 37103.9;
 		m_massEmpty = m_mass;
 		m_massFull = 51437.4;
-		m_powerLimit = 300; 
+		m_powerLimit = 120; 
+		m_velocityMax = 70;
+		m_engineFailure = false;
+		m_signalFailure = false;
+		m_brakeFailure = false;
+		m_lights = false;
+		m_doors = false;
+		m_power = 0.0;
+		m_velocity = 0.0;
+		m_position = 0.0;
+		m_passengersMax = 222;
+		m_accelMin = -2.73;
+		m_accelMax = 0.5;
+		m_accel = 0.0;
+		m_grade = 0.0;
 	}
 	
-	public void setTrainController(TrainModel tm)
+	public void setTrainController()
 	{
-		m_trainController.setTrainModel(tm);
+		m_trainController.setTrainModel(this);
 	}
 	
 	public void tick(double timeLapse)
@@ -80,6 +100,11 @@ public class TrainModel
 	public void setSpeedLimit(int speedLimit)
 	{
 		m_speedLimit = speedLimit;
+	}
+	
+	public int getSpeedLimit()
+	{
+		return m_speedLimit;
 	}
 	
 	public int getTrainID()
@@ -168,17 +193,17 @@ public class TrainModel
 		return m_emergencyBrake;
 	}
 	
-	public void setEmergencyBrake(boolean emergencyBrake)
+	public void toggleEmergencyBrake(boolean emergencyBrake)
 	{
 		m_emergencyBrake = emergencyBrake;
 	}
 	
-	public void setEngineFailure(boolean engineFailure)
+	public void toggleEngineFailure(boolean engineFailure)
 	{
 		m_engineFailure = engineFailure;
 	}
 	
-	public void setSignalFailure(boolean signalFailure)
+	public void toggleSignalFailure(boolean signalFailure)
 	{
 		m_signalFailure = signalFailure;
 	}
@@ -188,5 +213,70 @@ public class TrainModel
 		m_brakeFailure = brakeFailure;
 	}
 	
+	public boolean getLights()
+	{
+		return m_lights;
+	}
+	
+	public void setLights(boolean lights)
+	{
+		m_lights = lights;
+	}
+	
+	public boolean getDoors()
+	{
+		return m_doors;
+	}
+	
+	public void setDoors(boolean doors)
+	{
+		m_doors = doors;
+	}
+	
+	public void setPower(double power)
+	{
+		m_power = power;
+	}
+	
+	public double getPower()
+	{
+		return m_power;
+	}
+	
+	public boolean getEngineStatus()
+	{
+		return m_engineFailure;
+	}
+	
+	public boolean getSignalStatus()
+	{
+		return m_signalFailure;
+	}
+	
+	public boolean getBrakeStatus()
+	{
+		return m_brakeFailure;
+	}
+	
+	public double getPosition()
+	{
+		return m_position;
+	}
+	
+	public double getAcceleration()
+	{
+		return m_accel;
+	}
+	
+	public double getSetpointSpeed()
+	{
+		return m_setpointVelocity;
+	}
+	
+	public double getGrade()
+	{
+		return m_grade;
+	}
 }
+
 
