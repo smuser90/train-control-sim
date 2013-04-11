@@ -8,6 +8,7 @@ public class Block {
 	boolean isCrossing;
 	boolean occupied;
 	boolean failure;
+	int type;
 	
 	public Block(int bn, boolean swi, boolean cros) {
 		this.blockNumber = bn;
