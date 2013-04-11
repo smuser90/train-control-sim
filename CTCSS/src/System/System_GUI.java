@@ -20,8 +20,9 @@ import Simulator.Simulator;
 import TrackController.TrackControllerModule;
 import TrackModel.TrackModelModule;
 import CTC.CTCModule;
-import TrainModel.TrainModelModule;
 import TrainController.TrainControllerModule;
+import TrainModel.TrainModelModule;
+//import TrainController.TrainControllerModule;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -63,7 +64,7 @@ public class System_GUI {
 	private static void setGUILAndF() {
 		try {
             	// Set System L&F
-			//if(UIManager.getSystemLookAndFeelClassName().toString().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
+			if(UIManager.getSystemLookAndFeelClassName().toString().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 	    } 
 	    catch (UnsupportedLookAndFeelException e) {
@@ -108,6 +109,7 @@ public class System_GUI {
 		updateSplash(4);
 		tm = new TrainModelModule();
 		log.append(0,  "Train Model Module Loaded\n");
+		updateSplash(5);
 		tnc = new TrainControllerModule();
 		log.append(0,  "Train Controller Module Loaded\n");
 		updateSplash(6);
