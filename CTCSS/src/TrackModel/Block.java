@@ -1,6 +1,6 @@
 package TrackModel;
 
-public class Block {
+public class Block{
 	private int length; // length of this block
 	private int number; // the ID of the block
 	private int trainID; // the ID of the train on this block
@@ -10,8 +10,13 @@ public class Block {
 	private boolean open; // if the block is open or not
 	private boolean failure; // if this section fails
 	private int type; // the type of this block, remember to check that it is either 0, 1, 2, or 3
+	private int size; // block size
 	private boolean crossingUp;
+	// to implement switching, I will just switch these two integers
+	private int nextBlock; // what is the next block in the line ???  need this?
+	private int nextAltBlock; // what is the alt block ???,  need this?
 	/*
+	 * remember, blocks with ID 0 are yard blocks
 	 * 0 - regular
 	 * 1 - switch
 	 * 2 - crossing
@@ -27,6 +32,8 @@ public class Block {
 		this.number = blockNum;
 		crossingUp = false;
 	}	
+	
+	
 	
 	
 	/* final: all this other shit
@@ -47,7 +54,15 @@ public class Block {
 	// add getType, getBlockNumber, getFailure, setType, getOccupied, setCrossingActive, getCrossingActive
 	// prototype methods
 
+	public void setSize(int t)
+	{
+		this.size = t;
+	}
 	
+	public int getSize()
+	{
+		return this.size;
+	}
 	public int getBlockNumber()
 	{
 		return this.number;
