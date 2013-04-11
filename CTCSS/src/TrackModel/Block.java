@@ -10,6 +10,7 @@ public class Block {
 	private boolean open; // if the block is open or not
 	private boolean failure; // if this section fails
 	private int type; // the type of this block, remember to check that it is either 0, 1, 2, or 3
+	private boolean crossingUp;
 	/*
 	 * 0 - regular
 	 * 1 - switch
@@ -19,6 +20,16 @@ public class Block {
 	// trainDirection <- do we need this?
 	// no default or alt switch dir needed due to the graph implementation
 	
+	
+	// prototype: only int block number
+	public Block(int blockNum)
+	{
+		this.number = blockNum;
+		crossingUp = false;
+	}	
+	
+	
+	/* final: all this other shit
 	public Block(int len, double gr, int bID, int spLim, int t)
 	{
 		this.length = len;
@@ -31,7 +42,48 @@ public class Block {
 		this.trainID = 0 ;
 		this.type = t;
 	}
+	*/
 	
+	// add getType, getBlockNumber, getFailure, setType, getOccupied, setCrossingActive, getCrossingActive
+	// prototype methods
+	public int getType()
+	{
+		return this.type;
+	}
+	
+	public int getBlockNumber()
+	{
+		return this.number;
+	}
+	
+	public boolean getFailure()
+	{
+		return this.failure;
+	}
+	
+	public void setType(int t)
+	{
+		this.type = t;
+	}
+	
+	public boolean getOccupied()
+	{
+		return this.occupied;
+	}
+	
+	public boolean getCrossing()
+	{
+		return this.crossingUp;
+	}
+	
+	public void setCrossing(boolean b)
+	{
+		this.crossingUp = b;
+	}
+	
+	
+	
+	// **************************************************END OF PROTOTYPE METHODS**************************************************
 	public void setSpeedLimit(int s)
 	{
 		this.speedLimit = s;
