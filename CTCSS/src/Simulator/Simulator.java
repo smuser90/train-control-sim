@@ -8,21 +8,23 @@ import CTC.CTCModule;
 import Log.Log;
 import TrackController.TrackControllerModule;
 import TrackModel.Block;
+import TrainModel.TrainModelModule;
 
 public class Simulator implements Runnable{
 	
 	// Fields
 	private Log log = null;
 	private boolean paused = false;
-	private int realTime = 1000;
+	private int realTime = 250;
 	private int timeStep = 1;
 	private long sysTimeNum;
 	private Date sysTime;
 	private DateFormat df;
 	private CTCModule ctc;
 	private TrackControllerModule tcm;
+	private TrainModelModule tm;
 	private SpeedDialog sd;
-	public ArrayList<Block> myBlocks;
+	private ArrayList<Block> myBlocks;
 	
 	public void run() {
 		try {
@@ -41,7 +43,7 @@ public class Simulator implements Runnable{
 		this.run();
 	}
 	
-	public Simulator(CTCModule c, TrackControllerModule TcM) {
+	public Simulator(CTCModule c, TrackControllerModule TcM, TrainModelModule TM) {
 		myBlocks = new ArrayList<Block>();
 		for (int blockCount = 0; blockCount < 5; blockCount++) {
 			Block blk = new Block(blockCount);
@@ -50,10 +52,13 @@ public class Simulator implements Runnable{
 				blk.setType(1);
 			if(blockCount == 2)
 				blk.setType(2);
+			if(blockCount == 4)
+				blk.setType(3);
 			myBlocks.add(blk);
 		}
 		ctc = c;
 		tcm = TcM;
+		tm = TM;
 		sd = new SpeedDialog(this);
 		sysTimeNum = System.currentTimeMillis();
 		sysTime = new Date(sysTimeNum);
@@ -100,8 +105,8 @@ public class Simulator implements Runnable{
 		
 	}
 	
-	public void scheduleTrain() {
-		
+	public void scheduleTrain(int line) {
+		tm.addTrain(line);
 	}
 	
 	public void closeBlock(int blockID) {
@@ -122,6 +127,7 @@ public class Simulator implements Runnable{
 	
 	public void loadTrack() {
 		tcm.getTrack(myBlocks);
+		ctc.setGLine(myBlocks);
 		log.append(1, "Track Loaded\n");
 	}
 }

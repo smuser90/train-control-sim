@@ -54,14 +54,20 @@ public class TNCPanel extends JPanel {
 	public TNCPanel(TrainControllerModule tcm, ArrayList<TrainController> l) {
 		_tcm = tcm;
 		list = l;
-//		tnc = list.get(0);
-		tnc = new TrainController(this, null);
-		list.add(tnc);
-		tnc1 = new TrainController(this, null);
+		if (!list.isEmpty()){
+			tnc = list.get(0);
+		}
+		else{
+			tnc = null;
+		}
+//		tnc = new TrainController(this);
+//		tnc.setTrainModel(null);
+//		list.add(tnc);
+//		tnc1 = new TrainController(this, null);
 		
-		tnc1.trainID=1;
-		tnc1.currSpeed=50;
-		list.add(tnc1);
+//		tnc1.trainID=1;
+//		tnc1.currSpeed=50;
+//		list.add(tnc1);
 		
 		
 		setBorder(UIManager.getBorder("Button.border"));
@@ -90,7 +96,12 @@ public class TNCPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				double setPointSpeed = Double.parseDouble(txtSetSpeed.getText());
 				System.out.println("setSpeed = " + setPointSpeed);
-				tnc.setSpeed(setPointSpeed);
+				if (tnc!=null){
+					tnc.setSpeed(setPointSpeed);
+				}
+				else {
+					setPointSpeed =0;
+				}
 				table.setValueAt(setPointSpeed, 1, 1);
 			}
 		});
@@ -102,7 +113,12 @@ public class TNCPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				int temperature;
 				temperature = Integer.parseInt(txtSetTemp.getText());
-				tnc.setTemp(temperature);
+				if (tnc!=null){
+					tnc.setTemp(temperature);
+				}
+				else{
+					temperature = 0;
+				}
 				table.setValueAt(temperature, 5, 1);
 			}
 		});
@@ -143,12 +159,22 @@ public class TNCPanel extends JPanel {
 		lightToggle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(lightToggle.isSelected()){
-					tnc.setLights(true);
-					table.setValueAt("On", 3, 1);
+					if (tnc!=null){
+						tnc.setLights(true);
+						table.setValueAt("On", 3, 1);
+					}
+					else {
+						table.setValueAt("N/A", 3, 1);
+					}
 				}
 				else {
-					tnc.setLights(false);
-					table.setValueAt("Off", 3, 1);
+					if(tnc!=null){
+						tnc.setLights(false);
+						table.setValueAt("Off", 3, 1);
+					}
+					else{
+						table.setValueAt("N/A", 3, 1);
+					}
 				}
 				
 			}
@@ -162,12 +188,23 @@ public class TNCPanel extends JPanel {
 		doorToggle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(doorToggle.isSelected()){
-					tnc.setDoors(true);
-					table.setValueAt("Open", 4, 1);
+					if (tnc!=null){
+						tnc.setDoors(true);
+						table.setValueAt("Open", 4, 1);
+					}
+					else {
+						table.setValueAt("N/A", 4, 1);
+					}
 				}
 				else {
-					tnc.setDoors(false);
-					table.setValueAt("Close", 4, 1);
+					if (tnc!=null){
+						tnc.setDoors(false);
+						table.setValueAt("Close", 4, 1);
+					}
+					else{
+						table.setValueAt("N/A", 4, 1);
+					}
+					
 				}
 				
 			}
@@ -181,12 +218,22 @@ public class TNCPanel extends JPanel {
 		SetBrake.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(SetBrake.isSelected()){
-					tnc.setBrake(true);
-					table.setValueAt("Pull", 7, 1);
+					if (tnc!=null){
+						tnc.setBrake(true);
+						table.setValueAt("Pull", 7, 1);
+					}
+					else{
+						table.setValueAt("N/A", 7, 1);
+					}
 				}
 				else {
-					tnc.setBrake(false);
-					table.setValueAt("N/A", 7, 1);
+					if(tnc!=null){
+						tnc.setBrake(false);
+						table.setValueAt("N/A", 7, 1);
+					}
+					else{
+						table.setValueAt("N/A", 7, 1);
+					}
 				}
 				
 			}
@@ -199,13 +246,23 @@ public class TNCPanel extends JPanel {
 		add(tglbtnSetEmergencyBrake);
 		tglbtnSetEmergencyBrake.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(tglbtnSetEmergencyBrake.isSelected()){					
-					tnc.setEBrake(true);
-					table.setValueAt("Pull", 6, 1);
+				if(tglbtnSetEmergencyBrake.isSelected()){	
+					if(tnc!=null){
+						tnc.setEBrake(true);
+						table.setValueAt("Pull", 6, 1);
+					}
+					else{
+						table.setValueAt("N/A", 6, 1);
+					}
 				}
 				else {
-					tnc.setEBrake(false);
-					table.setValueAt("N/A", 6, 1);
+					if (tnc!=null){
+						tnc.setEBrake(false);
+						table.setValueAt("N/A", 6, 1);
+					}
+					else{
+						table.setValueAt("N/A", 6, 1);
+					}
 				}
 				
 			}
@@ -220,11 +277,12 @@ public class TNCPanel extends JPanel {
 		table.setColumnSelectionAllowed(true);
 		table.setCellSelectionEnabled(true);
 		table.setBackground(SystemColor.textHighlight);
+		
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"Current Speed", tnc.currSpeed},
-				{"Set Point Speed", tnc.getSetPointSpeed()},
-				{"Authority", tnc.authority},
+				{"Current Speed", "N/A"},
+				{"Set Point Speed", "N/A"},
+				{"Authority", "N/A"},
 				{"Lights", "off"},
 				{"Doors", "Close"},
 				{"Temperture", "N/A"},
@@ -250,8 +308,8 @@ public class TNCPanel extends JPanel {
 		
 		// comboBox
 		comboBox = new JComboBox();	
-		comboBox.addItem(tnc.trainID);
-		comboBox.addItem(tnc1.trainID);
+//		comboBox.addItem(0);
+//		comboBox.addItem(1);
 		comboBox.setBounds(25, 6, 236, 28);
 		add(comboBox);
 		comboBox.addItemListener(new ItemListener(){
@@ -259,8 +317,12 @@ public class TNCPanel extends JPanel {
 				if(event.getStateChange()==ItemEvent.SELECTED){
 					int ID;
 					ID = comboBox.getSelectedIndex();
-					System.out.println("Selected ID: "+ID);
-					tnc = list.get(ID);
+//					System.out.println("Selected ID: "+ID);
+					if (list.get(ID) != null){
+						tnc = list.get(ID);
+					
+						
+					
 					table.setValueAt(tnc.currSpeed, 0, 1);
 					table.setValueAt(tnc.setPointSpeed, 1, 1);
 					table.setValueAt(tnc.authority, 2, 1);
@@ -298,6 +360,10 @@ public class TNCPanel extends JPanel {
 					else {
 						tglbtnSetEmergencyBrake.setSelected(true);
 						table.setValueAt("Pull", 7, 1);
+					}
+					}
+					else{
+						
 					}
 					
 					

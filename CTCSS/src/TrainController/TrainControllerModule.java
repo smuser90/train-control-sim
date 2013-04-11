@@ -20,9 +20,9 @@ private ArrayList<TrainController> controllers;
 		return gui;
 	}
 	
-	public TrainController newTNC(TrainModel tnm) {
-//		gui.comboBox.addItem(tnm.trainID);
-		TrainController tnc = new TrainController(gui, tnm);
+	public TrainController getTrainController() {
+//		
+		TrainController tnc = new TrainController(gui);
 		controllers.add(tnc);
 		return tnc;
 		
