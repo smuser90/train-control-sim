@@ -278,12 +278,18 @@ public class System_GUI {
 	
 	// Simply to show functionality for now will be fleshed out more later
 	private void login() {
-		frmCtcss.getContentPane().add(panel_1);
-		frmCtcss.getContentPane().add(tabbedPane);
-		mnFile.remove(0);
-		mnFile.insert(mntmLogout, 0);
-		frmCtcss.repaint();
-		loggedIn = true;
+		if(Login.login(null, null)) {
+			frmCtcss.getContentPane().add(panel_1);
+			frmCtcss.getContentPane().add(tabbedPane);
+			mnFile.remove(0);
+			mnFile.insert(mntmLogout, 0);
+			frmCtcss.repaint();
+			loggedIn = true;
+			log.append(1, "Logged in as Optimus\n");
+		}
+		else {
+			log.append(3, "Login failed\n");
+		}
 	}
 	
 	// Simply to show functionality for now will be fleshed out more later
