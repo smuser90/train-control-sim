@@ -11,7 +11,11 @@ public class Block {
 	private boolean failure; // if this section fails
 	private int type; // the type of this block, remember to check that it is either 0, 1, 2, or 3
 	private boolean crossingUp;
+	// to implement switching, I will just switch these two integers
+	private int nextBlock; // what is the next block in the line
+	private int nextAltBlock; // what is the alt block
 	/*
+	 * remember, blocks with ID 0 are yard blocks
 	 * 0 - regular
 	 * 1 - switch
 	 * 2 - crossing
