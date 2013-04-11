@@ -1,10 +1,17 @@
 package CTC;
 
+import java.util.ArrayList;
+
+import Simulator.Simulator;
+
 public class CTCModule {
-	private CTCPanel gui = null;
+	// Fields
+	private CTCPanel gui;
+	private Simulator sim;
 	
-	public CTCModule() {
-		gui = new CTCPanel();
+	public CTCModule(Simulator s) {
+		gui = new CTCPanel(this);
+		sim = s;
 	}
 		
 	public CTCPanel getPanel() {

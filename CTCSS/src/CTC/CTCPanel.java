@@ -2,98 +2,136 @@ package CTC;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CTCPanel extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-
+	
+	// GUI Elements
+	private JTabbedPane tabbedPane;
+	private JPanel panel;
+	private JComboBox lineBox;
+	private JComboBox blockActionsBox;
+	private JComboBox trainBox;
+	private JComboBox stationBox;
+	private JComboBox trainActionsBox;
+	private JComboBox blocksBox;
+	private JButton trainButton;
+	private JButton blockButton;
+	private JTextField speedField;
+	private JTextField authorityField;
+	private JLabel lineLabel;
+	private JLabel blockLabel;
+	private JLabel speedLabel;
+	private JLabel trainLabel;
+	private JLabel authorityLabel;
+	
+	// Fields
+	private CTCModule _ctc;
+	
 	/**
 	 * Create the panel.
 	 */
-	public CTCPanel() {
+	public CTCPanel(CTCModule ctc) {
+		_ctc = ctc;
 		setLayout(null);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 300, 378);
 		add(tabbedPane);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		tabbedPane.addTab("CTC Office", null, panel, null);
 		panel.setLayout(null);
 		
-		JLabel label = new JLabel("Select Line");
-		label.setBounds(10, 11, 56, 14);
-		panel.add(label);
+		lineLabel = new JLabel("Select Line");
+		lineLabel.setBounds(10, 11, 275, 14);
+		panel.add(lineLabel);
 		
-		JButton button = new JButton("Perform Train Action");
-		button.setBounds(10, 286, 131, 23);
-		panel.add(button);
+		trainButton = new JButton("Perform Train Action");
+		trainButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		trainButton.setBounds(10, 286, 275, 23);
+		panel.add(trainButton);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"List of Blocks"}));
-		comboBox.setBounds(10, 85, 105, 20);
-		panel.add(comboBox);
+		blocksBox = new JComboBox();
+		blocksBox.setModel(new DefaultComboBoxModel(new String[] {"Blocks"}));
+		blocksBox.setBounds(10, 85, 136, 20);
+		panel.add(blocksBox);
 		
-		JLabel label_1 = new JLabel("Block Actions");
-		label_1.setBounds(10, 60, 75, 14);
-		panel.add(label_1);
+		blockLabel = new JLabel("Block Actions");
+		blockLabel.setBounds(10, 60, 275, 14);
+		panel.add(blockLabel);
 		
-		JLabel label_2 = new JLabel("Set Speed Limit");
-		label_2.setBounds(39, 116, 86, 14);
-		panel.add(label_2);
+		speedLabel = new JLabel("Set Speed Limit");
+		speedLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		speedLabel.setBounds(10, 116, 136, 14);
+		panel.add(speedLabel);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"List of Block Actions"}));
-		comboBox_1.setBounds(125, 85, 119, 20);
-		panel.add(comboBox_1);
+		blockActionsBox = new JComboBox();
+		blockActionsBox.setModel(new DefaultComboBoxModel(new String[] {"Block Actions", "Speed Limit", "Close", "Open"}));
+		blockActionsBox.setBounds(156, 85, 129, 20);
+		panel.add(blockActionsBox);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(135, 116, 86, 20);
-		panel.add(textField);
+		speedField = new JTextField();
+		speedField.setColumns(10);
+		speedField.setBounds(158, 113, 127, 20);
+		panel.add(speedField);
 		
-		JButton button_1 = new JButton("Perform Block Action");
-		button_1.setBounds(10, 140, 131, 23);
-		panel.add(button_1);
+		blockButton = new JButton("Perform Block Action");
+		blockButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		blockButton.setBounds(10, 140, 275, 23);
+		panel.add(blockButton);
 		
-		JLabel label_3 = new JLabel("Train Actions");
-		label_3.setBounds(10, 174, 75, 14);
-		panel.add(label_3);
+		trainLabel = new JLabel("Train Actions");
+		trainLabel.setBounds(10, 174, 275, 14);
+		panel.add(trainLabel);
 		
-		JComboBox comboBox_2 = new JComboBox();
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"List of Trains"}));
-		comboBox_2.setBounds(10, 199, 105, 20);
-		panel.add(comboBox_2);
+		trainBox = new JComboBox();
+		trainBox.setModel(new DefaultComboBoxModel(new String[] {"Trains"}));
+		trainBox.setBounds(10, 199, 136, 20);
+		panel.add(trainBox);
 		
-		JComboBox comboBox_3 = new JComboBox();
-		comboBox_3.setModel(new DefaultComboBoxModel(new String[] {"List of Stations"}));
-		comboBox_3.setBounds(10, 230, 105, 20);
-		panel.add(comboBox_3);
+		stationBox = new JComboBox();
+		stationBox.setModel(new DefaultComboBoxModel(new String[] {"Stations"}));
+		stationBox.setBounds(10, 230, 136, 20);
+		panel.add(stationBox);
 		
-		JComboBox comboBox_4 = new JComboBox();
-		comboBox_4.setModel(new DefaultComboBoxModel(new String[] {"List of Train Actions"}));
-		comboBox_4.setBounds(125, 199, 119, 20);
-		panel.add(comboBox_4);
+		trainActionsBox = new JComboBox();
+		trainActionsBox.setModel(new DefaultComboBoxModel(new String[] {"Train Actions", "Schedule Train", "Route Train"}));
+		trainActionsBox.setBounds(156, 199, 129, 20);
+		panel.add(trainActionsBox);
 		
-		JLabel label_4 = new JLabel("Set Authority");
-		label_4.setBounds(46, 261, 69, 14);
-		panel.add(label_4);
+		authorityLabel = new JLabel("Set Authority");
+		authorityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		authorityLabel.setBounds(10, 261, 136, 14);
+		panel.add(authorityLabel);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(125, 258, 86, 20);
-		panel.add(textField_1);
+		authorityField = new JTextField();
+		authorityField.setColumns(10);
+		authorityField.setBounds(156, 258, 129, 20);
+		panel.add(authorityField);
 		
-		JComboBox comboBox_5 = new JComboBox();
-		comboBox_5.setModel(new DefaultComboBoxModel(new String[] {"List of Lines"}));
-		comboBox_5.setBounds(10, 29, 95, 20);
-		panel.add(comboBox_5);
+		lineBox = new JComboBox();
+		lineBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(lineBox.getSelectedItem());
+			}
+		});
+		lineBox.setModel(new DefaultComboBoxModel(new String[] {"Lines", "Green", "Red"}));
+		lineBox.setBounds(10, 29, 275, 20);
+		panel.add(lineBox);
 
 	}
 }
