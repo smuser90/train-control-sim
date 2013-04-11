@@ -41,7 +41,7 @@ public class TNCPanel extends JPanel {
 	private JTextField textField;
 	private String setSpeedInput;
 	private String temp;
-	public TrainController tnc, tnc1;
+	public TrainController tnc;
 	private TrainControllerModule _tcm;
 	public JComboBox comboBox;
 	public ArrayList<TrainController> list;
@@ -54,21 +54,7 @@ public class TNCPanel extends JPanel {
 	public TNCPanel(TrainControllerModule tcm, ArrayList<TrainController> l) {
 		_tcm = tcm;
 		list = l;
-		if (!list.isEmpty()){
-			tnc = list.get(0);
-		}
-		else{
-			tnc = null;
-		}
-//		tnc = new TrainController(this);
-//		tnc.setTrainModel(null);
-//		list.add(tnc);
-//		tnc1 = new TrainController(this, null);
-		
-//		tnc1.trainID=1;
-//		tnc1.currSpeed=50;
-//		list.add(tnc1);
-		
+		tnc=null;		
 		
 		setBorder(UIManager.getBorder("Button.border"));
 		setLayout(null);
@@ -308,8 +294,6 @@ public class TNCPanel extends JPanel {
 		
 		// comboBox
 		comboBox = new JComboBox();	
-//		comboBox.addItem(0);
-//		comboBox.addItem(1);
 		comboBox.setBounds(25, 6, 236, 28);
 		add(comboBox);
 		comboBox.addItemListener(new ItemListener(){
@@ -318,7 +302,9 @@ public class TNCPanel extends JPanel {
 					int ID;
 					ID = comboBox.getSelectedIndex();
 //					System.out.println("Selected ID: "+ID);
-					if (list.get(ID) != null){
+//					System.out.println("list empty: "+list.isEmpty());
+					
+					if (!list.isEmpty()){
 						tnc = list.get(ID);
 					
 						
@@ -387,6 +373,17 @@ public class TNCPanel extends JPanel {
 		JLabel lblLog = new JLabel("Log");
 		lblLog.setBounds(31, 211, 61, 16);
 		add(lblLog);
+		
+		
+		// testing
+			/*		tnc = new TrainController(this);
+					list.add(tnc);
+					comboBox.addItem(tnc.trainID);
+					tnc1 = new TrainController(this);
+					tnc1.trainID=1;
+					tnc1.currSpeed=50;
+					list.add(tnc1);
+					comboBox.addItem(tnc1.trainID);*/
 	}
 	
 
