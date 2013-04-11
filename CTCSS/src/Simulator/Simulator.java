@@ -24,7 +24,7 @@ public class Simulator implements Runnable{
 	private TrackControllerModule tcm;
 	private TrainModelModule tm;
 	private SpeedDialog sd;
-	public ArrayList<Block> myBlocks;
+	private ArrayList<Block> myBlocks;
 	
 	public void run() {
 		try {
@@ -127,6 +127,7 @@ public class Simulator implements Runnable{
 	
 	public void loadTrack() {
 		tcm.getTrack(myBlocks);
+		ctc.setGLine(myBlocks);
 		log.append(1, "Track Loaded\n");
 	}
 }
