@@ -22,7 +22,6 @@ import TrackModel.TrackModelModule;
 import CTC.CTCModule;
 import TrainController.TrainControllerModule;
 import TrainModel.TrainModelModule;
-//import TrainController.TrainControllerModule;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -252,6 +251,7 @@ public class System_GUI {
 		// Simulation Menu
 		mnSimulation = new JMenu("Simulation");
 		menuBar.add(mnSimulation);
+		mnSimulation.setEnabled(false);
 		
 		mntmRun = new JMenuItem("Run");
 		mntmRun.addActionListener(new ActionListener() {
@@ -291,7 +291,7 @@ public class System_GUI {
 			mnFile.insert(mntmLogout, 0);
 			frmCtcss.repaint();
 			loggedIn = true;
-			log.append(1, "Logged in as Optimus\n");
+			mnSimulation.setEnabled(true);
 		}
 		else {
 			log.append(3, "Login failed\n");
@@ -306,6 +306,8 @@ public class System_GUI {
 		mnFile.insert(mntmLogin, 0);
 		frmCtcss.repaint();
 		loggedIn = false;
+		mnSimulation.setEnabled(false);
+		
 	}
 	
 	private void pause() {
