@@ -3,6 +3,7 @@ package Simulator;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 import CTC.CTCModule;
 import Log.Log;
@@ -114,6 +115,14 @@ public class Simulator implements Runnable{
 	
 	public void scheduleTrain(int line) {
 		tm.addTrain(line);
+		Set<Integer> trains = tm.getTrainIDS();
+		Integer [] trs = new Integer[trains.size()];
+		trains.toArray(trs);		
+		ArrayList<Integer> tids = new ArrayList<Integer>();
+		for(int i = 0; i < trains.size(); i++) {
+			tids.add(trs[i]);
+		}
+		ctc.setGLTrains(tids);
 	}
 	
 	public void closeBlock(int blockID) {

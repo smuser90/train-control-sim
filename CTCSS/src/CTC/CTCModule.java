@@ -9,7 +9,7 @@ import TrackModel.Block;
 public class CTCModule {
 	// Fields
 	private CTCPanel gui;
-	private Simulator sim;
+	public Simulator sim;
 	private ArrayList<Block> greenLine = null;
 	private ArrayList<Integer> gTrainIDs = null;
 	private ArrayList<String> lines = null;
@@ -28,12 +28,15 @@ public class CTCModule {
 	}
 	
 	protected void scheduleTrain(int line) {
-		if(sim != null)
+		if(sim != null) {
 			sim.scheduleTrain(line);
-		if(line == 0) {
-			log.append(0, "Train added to Green Line\n");
-		} else {
-			log.append(0, "Train added to Red Line\n");
+			if(line == 0) {
+				sim.scheduleTrain(line);
+				log.append(0, "Train added to Green Line\n");
+			} else {
+				sim.scheduleTrain(line);
+				log.append(0, "Train added to Red Line\n");
+			}
 		}
 	}
 	

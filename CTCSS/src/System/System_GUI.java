@@ -110,9 +110,11 @@ public class System_GUI {
 		log.append(0,  "Train Model Module Loaded\n");
 		updateSplash(5);
 		tnc = new TrainControllerModule();
+		tm.receiveController(tnc);
 		log.append(0,  "Train Controller Module Loaded\n");
 		updateSplash(6);
 		sim = new Simulator(ctc, trc, tm, trm);
+		ctc.sim = sim;
 		log.append(0, "Simulator Started\n");
 		for(int i = 0; i < 5; i++)
 			updateSplash(7);

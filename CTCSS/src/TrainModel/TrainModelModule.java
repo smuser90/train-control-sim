@@ -2,6 +2,7 @@ package TrainModel;
 
 import TrainController.TrainControllerModule;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.lang.Integer;
 import java.util.Set;
@@ -9,7 +10,7 @@ import java.util.Set;
 public class TrainModelModule 
 {
 	private static TMPanel m_gui = null;
-	private static Map<Integer, TrainModel> m_trainList = null;
+	private Map<Integer, TrainModel> m_trainList;
 	private TrainControllerModule m_tcModule = null;
 	private int m_trainID;
 	
@@ -18,6 +19,7 @@ public class TrainModelModule
 	{
 		m_gui = new TMPanel(this);
 		m_trainID = 1;
+		m_trainList = new HashMap<Integer, TrainModel>();
 	}
 	
 	public void receiveController(TrainControllerModule tc)
