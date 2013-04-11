@@ -21,6 +21,7 @@ import TrackController.TrackControllerModule;
 import TrackModel.TrackModelModule;
 import CTC.CTCModule;
 import TrainModel.TrainModelModule;
+import TrainController.TrainControllerModule;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -34,6 +35,7 @@ public class System_GUI {
 	private static TrainModelModule tm;
 	private static TrackModelModule trm;
 	private static TrackControllerModule trc;
+	private static TrainControllerModule tnc;
 	private static Simulator sim;
 	private static boolean loggedIn = false;
 	
@@ -106,6 +108,8 @@ public class System_GUI {
 		updateSplash(4);
 		tm = new TrainModelModule();
 		log.append(0,  "Train Model Module Loaded\n");
+		tnc = new TrainControllerModule();
+		log.append(0,  "Train Controller Module Loaded\n");
 		updateSplash(6);
 		sim = new Simulator(ctc);
 		log.append(0, "Simulatior Started\n");
@@ -195,7 +199,7 @@ public class System_GUI {
 		tabbedPane.addTab("Train Model", null, panel_4, null);
 		
 		// Train Controller
-		JPanel panel_5 = new JPanel();
+		JPanel panel_5 = tnc.getPanel();
 		panel_5.setBackground(Color.WHITE);
 		tabbedPane.addTab("Train Controller", null, panel_5, null);
 		
