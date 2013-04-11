@@ -10,6 +10,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import java.awt.Rectangle;
 
 public class LogPanel extends JPanel {
 
@@ -33,11 +34,12 @@ public class LogPanel extends JPanel {
 		panel.setLayout(null);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 964, 102);
+		scrollPane.setBounds(0, 0, 960, 102);
 		panel.add(scrollPane);
 		
 		textPane = new JTextPane();
 		textPane.setEditable(false);
+		textPane.setBounds(new Rectangle(0, 0, 960, 102));
 		scrollPane.setViewportView(textPane);
 
 	}
