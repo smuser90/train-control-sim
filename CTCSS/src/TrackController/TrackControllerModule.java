@@ -1,5 +1,6 @@
 package TrackController;
 
+import TrackModel.Block;
 /*************************************
  * For block.type
  * 0 regular
@@ -38,13 +39,13 @@ public class TrackControllerModule {
 	public void getTrack(ArrayList<Block> track){
 		myBlocks = track;
 		for (int listCount = 0; listCount < myBlocks.size(); listCount++) {
-			if (myBlocks.get(listCount).type == 1) {
+			if (myBlocks.get(listCount).getType() == 1) {
 				switchList.add(listCount);
 			}
-			if (myBlocks.get(listCount).occupied) {
+			if (myBlocks.get(listCount).getOccupied()) {
 				trainList.add(listCount);
 			}
-			if (myBlocks.get(listCount).type == 2)
+			if (myBlocks.get(listCount).getType() == 2)
 				crossingList.add(listCount);
 		}
 		// Set some of the blocks as switches *TESTING*
@@ -184,5 +185,8 @@ public class TrackControllerModule {
 	
 	protected ArrayList<TrackController> getTrCList() {
 		return trackControllerList;
+	}
+	protected ArrayList<Integer> getCrossingList() {
+		return crossingList;
 	}
 }

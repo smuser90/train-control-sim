@@ -1,5 +1,7 @@
 package TrackController;
 
+import TrackModel.Block;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
@@ -38,9 +40,11 @@ public class TrackControllerPanel extends JPanel {
 	private ArrayList<Block> blockList;
 	private ArrayList<Integer> numberSwitch;
 	private ArrayList<Integer> trainList;
+	private ArrayList<Integer> crossingList;
 	private int index = 0;
 	private String myTrainList = "";
 	private String mySwitchList = "";
+	private String myCrossingList = "";
 	private boolean hasInfo = false;
 	/**
 	 * Create the panel.
@@ -52,6 +56,7 @@ public class TrackControllerPanel extends JPanel {
 		trainList = _tcm.getTrainList();
 		numberSwitch = _tcm.getSwitchList();
 		trackControllerList = _tcm.getTrCList();
+		crossingList = _tcm.getCrossingList();
 		JLabel lblNewLabel_3 = new JLabel("Properties");
 		lblNewLabel_3.setBounds(10, 111, 77, 14);
 		add(lblNewLabel_3);
@@ -208,7 +213,7 @@ public class TrackControllerPanel extends JPanel {
 			if (currentController == trackControllerList.size())
 				currentController = 0;
 			else if(currentController == -1)
-				currentController = 7;
+				currentController = trackControllerList.size()-1;
 			// trackID == 0 means we are on the green track
 			if (trackID == 0) {
 				if (trackControllerList.get(currentController).getTrackNum() == 0) {
@@ -268,9 +273,9 @@ public class TrackControllerPanel extends JPanel {
 		//	}
 			
 		//	else if(blockList.get(trackControllerList.get(currentController).blocksControlled.get(index)) == occupied)
-			if(trackControllerList.get(currentController).blocksControlled.contains(blockList.get(index).blockNumber) && blockList.get(index).occupied)
+			if(trackControllerList.get(currentController).blocksControlled.contains(blockList.get(index).getBlockNumber()) && blockList.get(index).getOccupied())
 			{
-				myTrainList = myTrainList + "Train on Block: " + blockList.get(index).blockNumber + "\n";
+				myTrainList = myTrainList + "Train on Block: " + blockList.get(index).getBlockNumber() + "\n";
 				//txtrCrossingAtBlock.setText("here with are with final index " + index);
 				//myTrainList = myTrainList + "Train on Block: " + (trackControllerList.get(currentController).blocksControlled.get(index) + 1 ) + "\n";
 				
@@ -290,6 +295,21 @@ public class TrackControllerPanel extends JPanel {
 		txtrSwitchAtBlock.setText(mySwitchList);
 		mySwitchList = "";
 			
+		
+		myCrossingList = "";
+		for(index = 0; index < crossingList.size(); index++)
+		{
+			if(trackControllerList.get(currentController).blocksControlled.contains(crossingList.get(index)))
+			{
+				if(blockList.get(crossingList.get(index)).getCrossing() == true)
+					myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is DOWN" ;
+				else if(blockList.get(crossingList.get(index)).getCrossing() == false)
+					myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is UP" ;
+			}
+		}
+		//txtrSwitchAtBlock.setText("Here i am "+ numberSwitch.size());
+		txtrCrossingAtBlock.setText(myCrossingList);
+		myCrossingList = "";
 		
 		//Goes through each controlled block for each track controller
 		//for(Iterator<Integer> i = trackControllerList.get(currentController).blocksControlled.iterator();i.hasNext();)

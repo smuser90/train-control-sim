@@ -1,5 +1,7 @@
 package TrackController;
 
+import TrackModel.Block;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -24,11 +26,12 @@ public class TrackControllerTester {
 		myBlocks = new ArrayList<Block>();
 		
 		for (int blockCount = 0; blockCount < 5; blockCount++) {
-			Block blk = new Block(blockCount, false, false);
+			Block blk = new Block(blockCount);
+			//blk.setBlockNumber(blockCount);
 			if(blockCount == 1)
-				blk.type = 1;
-			if(blockCount == 3)
-				blk.type = 2;
+				blk.setType(1);
+			if(blockCount == 2)
+				blk.setType(2);
 			myBlocks.add(blk);
 		}
 		
@@ -85,7 +88,7 @@ public class TrackControllerTester {
 		JButton btnAddtrain = new JButton("AddTrain");
 		btnAddtrain.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				myBlocks.get(0).occupied = true;
+				myBlocks.get(1).setOccupied(true);
 			}
 		});
 		btnAddtrain.setBounds(208, 432, 89, 23);
