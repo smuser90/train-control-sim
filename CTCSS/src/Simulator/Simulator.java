@@ -23,7 +23,7 @@ public class Simulator implements Runnable{
 	public void run() {
 		try {
 			if(!paused) {
-				Thread.sleep(realTime*timeStep);
+				Thread.sleep(realTime/timeStep);
 				sysTimeNum += realTime*timeStep;
 				sysTime.setTime(sysTimeNum);
 				loadLogTime();
@@ -55,8 +55,8 @@ public class Simulator implements Runnable{
 		if(speed == -1) {
 			log.append(3, "Speed must be a number 'x' s.t. 1 <= x <= 10\n");
 		} else {
-			log.append(1, "Speed set to " + Integer.toString(timeStep) + "*real time\n" );
 			timeStep = speed;
+			log.append(1, "Speed set to " + Integer.toString(timeStep) + "*real time\n" );
 		}
 	}
 	
