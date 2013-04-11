@@ -6,28 +6,38 @@ public class TrainController
 {
 	public TrainModel train;
 	public int trainID;
-//	private double currSpeed;
-	private double output;
-//	private double speedLimit;
+	public double currSpeed;
+	public double output;
+	public double speedLimit;
 	public double setPointSpeed=0;		// initial setPointSpeed
-	private Boolean authority;
-	private Boolean lights;
-	private Boolean doors;
-	private int temp;
-	private Boolean brake;
-	private Boolean eBrake;
+	public int authority;
+	public Boolean lights = false;
+	public Boolean doors = false;
+	public int temp;
+	public Boolean brake;
+	public Boolean eBrake;
 	private final int Kp = 0;
 	private final int Ki = 0;
 	private final int t = 0;
 	private double pre_error=0, error=0, Vk, pre_Vk=0 ;
+	private TNCPanel panel;
 //	private routeInfo ;
 	
-	public TrainController(TrainModel t){
-		train = t;
-//		trainID = t.trainID;
+	public TrainController(TNCPanel gui, TrainModel tnm){
+		panel = gui;
+		train = tnm;
+		trainID = 000;
+		currSpeed = 100;
+		speedLimit = 120;
+		authority = 1;
+		lights = false;
+		doors = false;
+		temp = 100;		
+		brake = false;
+		eBrake = false;
 	}
 	
-	public void setSpeed(int s){
+	public void setSpeed(double s){
 		setPointSpeed = s;
 //		if (setPointSpeed>train.speedLimit){
 //			setPointSpeed = train.speedLimit;	 // check speed limit 
@@ -35,29 +45,39 @@ public class TrainController
 //		regulateSpeed();
 	}
 	
-	public Boolean setLights(){
-//		train.setLight();
-		return false;
+	public double getSetPointSpeed(){
+		return setPointSpeed;
 	}
 	
-	public Boolean setDoors(){
+	public Boolean setLights(Boolean l){
+		lights = l;
+//		train.setLight(lights);
+		return lights;
+	}
+	
+	public Boolean setDoors(Boolean d){
+		doors = d;
 //		train.setDoor();
 		return false;
 	}
 	
-	public int setTemp(int temp){
+	public int setTemp(int t){
+		temp = t;
+		System.out.println("temp = " + temp);
 //		train.setTemp(temp);
 		return 0; 
 	}
 	
-	public Boolean setBrake(){
+	public Boolean setBrake(Boolean b){
+		brake = b;
 //		train.setBrake();
-		return false;
+		return brake;
 	}
 	
-	public Boolean setEBrake(){
+	public Boolean setEBrake(Boolean eb){
+		eBrake = eb;
 //		train.setEBrake();
-		return false;
+		return eBrake;
 	}
 	
 	public String log(){
@@ -75,6 +95,8 @@ public class TrainController
 //		eBrake = train.getEmergencyBrake();
 //		routeInfo;
 		
+		panel.table.setValueAt(currSpeed, 0, 1);
+		panel.table.setValueAt(authority, 2, 1);
 		
 //		if (!train.getAuthority()){
 //			train.setEmergencyBrake();				// check authority

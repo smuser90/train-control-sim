@@ -31,68 +31,67 @@ import java.util.ArrayList;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.UIManager;
 import Log.Log;
+import javax.swing.ListSelectionModel;
 
 public class TNCPanel extends JPanel {
 	private JTextField txtSetSpeed;
 	private JTextField txtSetTemp;
 	private JTextField txtNextStation;
-	private JTable table;
+	public JTable table;
 	private JTextField textField;
 	private String setSpeedInput;
-	private String setTemp;
-	private TrainController tnc;
-
+	private String temp;
+	public TrainController tnc, tnc1;
+	private TrainControllerModule _tcm;
+	public JComboBox comboBox;
+	public ArrayList<TrainController> list;
+	public JToggleButton tglbtnSetEmergencyBrake, SetBrake, doorToggle, lightToggle;
+	
+	
 	/**
 	 * Create the panel.
 	 */
-	public TNCPanel() {
+	public TNCPanel(TrainControllerModule tcm, ArrayList<TrainController> l) {
+		_tcm = tcm;
+		list = l;
+//		tnc = list.get(0);
+		tnc = new TrainController(this, null);
+		list.add(tnc);
+		tnc1 = new TrainController(this, null);
 		
-		tnc = getTrainController(001);
+		tnc1.trainID=1;
+		tnc1.currSpeed=50;
+		list.add(tnc1);
+		
 		
 		setBorder(UIManager.getBorder("Button.border"));
 		setLayout(null);
 		setBounds(100, 100, 650, 350);
 		
+		
+		// text field
 		txtSetSpeed = new JTextField();
 		txtSetSpeed.setText("");
 		txtSetSpeed.setBounds(438, 27, 74, 28);
 		add(txtSetSpeed);
 		txtSetSpeed.setColumns(10);
-		txtSetSpeed.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0){
-				setSpeedInput = txtSetSpeed.getText();
-			}
-		});
+				
+		txtSetTemp = new JTextField();
+		txtSetTemp.setText("");
+		txtSetTemp.setColumns(10);
+		txtSetTemp.setBounds(438, 55, 74, 28);
+		add(txtSetTemp);
 		
+		// buttons
 		JButton setSpeed = new JButton("Apply speed");
 		setSpeed.setBounds(510, 28, 117, 29);
 		add(setSpeed);
 		setSpeed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int setPointSpeed = Integer.parseInt(setSpeedInput);
+				double setPointSpeed = Double.parseDouble(txtSetSpeed.getText());
+				System.out.println("setSpeed = " + setPointSpeed);
 				tnc.setSpeed(setPointSpeed);
-				System.out.println("setSpeed" + setPointSpeed);
-	//			log.append(0,  "Train Controller Module Loaded\n");
-			}
-		});
-		
-		
-		JLabel lblSetSpeed = new JLabel("Set speed");
-		lblSetSpeed.setBounds(365, 33, 61, 16);
-		add(lblSetSpeed);
-		
-		JLabel lblNewLabel = new JLabel("Set temp");
-		lblNewLabel.setBounds(365, 61, 61, 16);
-		add(lblNewLabel);
-		
-		txtSetTemp = new JTextField();
-		txtSetTemp.setText("set temp");
-		txtSetTemp.setColumns(10);
-		txtSetTemp.setBounds(438, 55, 74, 28);
-		add(txtSetTemp);
-		txtSetTemp.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0){
-				setTemp = txtSetTemp.getText();
+				table.setValueAt(setPointSpeed, 1, 1);
 			}
 		});
 		
@@ -101,11 +100,23 @@ public class TNCPanel extends JPanel {
 		add(setTemp);
 		setTemp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int temp;
-			//	temp = Integer.parseInt(setTemp);
-			//	tnc.setTemp(temp);
+				int temperature;
+				temperature = Integer.parseInt(txtSetTemp.getText());
+				tnc.setTemp(temperature);
+				table.setValueAt(temperature, 5, 1);
 			}
 		});
+		
+		
+		// labels
+		
+		JLabel lblSetSpeed = new JLabel("Set speed");
+		lblSetSpeed.setBounds(365, 33, 61, 16);
+		add(lblSetSpeed);
+		
+		JLabel lblNewLabel = new JLabel("Set temp");
+		lblNewLabel.setBounds(365, 61, 61, 16);
+		add(lblNewLabel);
 		
 		JLabel lblSetLights = new JLabel("Set Lights");
 		lblSetLights.setBounds(365, 89, 67, 16);
@@ -119,66 +130,110 @@ public class TNCPanel extends JPanel {
 		lblSetBrake.setBounds(365, 153, 61, 16);
 		add(lblSetBrake);
 		
-		JToggleButton tglbtnNewToggleButton = new JToggleButton("Lights On");
-		tglbtnNewToggleButton.setBounds(438, 84, 189, 29);
-		add(tglbtnNewToggleButton);
-		
-		JToggleButton tglbtnDoorsOn = new JToggleButton("Doors On");
-		tglbtnDoorsOn.setBounds(438, 117, 189, 29);
-		add(tglbtnDoorsOn);
-		
-		JToggleButton tglbtnSetBrake = new JToggleButton("Set Brake");
-		tglbtnSetBrake.setBounds(438, 148, 189, 29);
-		add(tglbtnSetBrake);
-		
-		JToggleButton tglbtnSetEmergencyBrake = new JToggleButton("Set Emergency Brake");
-		tglbtnSetEmergencyBrake.setBounds(438, 176, 189, 29);
-		add(tglbtnSetEmergencyBrake);
-		
 		JLabel lblSetEbrake = new JLabel("Set EBrake");
 		lblSetEbrake.setBounds(365, 181, 67, 16);
 		add(lblSetEbrake);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.addItemListener(new ItemListener(){
-			public void itemStateChanged(ItemEvent event){
-				if(event.getStateChange()==ItemEvent.SELECTED){
-					int ID;
-			//		ID = comboBox.getSelectedIndex();
+		
+		// light toggle
+		
+		lightToggle = new JToggleButton("Lights On");
+		lightToggle.setBounds(438, 84, 189, 29);
+		add(lightToggle);
+		lightToggle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(lightToggle.isSelected()){
+					tnc.setLights(true);
+					table.setValueAt("On", 3, 1);
 				}
-					
-					
+				else {
+					tnc.setLights(false);
+					table.setValueAt("Off", 3, 1);
+				}
+				
 			}
 		});
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Train 001", "Train 002"}));
-		comboBox.setBounds(25, 6, 236, 28);
-		add(comboBox);
 		
-		txtNextStation = new JTextField();
-		txtNextStation.setText("Next Station\n");
-		txtNextStation.setBounds(27, 33, 134, 28);
-		add(txtNextStation);
-		txtNextStation.setColumns(10);
+		// door toggle
 		
+		doorToggle = new JToggleButton("Doors On");
+		doorToggle.setBounds(438, 117, 189, 29);
+		add(doorToggle);
+		doorToggle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(doorToggle.isSelected()){
+					tnc.setDoors(true);
+					table.setValueAt("Open", 4, 1);
+				}
+				else {
+					tnc.setDoors(false);
+					table.setValueAt("Close", 4, 1);
+				}
+				
+			}
+		});
+		
+		
+		// brake toggle
+		SetBrake = new JToggleButton("Set Brake");
+		SetBrake.setBounds(438, 148, 189, 29);
+		add(SetBrake);
+		SetBrake.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(SetBrake.isSelected()){
+					tnc.setBrake(true);
+					table.setValueAt("Pull", 7, 1);
+				}
+				else {
+					tnc.setBrake(false);
+					table.setValueAt("N/A", 7, 1);
+				}
+				
+			}
+		});
+		
+		
+		// emergency toggle
+		tglbtnSetEmergencyBrake = new JToggleButton("Set Emergency Brake");
+		tglbtnSetEmergencyBrake.setBounds(438, 176, 189, 29);
+		add(tglbtnSetEmergencyBrake);
+		tglbtnSetEmergencyBrake.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(tglbtnSetEmergencyBrake.isSelected()){					
+					tnc.setEBrake(true);
+					table.setValueAt("Pull", 6, 1);
+				}
+				else {
+					tnc.setEBrake(false);
+					table.setValueAt("N/A", 6, 1);
+				}
+				
+			}
+		});
+		
+		
+		
+		// table
 		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setForeground(Color.BLACK);
 		table.setColumnSelectionAllowed(true);
 		table.setCellSelectionEnabled(true);
 		table.setBackground(SystemColor.textHighlight);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"Current Speed", null},
-				{"Set Point Speed", null},
-				{"Authority", null},
-				{"Lights", null},
-				{"Doors", null},
-				{"Temperture", null},
-				{"Emergency Brake", null},
-				{null, null},
-				{null, null},
+				{"Current Speed", tnc.currSpeed},
+				{"Set Point Speed", tnc.getSetPointSpeed()},
+				{"Authority", tnc.authority},
+				{"Lights", "off"},
+				{"Doors", "Close"},
+				{"Temperture", "N/A"},
+				{"Emergency Brake", "N/A"},
+				{"Brake", "N/A"},
+				
 			},
 			new String[] {
-				"Attribute", "New column"
+				"Attribute", "Value"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
@@ -192,6 +247,72 @@ public class TNCPanel extends JPanel {
 		table.setBounds(25, 77, 301, 128);
 		add(table);
 		
+		
+		// comboBox
+		comboBox = new JComboBox();	
+		comboBox.addItem(tnc.trainID);
+		comboBox.addItem(tnc1.trainID);
+		comboBox.setBounds(25, 6, 236, 28);
+		add(comboBox);
+		comboBox.addItemListener(new ItemListener(){
+			public void itemStateChanged(ItemEvent event){
+				if(event.getStateChange()==ItemEvent.SELECTED){
+					int ID;
+					ID = comboBox.getSelectedIndex();
+					System.out.println("Selected ID: "+ID);
+					tnc = list.get(ID);
+					table.setValueAt(tnc.currSpeed, 0, 1);
+					table.setValueAt(tnc.setPointSpeed, 1, 1);
+					table.setValueAt(tnc.authority, 2, 1);
+					if (tnc.lights == false){
+						lightToggle.setSelected(false);
+						table.setValueAt("Off", 3, 1);
+					}
+					else {
+						lightToggle.setSelected(true);
+						table.setValueAt("On", 3, 1);
+					}
+					if (tnc.doors == false){
+						doorToggle.setSelected(false);
+						table.setValueAt("Close", 4, 1);
+					}
+					else {
+						doorToggle.setSelected(true);
+						table.setValueAt("Open", 4, 1);
+					}
+					table.setValueAt(tnc.temp, 5, 1);
+					
+					if (tnc.brake == false){			
+						SetBrake.setSelected(false);
+						table.setValueAt("N/A", 6, 1);
+					}
+					else {
+						SetBrake.setSelected(true);
+						table.setValueAt("Pull", 6, 1);
+					}
+					
+					if (tnc.eBrake == false){
+						tglbtnSetEmergencyBrake.setSelected(false);
+						table.setValueAt("N/A", 7, 1);
+					}
+					else {
+						tglbtnSetEmergencyBrake.setSelected(true);
+						table.setValueAt("Pull", 7, 1);
+					}
+					
+					
+				}					
+			}
+		});
+		
+		txtNextStation = new JTextField();
+		txtNextStation.setText("Next Station\n");
+		txtNextStation.setBounds(27, 33, 134, 28);
+		add(txtNextStation);
+		txtNextStation.setColumns(10);
+		
+		
+		
 		textField = new JTextField();
 		textField.setBounds(17, 229, 610, 96);
 		add(textField);
@@ -200,10 +321,10 @@ public class TNCPanel extends JPanel {
 		JLabel lblLog = new JLabel("Log");
 		lblLog.setBounds(31, 211, 61, 16);
 		add(lblLog);
-		
-
 	}
-	private static void addPopup(Component component, final JPopupMenu popup) {
+	
+
+/*	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				if (e.isPopupTrigger()) {
@@ -219,9 +340,5 @@ public class TNCPanel extends JPanel {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
-	}
-	
-	private static TrainController getTrainController(int ID){
-		return null;
-	}
+	}*/
 }

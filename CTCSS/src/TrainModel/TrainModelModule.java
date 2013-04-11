@@ -29,14 +29,15 @@ public class TrainModelModule
 	{
 		return m_trainList;
 	}
+	
 	public TMPanel getPanel()
 	{
 		return m_gui;
 	}
 	
-	public void addTrain()
+	public void addTrain(int line)
 	{
-		TrainModel train = new TrainModel(m_trainID, m_tcModule.getTrainController());
+		TrainModel train = new TrainModel(m_trainID, line, m_tcModule.getTrainController());
 		train.setTrainController(train);
 		m_trainList.put( new Integer(m_trainID), train);
 		m_trainID++;
