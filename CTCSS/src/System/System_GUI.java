@@ -147,8 +147,8 @@ public class System_GUI {
 					window.frmCtcss.toFront();
 					Thread t = new Thread(sim);
 					t.start();
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
 			}
 		});
