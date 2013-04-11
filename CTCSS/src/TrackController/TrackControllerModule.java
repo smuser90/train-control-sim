@@ -7,57 +7,26 @@ package TrackController;
  * 2 crossing
  */
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class TrackControllerModule extends JFrame {
-
-	private JPanel contentPane;
-	static TrackControllerPanel currentPanel;
-	JLabel lblNewLabel = new JLabel("New label");
-	static ArrayList<TrackController> trackControllerList = new ArrayList<TrackController>();
-	static ArrayList<Block> myBlocks = new ArrayList<Block>();//new ArrayList<Block>();
-	static ArrayList<Integer> switchList = new ArrayList<Integer>();
-	static ArrayList<Integer> trainList = new ArrayList<Integer>();
-	static ArrayList<Integer> crossingList = new ArrayList<Integer>();
-	static int upperLimit;
-	static int lowerLimit;
-	static int index = 1;
-	static int count = 0;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TrackControllerModule frame = new TrackControllerModule();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+public class TrackControllerModule {
+	
+	private TrackControllerPanel currentPanel;
+	private ArrayList<TrackController> trackControllerList = new ArrayList<TrackController>();
+	private ArrayList<Block> myBlocks = new ArrayList<Block>();//new ArrayList<Block>();
+	private ArrayList<Integer> switchList = new ArrayList<Integer>();
+	private ArrayList<Integer> trainList = new ArrayList<Integer>();
+	private ArrayList<Integer> crossingList = new ArrayList<Integer>();
+	private int upperLimit;
+	private int lowerLimit;
+	private int index = 1;
+	private int count = 0;
 
 	/**
 	 * Create the frame.
 	 */
 	public TrackControllerModule() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 00, 650, 350);
-		currentPanel = new TrackControllerPanel();
+		currentPanel = new TrackControllerPanel(this);
 		
 		for (int blockCount = 0; blockCount < 5; blockCount++) {
 			Block blk = new Block(blockCount, false, false);
@@ -85,7 +54,7 @@ public class TrackControllerModule extends JFrame {
 	}
 	/************************************************************************************************
 	 CALL THIS TO WAKE ME UP************************************************************************/
-	public static void getTrack(){
+	public void getTrack(){
 		// Set some of the blocks as switches *TESTING*
 //		myBlocks.get(8).isSwitch = true;
 //		myBlocks.get(17).isSwitch = true;
@@ -153,7 +122,7 @@ public class TrackControllerModule extends JFrame {
 					for (count = lowerLimit + 1; count < upperLimit; count++)
 						tc.blocksControlled.add(count);
 				}
-				tc.blocks = tc.blocksControlled.size();
+				tc.setNumBlocks(tc.blocksControlled.size());
 				trackControllerList.add(tc);
 			}
 		}
@@ -163,7 +132,7 @@ public class TrackControllerModule extends JFrame {
 				tc.blocksControlled.add(count);
 				//tc.blocksControlled.add(count + 1);
 			}
-			tc.blocks = tc.blocksControlled.size();
+			tc.setNumBlocks(tc.blocksControlled.size());
 			trackControllerList.add(tc);
 		}
 
@@ -195,12 +164,24 @@ public class TrackControllerModule extends JFrame {
 	
 	/**************************************************************************************
 	 * CALL ME ONCE PER TICK**************************************************************/
-	public static void runPLC(){
+	public void runPLC(){
 		//currentPanel.test2();
 		TrackController.runPLC(trackControllerList);
 	}
 
-	public static ArrayList<Block> getBlockList() {
+	protected ArrayList<Block> getBlockList() {
 		return myBlocks;
+	}
+	
+	protected ArrayList<Integer> getTrainList() {
+		return trainList;
+	}
+	
+	protected ArrayList<Integer> getSwitchList() {
+		return switchList;
+	}
+	
+	protected ArrayList<TrackController> getTrCList() {
+		return trackControllerList;
 	}
 }

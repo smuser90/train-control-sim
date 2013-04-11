@@ -24,7 +24,7 @@ public class Simulator implements Runnable{
 		try {
 			if(!paused) {
 				Thread.sleep(realTime/timeStep);
-				sysTimeNum += realTime*timeStep;
+				sysTimeNum += realTime;
 				sysTime.setTime(sysTimeNum);
 				loadLogTime();
 			} else {

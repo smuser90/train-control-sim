@@ -22,30 +22,34 @@ import javax.swing.JComboBox;
 
 public class TrackControllerPanel extends JPanel {
 
-	static JTextArea txtrCrossingAtBlock = new JTextArea();
-	static JTextArea txtrTrainId = new JTextArea();
-	static JTextArea txtrSwitchAtBlock = new JTextArea();
-	static int currentController = 0;
-	static int trackID = 0;
-	static JLabel lblNewLabel = new JLabel("");
-	static JLabel lblNewLabel_1 = new JLabel("");
-	static JLabel lblNewLabel_2 = new JLabel("");
-	static ArrayList<TrackController> trackControllerList = TrackControllerModule.trackControllerList;
-	static ArrayList<Block> blockList = new ArrayList<Block>();//TrackControllerModule.myBlocks;
-	static ArrayList<Integer> numberSwitch = TrackControllerModule.switchList;
-	static ArrayList<Integer> trainList = TrackControllerModule.trainList;
-	static int up = TrackControllerModule.upperLimit;
-	static int index = 0;
-	static String myTrainList = "";
-	static String mySwitchList = "";
+	private JTextArea txtrCrossingAtBlock = new JTextArea();
+	private JTextArea txtrTrainId = new JTextArea();
+	private JTextArea txtrSwitchAtBlock = new JTextArea();
+	private JLabel lblNewLabel = new JLabel("");
+	private JLabel lblNewLabel_1 = new JLabel("");
+	private JLabel lblNewLabel_2 = new JLabel("");
+	
+	// Fields
+	private TrackControllerModule _tcm;
+	private int currentController = 0;
+	private int trackID = 0;
+	private ArrayList<TrackController> trackControllerList;
+	private ArrayList<Block> blockList;;
+	private ArrayList<Integer> numberSwitch;
+	private ArrayList<Integer> trainList;
+	private int index = 0;
+	private String myTrainList = "";
+	private String mySwitchList = "";
 	/**
 	 * Create the panel.
 	 */
-	public TrackControllerPanel() {
+	public TrackControllerPanel(TrackControllerModule tcm) {
 		setLayout(null);
-		
-		blockList = TrackControllerModule.getBlockList();
-
+		_tcm = tcm;
+		blockList = _tcm.getBlockList();
+		trainList = _tcm.getTrainList();
+		numberSwitch = _tcm.getSwitchList();
+		trackControllerList = _tcm.getTrCList();
 		JLabel lblNewLabel_3 = new JLabel("Properties");
 		lblNewLabel_3.setBounds(10, 111, 77, 14);
 		add(lblNewLabel_3);
@@ -72,8 +76,8 @@ public class TrackControllerPanel extends JPanel {
 				//blockList.get(28).occupied = true;
 				//PLC.detectTrains();
 				
-				TrackControllerModule.getTrack();
-				TrackControllerModule.runPLC();
+				_tcm.getTrack();
+				_tcm.runPLC();
 				//currentController++;
 				//displayChange();
 				blockList.get(2).occupied = true;
@@ -187,7 +191,7 @@ public class TrackControllerPanel extends JPanel {
 
 	}
 
-	public static void displayChange() {
+	protected void displayChange() {
 		// txtrCrossingAtBlock.setText("Crossing at Block 17: INACTIVE\r\nCrossing at Block 20: ACTIVE\r\nCrossing at Block 17: INACTIVE");
 		//for (int i = 0; i < trackControllerList.size(); i++) {
 			if (currentController == trackControllerList.size())
@@ -196,27 +200,27 @@ public class TrackControllerPanel extends JPanel {
 				currentController = 7;
 			// trackID == 0 means we are on the green track
 			if (trackID == 0) {
-				if (trackControllerList.get(currentController).track == 0) {
+				if (trackControllerList.get(currentController).getTrackNum() == 0) {
 					//txtrCrossingAtBlock.setText("Track Controller : "
 						//	+ trackControllerList.get(currentController).number + " With "
 						//	+ trackControllerList.get(currentController).blocks + " blocks and is track "
 						//	+ trackControllerList.get(currentController).track);
-					lblNewLabel.setText("Controller: " + trackControllerList.get(currentController).number);
-					lblNewLabel_2.setText("Blocks: " + trackControllerList.get(currentController).blocks);
-					lblNewLabel_1.setText("Trains: " + trackControllerList.get(currentController).trains);
+					lblNewLabel.setText("Controller: " + trackControllerList.get(currentController).getID());
+					lblNewLabel_2.setText("Blocks: " + trackControllerList.get(currentController).getNumBlocks());
+					lblNewLabel_1.setText("Trains: " + trackControllerList.get(currentController).getNumTrains());
 					//break;
 				} else {
 					currentController++;
 				}
 			} else {
-				if (trackControllerList.get(currentController).track == 1) {
+				if (trackControllerList.get(currentController).getTrackNum() == 1) {
 					//txtrCrossingAtBlock.setText("Track Controller : "
 						//	+ trackControllerList.get(currentController).number + " With "
 						//	+ trackControllerList.get(currentController).blocks + " blocks and is track "
 						//	+ trackControllerList.get(currentController).track);
-					lblNewLabel.setText("Controller: " + trackControllerList.get(currentController).number);
-					lblNewLabel_2.setText("Blocks: " + trackControllerList.get(currentController).blocks);
-					lblNewLabel_1.setText("Trains: " + trackControllerList.get(currentController).trains);
+					lblNewLabel.setText("Controller: " + trackControllerList.get(currentController).getID());
+					lblNewLabel_2.setText("Blocks: " + trackControllerList.get(currentController).getNumBlocks());
+					lblNewLabel_1.setText("Trains: " + trackControllerList.get(currentController).getNumTrains());
 
 					//break;
 				} else {
@@ -292,7 +296,7 @@ public class TrackControllerPanel extends JPanel {
 	}
 
 
-	public static void test3() {
+	public private void test3() {
 		txtrSwitchAtBlock.setText("" + blockList.size());
 		
 	}*/

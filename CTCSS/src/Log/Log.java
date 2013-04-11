@@ -59,7 +59,6 @@ public class Log {
 				lCurrent = 0;
 			}
 		}
-		
 		if(st != null) {
 			current.append(st + " | ");
 			size += st.length() + 3;
