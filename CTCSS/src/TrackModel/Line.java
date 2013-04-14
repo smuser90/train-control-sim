@@ -6,13 +6,17 @@ import java.util.ArrayList;
 import Log.Log;
 
 public class Line {
-	int V; // number of vertices
-	int E; // edges
-	ArrayList<ArrayList<Integer>> trackAdjList; // list of all the vertices and where they link
-	ArrayList<Block> blockList; // list of all the blocks and their data
+	private int V; // number of vertices
+	private int E; // edges
+	private ArrayList<ArrayList<Integer>> trackAdjList; // list of all the vertices and where they link
+	private ArrayList<Block> blockList; // list of all the blocks and their data
+	private String lineName;
 	
-	public Line(int numBlocks)
+	public Line() {}
+	
+	public Line(int numBlocks, String lName)
 	{
+		this.lineName = lName;
 		this.V = numBlocks;
 		this.E = 0;
 		trackAdjList = new ArrayList<ArrayList<Integer>>();
@@ -45,6 +49,7 @@ public class Line {
 	
 	protected void print() {
 		StringBuilder track = new StringBuilder("\n");
+		track.append(this.lineName + "\n");
 		for(int i = 0; i < this.trackAdjList.size(); i++) {
 			track.append(i + " : ");
 			for(int j = 0; j < this.trackAdjList.get(i).size(); j++) {
@@ -57,5 +62,9 @@ public class Line {
 	
 	public ArrayList<Block> getBlocks() {
 		return this.blockList;
+	}
+	
+	public String getName() {
+		return this.lineName;
 	}
 }

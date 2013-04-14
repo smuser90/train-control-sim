@@ -13,8 +13,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class TrackModelPanel extends JPanel {
-	File file;
-	TrackModelModule tm;
+	private File file;
+	private TrackModelModule tm;
+	private JTabbedPane tabbedPane;
 	/**
 	 * Create the panel.
 	 */
@@ -42,15 +43,15 @@ public class TrackModelPanel extends JPanel {
 		btnNewButton.setBounds(10, 316, 200, 23);
 		add(btnNewButton);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 11, 630, 237);
 		add(tabbedPane);
-		
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("Green Line", null, panel, null);
-		
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("Red Line", null, panel_1, null);
 
+	}
+	
+	protected void addLine(Line l) {
+		JPanel panel = new JPanel();
+		tabbedPane.addTab(l.getName(), null, panel, null);
+		
 	}
 }

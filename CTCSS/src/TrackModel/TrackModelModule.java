@@ -24,10 +24,7 @@ public class TrackModelModule {
 	public void getLineFile(File f)
 	{
 		hasTrack = tr.getLineFile(f);
-	}
-	
-	public ArrayList<Block> getGLine() {
-		return this.tr.getGLine();
+		addLine(tr.getNewLine());
 	}
 	
 	public boolean hasTrack() {
@@ -36,5 +33,9 @@ public class TrackModelModule {
 	
 	public void gotTrack() {
 		hasTrack = false;
+	}
+	
+	private void addLine(Line l) {
+		gui.addLine(l);
 	}
 }
