@@ -10,6 +10,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import javax.swing.JPasswordField;
+import javax.swing.text.JTextComponent.KeyBinding;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginDialog extends JDialog {
 	private JTextField textField;
@@ -28,6 +32,14 @@ public class LoginDialog extends JDialog {
 		getContentPane().add(lblUsername);
 		
 		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					tryLogin(sys);
+				}
+			}
+		});
 		textField.setBounds(80, 11, 86, 17);
 		getContentPane().add(textField);
 		textField.setColumns(10);
@@ -38,19 +50,32 @@ public class LoginDialog extends JDialog {
 		getContentPane().add(lblPassword);
 		
 		passwordField = new JPasswordField();
+		passwordField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					tryLogin(sys);
+				}
+			}
+		});
 		passwordField.setBounds(80, 36, 86, 17);
 		getContentPane().add(passwordField);
 		
 		JButton btnNewButton = new JButton("Login");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sys.setLoggedIn(Login.login(textField.getText(), new String(passwordField.getPassword())));
-				setVisible(false);
+				tryLogin(sys);
 			}
 		});
 		btnNewButton.setBounds(20, 61, 146, 23);
 		getContentPane().add(btnNewButton);
 		textField.setColumns(10);
 		setVisible(true);
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+	}
+	
+	private void tryLogin(System_GUI sys) {
+		sys.setLoggedIn(Login.login(textField.getText(), new String(passwordField.getPassword())));
+		setVisible(false);
 	}
 }
