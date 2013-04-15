@@ -43,13 +43,16 @@ public class TrackModelPanel extends JPanel {
 		btnNewButton.setBounds(10, 316, 200, 23);
 		add(btnNewButton);
 		
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 11, 630, 237);
-		add(tabbedPane);
+		tabbedPane = null;
 
 	}
 	
 	protected void addLine(Line l) {
+		if(tabbedPane == null) {
+			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+			tabbedPane.setBounds(10, 11, 630, 237);
+			add(tabbedPane);
+		}
 		JPanel panel = new JPanel();
 		tabbedPane.addTab(l.getName(), null, panel, null);
 		
