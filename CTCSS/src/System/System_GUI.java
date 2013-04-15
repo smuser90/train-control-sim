@@ -13,6 +13,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import Log.Log;
@@ -67,7 +68,18 @@ public class System_GUI {
             	// Set System L&F
 			if(UIManager.getSystemLookAndFeelClassName().toString().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	    } 
+			else
+				try {
+				    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				        if ("Nimbus".equals(info.getName())) {
+				            UIManager.setLookAndFeel(info.getClassName());
+				            break;
+				        }
+				    }
+				} catch (Exception e) {
+				    // If Nimbus is not available, you can set the GUI to another look and feel.
+				}
+		} 
 	    catch (UnsupportedLookAndFeelException e) {
 	    	// handle exception
 	    }
