@@ -38,6 +38,7 @@ public class System_GUI {
 	private static TrainControllerModule tnc;
 	private static Simulator sim;
 	private static boolean loggedIn = false;
+	private static boolean foundSplash = true;
 	
 	private JPanel panel_1;
 	private JTabbedPane tabbedPane;
@@ -82,13 +83,15 @@ public class System_GUI {
 	}
 	
 	private static void updateSplash(int frame) {
-		renderSplashFrame(frame);
-        splash.update();
-        try {
-            Thread.sleep(360);
-        }
-        catch(InterruptedException e) {
-        }
+		if(foundSplash) {
+			renderSplashFrame(frame);
+			splash.update();
+			try {
+				Thread.sleep(360);
+			}
+			catch(InterruptedException e) {
+			}
+		}
 	}
 	
 	private static void setup() {
@@ -130,16 +133,17 @@ public class System_GUI {
 		
 		splash = SplashScreen.getSplashScreen();
         if (splash == null) {
-            System.out.println("SplashScreen.getSplashScreen() returned null");
-            return;
+            foundSplash = false;
         }
-        g = splash.createGraphics();
-        if (g == null) {
-            System.out.println("g is null");
-            return;
+        if(foundSplash) {
+        	g = splash.createGraphics();
+        	if (g == null) {
+        		foundSplash = false;
+        	}
         }
         setup();
-        splash.close();
+        if(foundSplash)
+        	splash.close();
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

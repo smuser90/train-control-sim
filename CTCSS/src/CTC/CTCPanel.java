@@ -216,7 +216,7 @@ public class CTCPanel extends JPanel {
 				log.append(3, "Not Yet Supported\n");
 			}
 		} else {
-			log.append(3, "Must Select a a train action");
+			log.append(3, "Must Select a a train action\n");
 		}	
 	}
 	
