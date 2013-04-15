@@ -29,7 +29,7 @@ public class TMPanel extends JPanel
 	private static final long serialVersionUID = -5672590130944164297L;
 
 	private TrainModelModule 	m_tm;
-	private boolean 			locked = false;
+	private boolean 			locked = true;
 	private JComboBox 			comboBox;
 	private JScrollPane scrollPane;
 	private JTextPane logPane;

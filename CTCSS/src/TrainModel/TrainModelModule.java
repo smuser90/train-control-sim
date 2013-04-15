@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class TrainModelModule 
 {
-	private boolean locked = false;
+	private boolean locked = true;
 	private Simulator m_sim = null;
 	private static TMPanel m_gui = null;
 	private Map<Integer, TrainModel> m_trainList;
@@ -67,7 +67,7 @@ public class TrainModelModule
 	
 	public void toggleLock()
 	{
-		locked != locked;
+		locked = !locked;
 	}
 	
 	public void modifyTrain(int ID, int field, int value)
