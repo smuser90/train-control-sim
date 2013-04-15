@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class TrackModelModuleTester {
 
@@ -13,6 +15,7 @@ public class TrackModelModuleTester {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		setGUILAndF();
 		tm = new TrackModelModule();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -43,7 +46,27 @@ public class TrackModelModuleTester {
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = tm.getPanel();
-		panel.setBounds(10, 11, 809, 335);
+		panel.setBounds(10, 11, 650, 350);
 		frame.getContentPane().add(panel);
+	}
+	
+	private static void setGUILAndF() {
+		try {
+            	// Set System L&F
+			if(UIManager.getSystemLookAndFeelClassName().toString().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    } 
+	    catch (UnsupportedLookAndFeelException e) {
+	    	// handle exception
+	    }
+	    catch (ClassNotFoundException e) {
+	    	// handle exception
+	    }
+	    catch (InstantiationException e) {
+	    	// handle exception
+	    }
+	    catch (IllegalAccessException e) {
+	    	// handle exception
+	    }
 	}
 }

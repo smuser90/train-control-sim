@@ -23,7 +23,7 @@ public class CTCTester {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		ctc = new CTCModule(null);
+		ctc = new CTCModule();
 		myBlocks = new ArrayList<Block>();
 		tids = new ArrayList<Integer>();
 		for (int blockCount = 0; blockCount < 5; blockCount++) {

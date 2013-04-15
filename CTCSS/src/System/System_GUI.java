@@ -13,6 +13,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import Log.Log;
@@ -38,6 +39,7 @@ public class System_GUI {
 	private static TrainControllerModule tnc;
 	private static Simulator sim;
 	private static boolean loggedIn = false;
+	private static boolean foundSplash = true;
 	
 	private JPanel panel_1;
 	private JTabbedPane tabbedPane;
@@ -48,6 +50,7 @@ public class System_GUI {
 	private JMenuItem mntmPause;
 	private JMenu mnSimulation;
 	
+	private System_GUI sys;
 	static void renderSplashFrame(int frame) {
         final String[] comps = {"Log", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Simulator"};
         g.setComposite(AlphaComposite.Clear);
@@ -65,7 +68,18 @@ public class System_GUI {
             	// Set System L&F
 			if(UIManager.getSystemLookAndFeelClassName().toString().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	    } 
+			else
+				try {
+				    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				        if ("Nimbus".equals(info.getName())) {
+				            UIManager.setLookAndFeel(info.getClassName());
+				            break;
+				        }
+				    }
+				} catch (Exception e) {
+				    // If Nimbus is not available, you can set the GUI to another look and feel.
+				}
+		} 
 	    catch (UnsupportedLookAndFeelException e) {
 	    	// handle exception
 	    }
@@ -81,13 +95,15 @@ public class System_GUI {
 	}
 	
 	private static void updateSplash(int frame) {
-		renderSplashFrame(frame);
-        splash.update();
-        try {
-            Thread.sleep(360);
-        }
-        catch(InterruptedException e) {
-        }
+		if(foundSplash) {
+			renderSplashFrame(frame);
+			splash.update();
+			try {
+				Thread.sleep(360);
+			}
+			catch(InterruptedException e) {
+			}
+		}
 	}
 	
 	private static void setup() {
@@ -97,7 +113,7 @@ public class System_GUI {
 		log.append(0, "Log Loaded\n");
 		log.append(0, "Look and Feel set to " + UIManager.getLookAndFeel().getName() + "\n");
 		updateSplash(1);
-		ctc = new CTCModule(sim);
+		ctc = new CTCModule();
 		log.append(0, "CTC Module Loaded\n");
 		updateSplash(2);
 		trm = new TrackModelModule();
@@ -114,7 +130,7 @@ public class System_GUI {
 		log.append(0,  "Train Controller Module Loaded\n");
 		updateSplash(6);
 		sim = new Simulator(ctc, trc, tm, trm);
-		ctc.sim = sim;
+		ctc.setSimulator(sim);
 		log.append(0, "Simulator Started\n");
 		for(int i = 0; i < 5; i++)
 			updateSplash(7);
@@ -129,16 +145,17 @@ public class System_GUI {
 		
 		splash = SplashScreen.getSplashScreen();
         if (splash == null) {
-            System.out.println("SplashScreen.getSplashScreen() returned null");
-            return;
+            foundSplash = false;
         }
-        g = splash.createGraphics();
-        if (g == null) {
-            System.out.println("g is null");
-            return;
+        if(foundSplash) {
+        	g = splash.createGraphics();
+        	if (g == null) {
+        		foundSplash = false;
+        	}
         }
         setup();
-        splash.close();
+        if(foundSplash)
+        	splash.close();
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -161,6 +178,7 @@ public class System_GUI {
 	 */
 	public System_GUI() {
 		initialize();
+		sys = this;
 	}
 
 	/**
@@ -223,7 +241,7 @@ public class System_GUI {
 		mntmLogin = new JMenuItem("Login");
 		mntmLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				login();
+				new LoginDialog(sys);
 			}
 		});
 		mnFile.add(mntmLogin);
@@ -286,18 +304,22 @@ public class System_GUI {
 	
 	// Simply to show functionality for now will be fleshed out more later
 	private void login() {
-		if(Login.login(null, null)) {
+		if(loggedIn) {
 			frmCtcss.getContentPane().add(panel_1);
 			frmCtcss.getContentPane().add(tabbedPane);
 			mnFile.remove(0);
 			mnFile.insert(mntmLogout, 0);
 			frmCtcss.repaint();
-			loggedIn = true;
 			mnSimulation.setEnabled(true);
 		}
 		else {
 			log.append(3, "Login failed\n");
 		}
+	}
+	
+	protected void setLoggedIn(boolean val) {
+		loggedIn = val;
+		login();
 	}
 	
 	// Simply to show functionality for now will be fleshed out more later

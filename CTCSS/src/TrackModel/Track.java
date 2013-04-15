@@ -21,6 +21,7 @@ public class Track {
 	public boolean getLineFile(File f)
 	{
 		Log.Instance().append(1, "Track File: " + f.getName() + " selected\n");
+		boolean goodLine = true;
 		try
 		{
 			Line cLine = new Line();
@@ -34,17 +35,26 @@ public class Track {
             	if (index == 0)
             	{
             		lineName = line; // get name of the line from the file
-            		cLine = new Line(Integer.parseInt(br.readLine()), lineName);
-            		index++;
+            		// check the name of the line. If it exists GTFO 
+            		if (checkLineName(lineName))
+            		{
+            			cLine = new Line(Integer.parseInt(br.readLine()), lineName);
+                		index++;
+            		} else {
+            			goodLine = false;
+            			Log.Instance().append(3, "Line already exists\n");
+            			break;
+            		}
             	} else {
             		String [] lineItms = line.split(" ");
             		if(curBlock == -1) {
-            			cLine.addBlock(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[2]) , Integer.parseInt(lineItms[3]));
+            			// addBlock(int bID, int type, int len, double grade, int speedLimit, String sect)
+            			cLine.addBlock(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[2]) , Integer.parseInt(lineItms[3]) , Double.parseDouble(lineItms[4]) , Integer.parseInt(lineItms[5]) , lineItms[6] );
             			cLine.addEdge(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[1]));
             			curBlock = Integer.parseInt(lineItms[0]);
             		} else {
             			if(curBlock != Integer.parseInt(lineItms[0])) {
-            				cLine.addBlock(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[2]) , Integer.parseInt(lineItms[3]));
+            				cLine.addBlock(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[2]) , Integer.parseInt(lineItms[3]) , Double.parseDouble(lineItms[4]) , Integer.parseInt(lineItms[5]) , lineItms[6] );
             			}
             			cLine.addEdge(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[1]));
             			curBlock = Integer.parseInt(lineItms[0]);
@@ -52,15 +62,29 @@ public class Track {
             	}
             }
             br.close();
-            lines.add(cLine);
-            newLine = cLine;
-            cLine.print();
+            if(goodLine) {
+	            lines.add(cLine);
+	            newLine = cLine;
+	            cLine.print();
+            }
 			} catch (IOException q)
 			{return false;}
 		
-		return true;
+		return goodLine;
 	}
 	
+	private boolean checkLineName(String lName) {
+		// make sure that the track wasn't already loaded
+		for(int i = 0; i < lines.size(); i++)
+		{
+			if(lName.equals(lines.get(i).getName()))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	protected Line getNewLine() {
 		return newLine;
 	}
