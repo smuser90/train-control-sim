@@ -16,6 +16,8 @@ import TrainModel.TrainModelModule;
 public class Simulator implements Runnable{
 	
 	// Fields
+	private static final int trainsMax = 1;
+	private static int trains = 0;
 	private Log log = null;
 	private boolean paused = false;
 	private int realTime = 250;
@@ -38,6 +40,17 @@ public class Simulator implements Runnable{
 				sysTimeNum += realTime;
 				sysTime.setTime(sysTimeNum);
 				loadLogTime();
+				
+				/*
+				if(trains < trainsMax)
+				{
+					tm.addTrain(0);
+					trains++;
+				}
+				*/
+				
+				tm.tick(realTime/1000.0);
+				
 				if(trm.hasTrack()) {
 					newLine = trm.gotTrack();
 					this.loadGTrack();
@@ -68,6 +81,7 @@ public class Simulator implements Runnable{
 		ctc = c;
 		tcm = TcM;
 		tm = TM;
+		tm.linkSimulator(this);
 		trm = Tmm;
 		sd = new SpeedDialog(this);
 		sysTimeNum = System.currentTimeMillis();
@@ -93,14 +107,21 @@ public class Simulator implements Runnable{
 	public void togglePause() {
 		paused = !paused;
 		if(paused) {
+			tm.toggleLock();
 			log.append(1, "Simulation Paused\n");
 		} else {
+			tm.toggleLock();
 			log.append(1, "Simulation Unpaused\n");
 		}
 	}
 	
 	public SpeedDialog getSpeedDialog() {
 		return this.sd;
+	}
+	
+	public long getSimTime()
+	{
+		return sysTimeNum;
 	}
 	
 	public ArrayList<Integer> getTrainIDs() {
@@ -115,8 +136,7 @@ public class Simulator implements Runnable{
 		
 	}
 	
-	public void scheduleTrain(int line) {
-		System.out.println("scheduleTrain called");
+	public void scheduleTrain(String line) {
 		tm.addTrain(line);
 		Set<Integer> trains = tm.getTrainIDS();
 		Integer [] trs = new Integer[trains.size()];

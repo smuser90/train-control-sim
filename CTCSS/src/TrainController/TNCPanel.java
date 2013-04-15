@@ -280,6 +280,10 @@ public class TNCPanel extends JPanel {
 				"Attribute", "Value"
 			}
 		) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 687140540938402494L;
 			boolean[] columnEditables = new boolean[] {
 				false, true
 			};
