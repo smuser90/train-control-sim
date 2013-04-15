@@ -4,10 +4,8 @@ import Log.Log;
 
 public class Login {
 	
-	
-	
 	public static boolean login(String username, String password) {
-		Log.Instance().append(1, "Logged in as Optimus\n");
+		Log.Instance().append(1, "Logged in as " + username + "\n");
 		return true;
 	}
 	

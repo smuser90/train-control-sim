@@ -21,6 +21,7 @@ public class Track {
 	public boolean getLineFile(File f)
 	{
 		Log.Instance().append(1, "Track File: " + f.getName() + " selected\n");
+		boolean goodLine = true;
 		try
 		{
 			Line cLine = new Line();
@@ -30,7 +31,6 @@ public class Track {
             int index = 0;
             int numBlocks = 0;
             int curBlock = -1;
-            boolean goodLine = true;
             while ((line = br.readLine()) != null) {
             	if (index == 0)
             	{
@@ -69,7 +69,7 @@ public class Track {
 			} catch (IOException q)
 			{return false;}
 		
-		return true;
+		return goodLine;
 	}
 	
 	private boolean checkLineName(String lName) {

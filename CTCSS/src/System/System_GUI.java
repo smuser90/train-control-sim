@@ -48,6 +48,7 @@ public class System_GUI {
 	private JMenuItem mntmPause;
 	private JMenu mnSimulation;
 	
+	private System_GUI sys;
 	static void renderSplashFrame(int frame) {
         final String[] comps = {"Log", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Simulator"};
         g.setComposite(AlphaComposite.Clear);
@@ -97,7 +98,7 @@ public class System_GUI {
 		log.append(0, "Log Loaded\n");
 		log.append(0, "Look and Feel set to " + UIManager.getLookAndFeel().getName() + "\n");
 		updateSplash(1);
-		ctc = new CTCModule(sim);
+		ctc = new CTCModule();
 		log.append(0, "CTC Module Loaded\n");
 		updateSplash(2);
 		trm = new TrackModelModule();
@@ -114,7 +115,7 @@ public class System_GUI {
 		log.append(0,  "Train Controller Module Loaded\n");
 		updateSplash(6);
 		sim = new Simulator(ctc, trc, tm, trm);
-		ctc.sim = sim;
+		ctc.setSimulator(sim);
 		log.append(0, "Simulator Started\n");
 		for(int i = 0; i < 5; i++)
 			updateSplash(7);
@@ -161,6 +162,7 @@ public class System_GUI {
 	 */
 	public System_GUI() {
 		initialize();
+		sys = this;
 	}
 
 	/**
@@ -223,7 +225,7 @@ public class System_GUI {
 		mntmLogin = new JMenuItem("Login");
 		mntmLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				login();
+				new LoginDialog(sys);
 			}
 		});
 		mnFile.add(mntmLogin);
@@ -286,18 +288,22 @@ public class System_GUI {
 	
 	// Simply to show functionality for now will be fleshed out more later
 	private void login() {
-		if(Login.login(null, null)) {
+		if(loggedIn) {
 			frmCtcss.getContentPane().add(panel_1);
 			frmCtcss.getContentPane().add(tabbedPane);
 			mnFile.remove(0);
 			mnFile.insert(mntmLogout, 0);
 			frmCtcss.repaint();
-			loggedIn = true;
 			mnSimulation.setEnabled(true);
 		}
 		else {
 			log.append(3, "Login failed\n");
 		}
+	}
+	
+	protected void setLoggedIn(boolean val) {
+		loggedIn = val;
+		login();
 	}
 	
 	// Simply to show functionality for now will be fleshed out more later

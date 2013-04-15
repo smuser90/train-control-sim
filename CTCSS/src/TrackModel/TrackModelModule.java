@@ -24,7 +24,8 @@ public class TrackModelModule {
 	public void getLineFile(File f)
 	{
 		hasTrack = tr.getLineFile(f);
-		addLine(tr.getNewLine());
+		if(hasTrack)
+			addLine(tr.getNewLine());
 	}
 	
 	public boolean hasTrack() {

@@ -150,10 +150,15 @@ public class CTCPanel extends JPanel {
 	}
 	
 	protected void update() {
+		int tempPos = lineBox.getSelectedIndex();
+		reset();
+		lineBox.setSelectedIndex(tempPos);
 		if(lineBox.getSelectedItem().equals("Lines")) {
-			reset();
-		} else if(lineBox.getSelectedItem().equals("Green")) {
-			ArrayList<Block> t = _ctc.getGreenLine();
+			return;
+		} else {
+			ArrayList<Block> t = _ctc.getLine((String) lineBox.getSelectedItem());
+			if(t == null)
+				return;
 			ArrayList<String> t2 = new ArrayList<String>();
 			ArrayList<String> t3 = new ArrayList<String>();
 			ArrayList<Integer> t4 = _ctc.getGLTrains();

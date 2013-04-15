@@ -9,6 +9,7 @@ import CTC.CTCModule;
 import Log.Log;
 import TrackController.TrackControllerModule;
 import TrackModel.Block;
+import TrackModel.Line;
 import TrackModel.TrackModelModule;
 import TrainModel.TrainModelModule;
 
@@ -28,6 +29,7 @@ public class Simulator implements Runnable{
 	private TrackModelModule trm;
 	private SpeedDialog sd;
 	private ArrayList<Block> myBlocks;
+	private Line newLine;
 	
 	public void run() {
 		try {
@@ -37,8 +39,8 @@ public class Simulator implements Runnable{
 				sysTime.setTime(sysTimeNum);
 				loadLogTime();
 				if(trm.hasTrack()) {
+					newLine = trm.gotTrack();
 					this.loadGTrack();
-					trm.gotTrack();
 				}
 			} else {
 				Thread.sleep(1000);
@@ -145,6 +147,7 @@ public class Simulator implements Runnable{
 	public void loadGTrack() {
 		//tcm.getTrack(myBlocks);
 		//ctc.setGLine(myBlocks);
+		ctc.addLine(newLine);
 		log.append(1, "Track Loaded\n");
 	}
 }

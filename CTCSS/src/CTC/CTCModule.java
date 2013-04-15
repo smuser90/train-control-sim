@@ -5,26 +5,32 @@ import java.util.ArrayList;
 import Log.Log;
 import Simulator.Simulator;
 import TrackModel.Block;
+import TrackModel.Line;
 
 public class CTCModule {
 	// Fields
 	private CTCPanel gui;
-	public Simulator sim;
+	private Simulator sim = null;
 	private ArrayList<Block> greenLine = null;
 	private ArrayList<Integer> gTrainIDs = null;
-	private ArrayList<String> lines = null;
+	private ArrayList<String> lineNames = null;
+	private ArrayList<Line> lines = null;
 	private Log log = Log.Instance();
 	
-	public CTCModule(Simulator s) {
+	public CTCModule() {
 		gui = new CTCPanel(this);
-		sim = s;
-		lines = new ArrayList<String>();
-		lines.add("Lines");
+		lineNames = new ArrayList<String>();
+		lineNames.add("Lines");
 		gTrainIDs = new ArrayList<Integer>();
+		lines = new ArrayList<Line>();
 	}
 		
 	public CTCPanel getPanel() {
 		return this.gui;
+	}
+	
+	public void setSimulator(Simulator s) {
+		sim = s;
 	}
 	
 	protected void scheduleTrain(int line) {
@@ -41,18 +47,32 @@ public class CTCModule {
 	
 	public void setGLine(ArrayList<Block> gLine) {
 		greenLine = gLine;
-		if(!lines.contains("Green")) {
-			lines.add("Green");
+		if(!lineNames.contains("Green")) {
+			lineNames.add("Green");
 		}
 		gui.update();
 	}
 	
 	protected ArrayList<String> getLines() {
-		return lines;
+		return lineNames;
 	}
 	
 	protected ArrayList<Block> getGreenLine() {
 		return greenLine;
+	}
+	
+	public void addLine(Line line) {
+		lineNames.add(line.getName());
+		lines.add(line);
+		gui.update();
+	}
+	
+	protected ArrayList<Block> getLine(String lName) {
+		for(Line l : lines) {
+			if(l.getName().equals(lName))
+				return l.getBlocks();
+		}
+		return null;
 	}
 	
 	public void setGLTrains(ArrayList<Integer> tids) {
