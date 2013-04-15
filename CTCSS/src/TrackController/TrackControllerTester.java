@@ -25,6 +25,7 @@ public class TrackControllerTester {
 		trc = new TrackControllerModule();
 		myBlocks = new ArrayList<Block>();
 		
+		/*
 		for (int blockCount = 0; blockCount < 5; blockCount++) {
 			Block blk = new Block(blockCount);
 			//blk.setBlockNumber(blockCount);
@@ -34,6 +35,7 @@ public class TrackControllerTester {
 				blk.setType(2);
 			myBlocks.add(blk);
 		}
+		*/
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

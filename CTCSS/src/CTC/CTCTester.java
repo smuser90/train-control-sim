@@ -26,6 +26,7 @@ public class CTCTester {
 		ctc = new CTCModule();
 		myBlocks = new ArrayList<Block>();
 		tids = new ArrayList<Integer>();
+		/*
 		for (int blockCount = 0; blockCount < 5; blockCount++) {
 			Block blk = new Block(blockCount);
 			//blk.setBlockNumber(blockCount);
@@ -36,7 +37,7 @@ public class CTCTester {
 			if(blockCount == 4)
 				blk.setType(3);
 			myBlocks.add(blk);
-		}
+		}*/
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

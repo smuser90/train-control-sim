@@ -51,17 +51,12 @@ public class TrainModelModule
 		return m_trainList.keySet();
 	}
 	
-	public void addTrain(int line)
+	public void addTrain(String line)
 	{
-		System.out.println("addTrain called");
 		TrainModel train = new TrainModel(m_trainID, line, m_tcModule.getTrainController(), this);
 		train.setTrainController();
 		m_trainList.put( new Integer(m_trainID), train);
 		m_trainID++;
-		if(line == 0)
-			log.append(0, "Train Added on Green Line\n");
-		else
-			log.append(0,  "Train Added on Red Line\n");
 		m_gui.populateBox();
 	}
 	

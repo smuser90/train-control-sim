@@ -4,7 +4,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
 import javax.swing.JTextPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
@@ -12,6 +15,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -30,6 +34,7 @@ public class TMPanel extends JPanel
 
 	private TrainModelModule 	m_tm;
 	private boolean 			locked = true;
+	private JTable				table;
 	private JComboBox 			comboBox;
 	private JScrollPane scrollPane;
 	private JTextPane logPane;
@@ -51,6 +56,7 @@ public class TMPanel extends JPanel
 	private JButton doors;
 	private JButton passengers;
 	private JButton mass;
+	private int trainSelected = 0;
 	
 	public TMPanel(TrainModelModule tm)
 	{
@@ -59,8 +65,47 @@ public class TMPanel extends JPanel
 		setLayout(null);
 		setBounds(100, 100, 650, 350);
 		
+		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setForeground(Color.WHITE);
+		table.setColumnSelectionAllowed(true);
+		table.setCellSelectionEnabled(true);
+		table.setBackground(Color.DARK_GRAY);
+		
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{"Block", "N/A"},
+				{"Position", "N/A"},
+				{"Speed Limit", "N/A"},
+				{"Setpoint", "N/A"},
+				{"Velocity", "N/A"},
+				{"Acceleration","N/A"},
+				{"Authority","N/A"},
+				{"Grade","N/A"},
+				{"Doors","N/A"},
+				{"Lights","N/A"},
+				{"Passengers","0"},
+				{"Crew","0"},
+			},
+			new String[] {
+				"Attribute", "Value"
+			}
+		) 
+		{
+			private static final long serialVersionUID = 687140540938402495L;
+			boolean[] columnEditables = new boolean[] {
+				false, true
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table.getColumnModel().getColumn(0).setPreferredWidth(180);
+		table.setBounds(282, 50, 360, 192);
+		add(table);
+		
 		comboBox = new JComboBox();
-		comboBox.setBounds(6, 6, 638, 20);	
+		comboBox.setBounds(5, 5, 640, 30);	
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Trains"}));
 		comboBox.addActionListener(new ActionListener()
 		{
@@ -72,7 +117,7 @@ public class TMPanel extends JPanel
 		add(comboBox);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(16, 38, 239, 284);
+		scrollPane.setBounds(10, 50, 239, 284);
 		add(scrollPane);
 		
 		logPane = new JTextPane();
@@ -82,6 +127,8 @@ public class TMPanel extends JPanel
 			public void adjustmentValueChanged(AdjustmentEvent e){
 				if(locked)
 					e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+				else
+					e.getAdjustable().setValue(e.getValue());
 		}	});
 		btnEngineFailure = new JButton("Engine Failure");
 		btnEngineFailure.setBounds(282, 38, 117, 29);
@@ -90,7 +137,7 @@ public class TMPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+				
 			}
 		});
 		add(btnEngineFailure);
@@ -106,7 +153,7 @@ public class TMPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+				
 				
 			}
 		});
@@ -124,6 +171,8 @@ public class TMPanel extends JPanel
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+				TrainModel train = trainList.get(new Integer(trainSelected));
+				train.toggleBrakeFailure();
 				
 			}
 		});
@@ -140,7 +189,7 @@ public class TMPanel extends JPanel
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+				
 				
 			}
 		});
@@ -218,6 +267,7 @@ public class TMPanel extends JPanel
 			reset();
 		else
 		{
+			/*
 			position.setVisible(true);
 			velocity.setVisible(true);
 			setpoint.setVisible(true);
@@ -236,11 +286,13 @@ public class TMPanel extends JPanel
 			btnSignalFailure.setVisible(true);
 			btnBrakeFailure.setVisible(true);
 			btnEmergencyBrake.setVisible(true);
+			*/
 			logPane.setVisible(true);
 			scrollPane.setVisible(true);
 			int trainID = Integer.parseInt(comboBox.getSelectedItem().toString());
+			trainSelected = trainID;
 			TrainModel train = trainList.get(new Integer(trainID));
-			String log = train.getLog();
+			String log = train.getLog().toString();
 			position.setText("Position: "+train.getPosition());
 			velocity.setText("Velocity: "+train.getVelocity());
 			setpoint.setText("Setpoint: "+train.getSetpointSpeed());

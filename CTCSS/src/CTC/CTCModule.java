@@ -33,15 +33,10 @@ public class CTCModule {
 		sim = s;
 	}
 	
-	protected void scheduleTrain(int line) {
+	protected void scheduleTrain(String line) {
 		if(sim != null) {
-			if(line == 0) {
-				sim.scheduleTrain(line);
-				log.append(0, "Train added to Green Line\n");
-			} else {
-				sim.scheduleTrain(line);
-				log.append(0, "Train added to Red Line\n");
-			}
+			sim.scheduleTrain(line);
+			log.append(0, "Train added to " + line + " Line\n");
 		}
 	}
 	

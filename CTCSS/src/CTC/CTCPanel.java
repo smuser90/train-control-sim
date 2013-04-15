@@ -209,9 +209,9 @@ public class CTCPanel extends JPanel {
 		if(!trainActionsBox.getSelectedItem().equals("Train Actions")) {
 			if(trainActionsBox.getSelectedItem().equals("Schedule Train")) {
 				if(lineBox.getSelectedItem().equals("Green"))
-					_ctc.scheduleTrain(0);
+					_ctc.scheduleTrain("Green");
 				else
-					_ctc.scheduleTrain(1);
+					_ctc.scheduleTrain("Test");
 			} else {
 				log.append(3, "Not Yet Supported\n");
 			}

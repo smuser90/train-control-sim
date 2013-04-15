@@ -206,7 +206,6 @@ public class System_GUI {
 		
 		// Track Model
 		JPanel panel_2 = trm.getPanel();
-		panel_2.setBackground(Color.WHITE);
 		tabbedPane.addTab("Track Model", null, panel_2, null);
 		panel_2.setLayout(null);
 		
@@ -216,12 +215,10 @@ public class System_GUI {
 		
 		// Train Model
 		JPanel panel_4 = tm.getPanel();
-		panel_4.setBackground(Color.WHITE);
 		tabbedPane.addTab("Train Model", null, panel_4, null);
 		
 		// Train Controller
 		JPanel panel_5 = tnc.getPanel();
-		panel_5.setBackground(Color.WHITE);
 		tabbedPane.addTab("Train Controller", null, panel_5, null);
 		
 		// CTC

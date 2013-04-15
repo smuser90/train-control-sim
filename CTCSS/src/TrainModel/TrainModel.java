@@ -18,12 +18,12 @@ public class TrainModel
 	//MEMBER VARIABLES
 	private static TrainModelModule	m_parent;
 	
-	private String 				m_log;
+	private StringBuilder 		m_log;
 	private TrainController		m_trainController;
 	private ArrayList<Block>	m_routeInfo;
 	private int					m_blockIndex;
 	private int 				m_trainID;
-	private int					m_line;
+	private String				m_line;
 	private double 				m_length;
 	private double 				m_height;
 	private double 				m_width;
@@ -37,7 +37,7 @@ public class TrainModel
 	private int 				m_authority;
 	private int 				m_authorityRemaining;
 	private int 				m_temperature;
-	private int 				m_brake;
+	private boolean 			m_brake;
 	private int 				m_powerLimit;
 	private int					m_speedLimit;
 	private double				m_grade;
@@ -59,7 +59,7 @@ public class TrainModel
 	
 	
 	
-	public TrainModel(int ID, int line, TrainController tc, TrainModelModule tm)
+	public TrainModel(int ID, String line, TrainController tc, TrainModelModule tm)
 	{
 		m_parent = tm;
 		m_trainController = tc;
@@ -80,8 +80,8 @@ public class TrainModel
 		m_brakeFailure = false;
 		m_lights = false;
 		m_doors = false;
-		m_power = 10.0;
-		m_velocity = 1.0;
+		m_power = 100.0;
+		m_velocity = 0.0;
 		m_position = 0.0;
 		m_passengersMax = 222;
 		m_eBrakeDecel = -2.73;
@@ -89,7 +89,7 @@ public class TrainModel
 		m_accelMax = 1.0;
 		m_accel = 0.0;
 		m_grade = 0.0;
-		m_log = new String();
+		m_log = new StringBuilder();
 	}
 	
 	public TrainModel(ArrayList<ArrayList> attributes, TrainController tc )
@@ -107,20 +107,37 @@ public class TrainModel
 	
 	public void tick(double timeLapse)
 	{
-		if(m_velocity == 0.0) 
-			m_velocity = 0.00001;
+		double force = 0;
+		if(m_velocity < 0.00001) 
+			force = m_power*1000 / .01;
+		else
+			force = m_power*1000 / m_velocity;
+		/*
+		System.out.println("Force: "+force);
+		System.out.println("timeStep: "+timeLapse);
+		System.out.println("AccelBefore: "+m_accel);
+		*/
+		m_accel = (force / m_mass);
 		
-		m_accel = ((m_power / m_velocity) / m_mass);
+		//System.out.println("AccelAfter: "+m_accel);
+		//System.out.println("VelocityBefore: "+m_velocity);
 		
-		//if(m_velocity < m_velocityMax) 			
 		m_velocity = m_velocity + m_accel * timeLapse;
+		
+		//System.out.println("VelocityAfter: "+m_velocity);
+		//System.out.println("PositionBefore: "+m_position);
 		
 		m_position = m_position + m_velocity * timeLapse;
 		
-		String time = "" + m_parent.getSimTime();
-		m_log = m_log  +  time.substring(time.length()-6, time.length()) + ":\t" + "Position: "+m_position + "\n";
+		//System.out.println("PositionAfter: "+m_position);
+		//String time = "" + m_parent.getSimTime();
+		//String position = ""+m_position;
+		//String velocity = ""+m_velocity;
+		/*
+		m_log = m_log  +  time.substring(time.length()-6, time.length()) + ":\t" + "Position: "+position.substring(0,4) + "\n";
 		time = "" + m_parent.getSimTime();
-		m_log = m_log  +  time.substring(time.length()-6, time.length()) + ":\t" + "Velocity: "+m_velocity + "\n";
+		m_log = m_log  +  time.substring(time.length()-6, time.length()) + ":\t" + "Velocity: "+velocity.substring(0,4) + "\n";
+		*/
 		m_trainController.tick();
 	}
 	
@@ -193,6 +210,7 @@ public class TrainModel
 	public void setPassengers(int passengers)
 	{
 		m_passengers = passengers;
+		m_log.append("Passengers Updated To "+passengers+"\n");
 	}
 	
 	public int getAuthority()
@@ -203,6 +221,7 @@ public class TrainModel
 	public void setAuthority(int authority)
 	{
 		m_authority = authority;
+		m_log.append("Authority Updated To "+authority+"\n");
 	}
 	
 	public int getTemperature()
@@ -215,12 +234,12 @@ public class TrainModel
 		m_temperature = temperature;
 	}
 	
-	public int getBrake()
+	public boolean getBrake()
 	{
 		return m_brake;
 	}
 	
-	public void setBrake(int brake)
+	public void setBrake(boolean brake)
 	{
 		m_brake = brake;
 	}
@@ -230,24 +249,24 @@ public class TrainModel
 		return m_emergencyBrake;
 	}
 	
-	public void toggleEmergencyBrake(boolean emergencyBrake)
+	public void toggleEmergencyBrake()
 	{
-		m_emergencyBrake = emergencyBrake;
+		m_emergencyBrake = !m_emergencyBrake;
 	}
 	
-	public void toggleEngineFailure(boolean engineFailure)
+	public void toggleEngineFailure()
 	{
-		m_engineFailure = engineFailure;
+		m_engineFailure = !m_engineFailure;
 	}
 	
-	public void toggleSignalFailure(boolean signalFailure)
+	public void toggleSignalFailure()
 	{
-		m_signalFailure = signalFailure;
+		m_signalFailure = !m_signalFailure;
 	}
 	
-	public void setBrakeFailure(boolean brakeFailure)
+	public void toggleBrakeFailure()
 	{
-		m_brakeFailure = brakeFailure;
+		m_brakeFailure = !m_brakeFailure;
 	}
 	
 	public boolean getLights()
@@ -258,6 +277,10 @@ public class TrainModel
 	public void setLights(boolean lights)
 	{
 		m_lights = lights;
+		if(lights)
+			m_log.append("Lights Turned On \n");
+		else
+			m_log.append("Lights Turned Off \n");
 	}
 	
 	public boolean getDoors()
@@ -315,7 +338,7 @@ public class TrainModel
 		return m_grade;
 	}
 	
-	public String getLog()
+	public StringBuilder getLog()
 	{
 		return m_log;
 	}

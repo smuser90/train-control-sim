@@ -40,12 +40,17 @@ public class Simulator implements Runnable{
 				sysTimeNum += realTime;
 				sysTime.setTime(sysTimeNum);
 				loadLogTime();
+				
+				/*
 				if(trains < trainsMax)
 				{
 					tm.addTrain(0);
 					trains++;
 				}
-				tm.tick(timeStep/1000);
+				*/
+				
+				tm.tick(realTime/1000.0);
+				
 				if(trm.hasTrack()) {
 					newLine = trm.gotTrack();
 					this.loadGTrack();
@@ -131,8 +136,7 @@ public class Simulator implements Runnable{
 		
 	}
 	
-	public void scheduleTrain(int line) {
-		System.out.println("scheduleTrain called");
+	public void scheduleTrain(String line) {
 		tm.addTrain(line);
 		Set<Integer> trains = tm.getTrainIDS();
 		Integer [] trs = new Integer[trains.size()];
