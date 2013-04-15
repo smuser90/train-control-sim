@@ -53,7 +53,7 @@ public class Simulator implements Runnable{
 	}
 	
 	public Simulator(CTCModule c, TrackControllerModule TcM, TrainModelModule TM, TrackModelModule Tmm) {
-		myBlocks = new ArrayList<Block>();
+		/*myBlocks = new ArrayList<Block>();
 		for (int blockCount = 0; blockCount < 5; blockCount++) {
 			Block blk = new Block(blockCount);
 			//blk.setBlockNumber(blockCount);
@@ -64,7 +64,7 @@ public class Simulator implements Runnable{
 			if(blockCount == 4)
 				blk.setType(3);
 			myBlocks.add(blk);
-		}
+		}*/
 		ctc = c;
 		tcm = TcM;
 		tm = TM;
