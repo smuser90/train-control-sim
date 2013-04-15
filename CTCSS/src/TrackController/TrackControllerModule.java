@@ -1,6 +1,7 @@
 package TrackController;
 
 import TrackModel.Block;
+import TrackModel.Line;
 /*************************************
  * For block.type
  * 0 regular
@@ -36,8 +37,8 @@ public class TrackControllerModule {
 	}
 	/************************************************************************************************
 	 CALL THIS TO WAKE ME UP************************************************************************/
-	public void getTrack(ArrayList<Block> track){
-		myBlocks = track;
+	public void getTrack(Line track){
+		myBlocks = track.getBlocks();
 		for (int listCount = 0; listCount < myBlocks.size(); listCount++) {
 			if (myBlocks.get(listCount).getType() == 1) {
 				switchList.add(listCount);
@@ -48,6 +49,7 @@ public class TrackControllerModule {
 			if (myBlocks.get(listCount).getType() == 2)
 				crossingList.add(listCount);
 		}
+		trackControllerList = TCListMaker.makeTCList(track);
 		// Set some of the blocks as switches *TESTING*
 //		myBlocks.get(8).isSwitch = true;
 //		myBlocks.get(17).isSwitch = true;
@@ -78,56 +80,56 @@ public class TrackControllerModule {
 		//TrackControllerPanel.test3();
 		// Here we go through and create all the track controllers and assign
 		// them their blocks
-		if (switchList.size() != 0) {
-			for (index = 0; index < switchList.size(); index++) {
-				TrackController tc = new TrackController(index + 1, 0, 0, 0);
-
-				if (index == 0 && index != switchList.size() - 1) {
-					upperLimit = switchList.get(switchList.size() - 1);
-					lowerLimit = (switchList.get((index + 1)));
-					//lowerLimit = (switchList.get((index)));
-					for (count = 0; count < lowerLimit; count++) {
-						tc.blocksControlled.add(count);
-					}
-
-					//for (count = upperLimit + 1; count < 101; count++) {
-					//	tc.blocksControlled.add(count);
-					//}
-				}
-
-				else if (index == switchList.size() - 1) {
-					lowerLimit = switchList.get(0);
-					//upperLimit = switchList.get(index - 1);
-					upperLimit = switchList.get(index);
-
-					for (count = 0; count < lowerLimit + 1; count++) {
-						tc.blocksControlled.add(count);
-					}
-
-					for (count = upperLimit + 1; count < myBlocks.size(); count++) {
-						tc.blocksControlled.add(count);
-					}
-				}
-
-				else {
-					upperLimit = switchList.get(index + 1);
-					lowerLimit = switchList.get(index - 1);
-					for (count = lowerLimit + 1; count < upperLimit; count++)
-						tc.blocksControlled.add(count);
-				}
-				tc.setNumBlocks(tc.blocksControlled.size());
-				trackControllerList.add(tc);
-			}
-		}
-		else{
-			TrackController tc = new TrackController(1, 0, 0, 0);
-			for(count = 0; count < myBlocks.size(); count++){
-				tc.blocksControlled.add(count);
-				//tc.blocksControlled.add(count + 1);
-			}
-			tc.setNumBlocks(tc.blocksControlled.size());
-			trackControllerList.add(tc);
-		}
+//		if (switchList.size() != 0) {
+//			for (index = 0; index < switchList.size(); index++) {
+//				TrackController tc = new TrackController(index + 1, 0, 0, 0);
+//
+//				if (index == 0 && index != switchList.size() - 1) {
+//					upperLimit = switchList.get(switchList.size() - 1);
+//					lowerLimit = (switchList.get((index + 1)));
+//					//lowerLimit = (switchList.get((index)));
+//					for (count = 0; count < lowerLimit; count++) {
+//						tc.blocksControlled.add(count);
+//					}
+//
+//					//for (count = upperLimit + 1; count < 101; count++) {
+//					//	tc.blocksControlled.add(count);
+//					//}
+//				}
+//
+//				else if (index == switchList.size() - 1) {
+//					lowerLimit = switchList.get(0);
+//					//upperLimit = switchList.get(index - 1);
+//					upperLimit = switchList.get(index);
+//
+//					for (count = 0; count < lowerLimit + 1; count++) {
+//						tc.blocksControlled.add(count);
+//					}
+//
+//					for (count = upperLimit + 1; count < myBlocks.size(); count++) {
+//						tc.blocksControlled.add(count);
+//					}
+//				}
+//
+//				else {
+//					upperLimit = switchList.get(index + 1);
+//					lowerLimit = switchList.get(index - 1);
+//					for (count = lowerLimit + 1; count < upperLimit; count++)
+//						tc.blocksControlled.add(count);
+//				}
+//				tc.setNumBlocks(tc.blocksControlled.size());
+//				trackControllerList.add(tc);
+//			}
+//		}
+//		else{
+//			TrackController tc = new TrackController(1, 0, 0, 0);
+//			for(count = 0; count < myBlocks.size(); count++){
+//				tc.blocksControlled.add(count);
+//				//tc.blocksControlled.add(count + 1);
+//			}
+//			tc.setNumBlocks(tc.blocksControlled.size());
+//			trackControllerList.add(tc);
+//		}
 		hasTrack = true;
 		PLC.setup(myBlocks, crossingList);
 		currentPanel.displayChange();
