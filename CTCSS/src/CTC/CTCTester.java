@@ -26,7 +26,7 @@ public class CTCTester {
 		ctc = new CTCModule();
 		myBlocks = new ArrayList<Block>();
 		tids = new ArrayList<Integer>();
-		for (int blockCount = 0; blockCount < 5; blockCount++) {
+		/*for (int blockCount = 0; blockCount < 5; blockCount++) {
 			Block blk = new Block(blockCount);
 			//blk.setBlockNumber(blockCount);
 			if(blockCount == 1)
@@ -36,7 +36,7 @@ public class CTCTester {
 			if(blockCount == 4)
 				blk.setType(3);
 			myBlocks.add(blk);
-		}
+		}*/
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -72,7 +72,7 @@ public class CTCTester {
 		JButton btnGetTrack = new JButton("Get Track");
 		btnGetTrack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ctc.setGLine(myBlocks);
+				//ctc.setGLine(myBlocks);
 			}
 		});
 		btnGetTrack.setBounds(10, 473, 89, 23);
