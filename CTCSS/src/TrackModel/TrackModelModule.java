@@ -31,8 +31,9 @@ public class TrackModelModule {
 		return hasTrack;
 	}
 	
-	public void gotTrack() {
+	public Line gotTrack() {
 		hasTrack = false;
+		return tr.getNewLine();
 	}
 	
 	private void addLine(Line l) {
