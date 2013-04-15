@@ -3,18 +3,23 @@ package TrackModel;
 public class Block{
 	private int length; // length of this block
 	private int number; // the ID of the block
-	private int trainID; // the ID of the train on this block
+	private int trainID = 0; // the ID of the train on this block
 	private double grade; // the grade of this block
 	private int speedLimit; // speed limit on this block
-	private boolean occupied; // if there is a train on the block or not
-	private boolean open; // if the block is open or not
-	private boolean failure; // if this section fails
+	private boolean occupied = false; // if there is a train on the block or not
+	private boolean open = true; // if the block is open or not
+	private boolean failure = false; // if this block fails
 	private int type; // the type of this block, remember to check that it is either 0, 1, 2, or 3
-	private int size; // block size
-	private boolean crossingUp; // if true, the crossing is up, if false then they're down
-	// to implement switching, I will just switch these two integers
-	private int nextBlock; // what is the next block in the line ???  need this?
-	private int nextAltBlock; // what is the alt block ???,  need this?
+	private String section;
+	private boolean crossingUp = true; // if true, the crossing is up, if false then they're down
+	/*
+	 * in text file:
+	 * bID nextB bType bLength bGrade bSpLim bSection
+	 */
+	
+	// how are we gonna implement switching???
+	
+	
 	/*
 	 * remember, blocks with ID 0 are yard blocks
 	 * 0 - regular
@@ -27,46 +32,38 @@ public class Block{
 	
 	
 	// prototype: only int block number
-	
+	/*
 	public Block(int blockNum)
 	{
 		this.number = blockNum;
 		crossingUp = false;
 	}	
-	
+	*/
 	
 	
 	
 	// final: all this shit
 	
-	/*
-	public Block(int len, double gr, int bID, int spLim, int t, int s)
+	
+	public Block(int len, double gr, int bID, int spLim, int ty, String sec)
 	{
+		this.number = bID;
+		this.type = ty;
 		this.length = len;
-		this.grade = gr;
-		this.failure = false;
-		this.number = bID;  
-		this.occupied = false;
-		this.open = true;
-		this.speedLimit = spLim; 
-		this.trainID = 0 ;
-		this.type = t;
-		this.size = s;
+		this.grade = gr;		
+		this.speedLimit = spLim;
+		this.section = sec;
 	}
-	*/
+	
 	
 	// add getType, getBlockNumber, getFailure, setType, getOccupied, setCrossingActive, getCrossingActive
 	// prototype methods
-
-	public void setSize(int t)
+	
+	public int getLength()
 	{
-		this.size = t;
+		return this.length;
 	}
 	
-	public int getSize()
-	{
-		return this.size;
-	}
 	public int getBlockNumber()
 	{
 		return this.number;
@@ -80,11 +77,6 @@ public class Block{
 	public void setFailure(boolean v)
 	{
 		this.failure = v;
-	}
-	
-	public void setType(int t)
-	{
-		this.type = t;
 	}
 	
 	public int getType()

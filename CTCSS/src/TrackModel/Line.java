@@ -21,7 +21,6 @@ public class Line {
 		this.E = 0;
 		trackAdjList = new ArrayList<ArrayList<Integer>>();
 		blockList = new ArrayList<Block>();
-		
 		for (int i = 0; i < numBlocks; i ++)
 		{
 			trackAdjList.add(new ArrayList<Integer>()); // init all of the lists of blocks that each block references
@@ -38,11 +37,10 @@ public class Line {
 		trackAdjList.get(v).add(w);
 	}
 	
-	public void addBlock(int bID, int type, int size)
+	public void addBlock(int bID, int type, int len, double grade, int speedLimit, String sect)
 	{
-		Block t = new Block(bID);
-		t.setType(type);
-		t.setSize(size);
+		// Block(int len, double gr, int bID, int spLim, int ty, String sec)
+		Block t = new Block(len, grade, bID, speedLimit, type, sect);
 		this.blockList.add(t);
 		
 	}
