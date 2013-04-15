@@ -11,7 +11,7 @@ public class Block{
 	private boolean failure; // if this section fails
 	private int type; // the type of this block, remember to check that it is either 0, 1, 2, or 3
 	private int size; // block size
-	private boolean crossingUp;
+	private boolean crossingUp; // if true, the crossing is up, if false then they're down
 	// to implement switching, I will just switch these two integers
 	private int nextBlock; // what is the next block in the line ???  need this?
 	private int nextAltBlock; // what is the alt block ???,  need this?
@@ -27,6 +27,7 @@ public class Block{
 	
 	
 	// prototype: only int block number
+	
 	public Block(int blockNum)
 	{
 		this.number = blockNum;
@@ -36,8 +37,10 @@ public class Block{
 	
 	
 	
-	/* final: all this other shit
-	public Block(int len, double gr, int bID, int spLim, int t)
+	// final: all this shit
+	
+	/*
+	public Block(int len, double gr, int bID, int spLim, int t, int s)
 	{
 		this.length = len;
 		this.grade = gr;
@@ -48,6 +51,7 @@ public class Block{
 		this.speedLimit = spLim; 
 		this.trainID = 0 ;
 		this.type = t;
+		this.size = s;
 	}
 	*/
 	

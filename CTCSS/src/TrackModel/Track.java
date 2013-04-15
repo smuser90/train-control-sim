@@ -30,12 +30,21 @@ public class Track {
             int index = 0;
             int numBlocks = 0;
             int curBlock = -1;
+            boolean goodLine = true;
             while ((line = br.readLine()) != null) {
             	if (index == 0)
             	{
             		lineName = line; // get name of the line from the file
-            		cLine = new Line(Integer.parseInt(br.readLine()), lineName);
-            		index++;
+            		// check the name of the line. If it exists GTFO 
+            		if (checkLineName(lineName))
+            		{
+            			cLine = new Line(Integer.parseInt(br.readLine()), lineName);
+                		index++;
+            		} else {
+            			goodLine = false;
+            			Log.Instance().append(3, "Line already exists\n");
+            			break;
+            		}
             	} else {
             		String [] lineItms = line.split(" ");
             		if(curBlock == -1) {
@@ -52,15 +61,29 @@ public class Track {
             	}
             }
             br.close();
-            lines.add(cLine);
-            newLine = cLine;
-            cLine.print();
+            if(goodLine) {
+	            lines.add(cLine);
+	            newLine = cLine;
+	            cLine.print();
+            }
 			} catch (IOException q)
 			{return false;}
 		
 		return true;
 	}
 	
+	private boolean checkLineName(String lName) {
+		// make sure that the track wasn't already loaded
+		for(int i = 0; i < lines.size(); i++)
+		{
+			if(lName.equals(lines.get(i).getName()))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	protected Line getNewLine() {
 		return newLine;
 	}
