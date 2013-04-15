@@ -2,11 +2,23 @@ package TrainModel;
 
 import java.util.ArrayList;
 
+import javax.swing.text.Document;
+
 import TrackModel.Block;
 import TrainController.TrainController;
 
 public class TrainModel 
 {
+	//CONSTANTS
+	private static final double PERSON_WEIGHT = 79.3786647;
+	private static final double GRAVITY = 9.81;
+	private static final double KMH_MS_CONV = 0.277777778;
+	private static final double FRICTION_COEFF = 0.05;
+	
+	//MEMBER VARIABLES
+	private static TrainModelModule	m_parent;
+	
+	private String 				m_log;
 	private TrainController		m_trainController;
 	private ArrayList<Block>	m_routeInfo;
 	private int					m_blockIndex;
@@ -29,7 +41,8 @@ public class TrainModel
 	private int 				m_powerLimit;
 	private int					m_speedLimit;
 	private double				m_grade;
-	private double 				m_accelMin;
+	private double 				m_eBrakeDecel;
+	private double 				m_sBrakeDecel;
 	private double				m_accelMax;
 	private double				m_velocityMax;
 	private double 				m_power;
@@ -46,10 +59,12 @@ public class TrainModel
 	
 	
 	
-	public TrainModel(int ID, int line, TrainController tc)
+	public TrainModel(int ID, int line, TrainController tc, TrainModelModule tm)
 	{
+		m_parent = tm;
 		m_trainController = tc;
 		m_routeInfo = null;
+		m_blockIndex = 0;
 		m_line = line;
 		m_trainID = ID;
 		m_length = 32.2; 
@@ -59,20 +74,30 @@ public class TrainModel
 		m_massEmpty = m_mass;
 		m_massFull = 51437.4;
 		m_powerLimit = 120; 
-		m_velocityMax = 70;
+		m_velocityMax = 70.0;
 		m_engineFailure = false;
 		m_signalFailure = false;
 		m_brakeFailure = false;
 		m_lights = false;
 		m_doors = false;
-		m_power = 0.0;
-		m_velocity = 0.0;
+		m_power = 10.0;
+		m_velocity = 1.0;
 		m_position = 0.0;
 		m_passengersMax = 222;
-		m_accelMin = -2.73;
-		m_accelMax = 0.5;
+		m_eBrakeDecel = -2.73;
+		m_sBrakeDecel = -1.2;
+		m_accelMax = 1.0;
 		m_accel = 0.0;
 		m_grade = 0.0;
+		m_log = new String();
+	}
+	
+	public TrainModel(ArrayList<ArrayList> attributes, TrainController tc )
+	{
+		ArrayList<Double> doublesList = attributes.get(0);
+		ArrayList<Integer> intsList = attributes.get(1);
+		ArrayList<Boolean> boolsList = attributes.get(2);
+		
 	}
 	
 	public void setTrainController()
@@ -86,10 +111,22 @@ public class TrainModel
 			m_velocity = 0.00001;
 		
 		m_accel = ((m_power / m_velocity) / m_mass);
-		m_velocity = m_velocity + m_accel*timeLapse;
-		m_position = m_position + m_velocity*timeLapse;
 		
+		//if(m_velocity < m_velocityMax) 			
+		m_velocity = m_velocity + m_accel * timeLapse;
+		
+		m_position = m_position + m_velocity * timeLapse;
+		
+		String time = "" + m_parent.getSimTime();
+		m_log = m_log  +  time.substring(time.length()-6, time.length()) + ":\t" + "Position: "+m_position + "\n";
+		time = "" + m_parent.getSimTime();
+		m_log = m_log  +  time.substring(time.length()-6, time.length()) + ":\t" + "Velocity: "+m_velocity + "\n";
 		m_trainController.tick();
+	}
+	
+	public void setRouteInfo(ArrayList<Block> routeInfo)
+	{
+		m_routeInfo = routeInfo;
 	}
 	
 	public double getVelocity()
@@ -276,6 +313,11 @@ public class TrainModel
 	public double getGrade()
 	{
 		return m_grade;
+	}
+	
+	public String getLog()
+	{
+		return m_log;
 	}
 }
 
