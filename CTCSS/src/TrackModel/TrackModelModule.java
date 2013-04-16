@@ -40,4 +40,9 @@ public class TrackModelModule {
 	private void addLine(Line l) {
 		gui.addLine(l);
 	}
+	
+	public void closeBlock(int bNum, String lineName)
+	{
+		tr.getLine(lineName).getBlock(bNum).closeBlock();
+	}
 }
