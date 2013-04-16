@@ -69,17 +69,17 @@ public class TrainModel
 		m_length = 32.2; 
 		m_width = 2.65;
 		m_height = 3.42;
-		m_mass = 37103.9;
+		m_mass = 37103000.9;
 		m_massEmpty = m_mass;
-		m_massFull = 51437.4;
-		m_powerLimit = 120; 
+		m_massFull = 51437000.4;
+		m_powerLimit = 120000; 
 		m_velocityMax = 70.0;
 		m_engineFailure = false;
 		m_signalFailure = false;
 		m_brakeFailure = false;
 		m_lights = false;
 		m_doors = false;
-		m_power = 120000.0; //watts
+		m_power = 0.0; //watts
 		m_velocity = 0.0;
 		m_position = 0.0;
 		m_passengersMax = 222;
@@ -382,6 +382,10 @@ public class TrainModel
 		return m_setpointVelocity;
 	}
 	
+	public void setSetpointSpeed(double speed)
+	{
+		m_setpointVelocity = speed;
+	}
 	public double getGrade()
 	{
 		return m_grade;
