@@ -11,7 +11,6 @@ public class CTCModule {
 	// Fields
 	private CTCPanel gui;
 	private Simulator sim = null;
-	private ArrayList<Block> greenLine = null;
 	private ArrayList<Integer> gTrainIDs = null;
 	private ArrayList<String> lineNames = null;
 	private ArrayList<Line> lines = null;
@@ -40,20 +39,8 @@ public class CTCModule {
 		}
 	}
 	
-	public void setGLine(ArrayList<Block> gLine) {
-		greenLine = gLine;
-		if(!lineNames.contains("Green")) {
-			lineNames.add("Green");
-		}
-		gui.update();
-	}
-	
 	protected ArrayList<String> getLines() {
 		return lineNames;
-	}
-	
-	protected ArrayList<Block> getGreenLine() {
-		return greenLine;
 	}
 	
 	public void addLine(Line line) {
