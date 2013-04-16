@@ -16,6 +16,7 @@ public class TrackControllerModule {
 	private TrackControllerPanel currentPanel;
 	private ArrayList<TrackController> trackControllerList;
 	private ArrayList<Block> myBlocks;//new ArrayList<Block>();
+	//private ArrayList<ArrayList<Integer>> switchList;
 	private ArrayList<Integer> switchList;
 	private ArrayList<Integer> trainList;
 	private ArrayList<Integer> crossingList;
@@ -42,8 +43,12 @@ public class TrackControllerModule {
 		for (int listCount = 0; listCount < myBlocks.size(); listCount++) {
 			if (myBlocks.get(listCount).getType() == 1) {
 				switchList.add(listCount);
+<<<<<<< master
 <<<<<<< OURS
 =======
+=======
+				
+>>>>>>> 24fba9b Added TCListMaker for Track Controller and commented errors out of TrackControllerTester to test if build still works
 				//System.out.println("Switch on block: " + listCount);
 >>>>>>> THEIRS
 			}

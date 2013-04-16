@@ -286,6 +286,7 @@ public class TrackControllerPanel extends JPanel {
 		myTrainList = "";
 		for(index = 0; index < numberSwitch.size(); index++)
 		{
+<<<<<<< master
 <<<<<<< OURS
 =======
 			System.out.println("number Switch index " + index + " is " + numberSwitch.get(index));
@@ -294,6 +295,15 @@ public class TrackControllerPanel extends JPanel {
 			if(trackControllerList.get(currentController).blocksControlled.contains(numberSwitch.get(index)))
 			{
 				mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + (numberSwitch.get(index).intValue() + 1) +"\n";
+=======
+			System.out.println("number Switch size " + numberSwitch.size());
+			//System.out.println("is this block controlled " + trackControllerList.get(0).blocksControlled.get(1).getBlockNumber());
+			for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
+				if(trackControllerList.get(currentController).blocksControlled.get(i).getBlockNumber() == numberSwitch.get(index))
+				{
+					mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + (numberSwitch.get(index).intValue() + 1) +"\n";
+				}
+>>>>>>> 24fba9b Added TCListMaker for Track Controller and commented errors out of TrackControllerTester to test if build still works
 			}
 		}
 		//txtrSwitchAtBlock.setText("Here i am "+ numberSwitch.size());
