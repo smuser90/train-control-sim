@@ -146,6 +146,10 @@ public class TrainModel
 		m_routeInfo = routeInfo;
 	}
 	
+	public int getBlock()
+	{
+		return m_blockIndex;
+	}
 	public double getVelocity()
 	{
 		return m_velocity;

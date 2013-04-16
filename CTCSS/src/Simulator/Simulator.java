@@ -41,13 +41,13 @@ public class Simulator implements Runnable{
 				sysTime.setTime(sysTimeNum);
 				loadLogTime();
 				
-				/*
+				
 				if(trains < trainsMax)
 				{
-					tm.addTrain(0);
+					tm.addTrain("Dicks");
 					trains++;
 				}
-				*/
+				
 				
 				tm.tick(realTime/1000.0);
 				

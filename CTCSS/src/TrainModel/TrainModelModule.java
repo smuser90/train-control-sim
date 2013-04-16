@@ -99,6 +99,7 @@ public class TrainModelModule
 			if(tm != null)
 				tm.tick(timeLapse);
 		}
+		
 		m_gui.update();
 	}
 }

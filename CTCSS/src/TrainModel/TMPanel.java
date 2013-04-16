@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -39,23 +40,9 @@ public class TMPanel extends JPanel
 	private JScrollPane scrollPane;
 	private JTextPane logPane;
 	private JButton btnEngineFailure;
-	private JLabel engineStatus;
 	private JButton btnSignalFailure;
-	private JLabel signalStatus;
 	private JButton btnBrakeFailure;
-	private JLabel brakeStatus;
 	private JButton btnEmergencyBrake;
-	private JLabel eBrakeStatus;
-	private JButton position;
-	private JButton velocity;
-	private JButton setpoint;
-	private JButton acceleration;
-	private JButton lights;
-	private JButton grade;
-	private JButton crew;
-	private JButton doors;
-	private JButton passengers;
-	private JButton mass;
 	private int trainSelected = 0;
 	
 	public TMPanel(TrainModelModule tm)
@@ -67,41 +54,48 @@ public class TMPanel extends JPanel
 		
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setForeground(Color.WHITE);
-		table.setColumnSelectionAllowed(true);
-		table.setCellSelectionEnabled(true);
-		table.setBackground(Color.DARK_GRAY);
+		table.setForeground(Color.BLACK);
+		table.setColumnSelectionAllowed(false);
+		table.setCellSelectionEnabled(false);
 		
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"Block", "N/A"},
-				{"Position", "N/A"},
-				{"Speed Limit", "N/A"},
-				{"Setpoint", "N/A"},
-				{"Velocity", "N/A"},
-				{"Acceleration","N/A"},
-				{"Authority","N/A"},
-				{"Grade","N/A"},
-				{"Doors","N/A"},
-				{"Lights","N/A"},
-				{"Passengers","0"},
-				{"Crew","0"},
+				{"Block", ""},
+				{"Position", ""},
+				{"Speed Limit", ""},
+				{"Setpoint", ""},
+				{"Velocity", ""},
+				{"Acceleration",""},
+				{"Authority",""},
+				{"Grade",""},
+				{"Doors",""},
+				{"Lights",""},
+				{"Passengers",""},
+				{"Crew",""},
+				{"Engine",""},
+				{"Signal",""},
+				{"Brake",""},
+				{"eBrake",""}
 			},
 			new String[] {
 				"Attribute", "Value"
-			}
-		) 
+			})
 		{
-			private static final long serialVersionUID = 687140540938402495L;
-			boolean[] columnEditables = new boolean[] {
-				false, true
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
+			private static final long serialVersionUID = -6149142910618364640L;
+
+			public boolean isCellEditable(int row, int column)
+		      {  
+		          return false;  
+		      }
 		});
+		
 		table.getColumnModel().getColumn(0).setPreferredWidth(180);
-		table.setBounds(282, 50, 360, 192);
+		table.setBounds(280, 50, 360, 260);
+		table.setVisible(false);
+		
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment( JLabel.RIGHT );
+		table.getColumnModel().getColumn(1).setCellRenderer( rightRenderer );
 		add(table);
 		
 		comboBox = new JComboBox();
@@ -117,55 +111,44 @@ public class TMPanel extends JPanel
 		add(comboBox);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 50, 239, 284);
+		scrollPane.setBounds(10, 47, 240, 300);
 		add(scrollPane);
 		
 		logPane = new JTextPane();
+		logPane.setEditable(false);
 		scrollPane.setViewportView(logPane);
-		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener()
-		{
-			public void adjustmentValueChanged(AdjustmentEvent e){
-				if(locked)
-					e.getAdjustable().setValue(e.getAdjustable().getMaximum());
-				else
-					e.getAdjustable().setValue(e.getValue());
-		}	});
-		btnEngineFailure = new JButton("Engine Failure");
-		btnEngineFailure.setBounds(282, 38, 117, 29);
-		btnEngineFailure.setEnabled(false);
+		
+		
+		btnEngineFailure = new JButton("Engine");
+		btnEngineFailure.setBounds(278, 315, 80, 25);
 		btnEngineFailure.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				
+				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+				TrainModel train = trainList.get(new Integer(trainSelected));
+				train.toggleEngineFailure();	
+				update();
 			}
 		});
 		add(btnEngineFailure);
 		
-		engineStatus = new JLabel("Status - ");
-		engineStatus.setBounds(292, 63, 61, 16);
-		add(engineStatus);
-		
-		btnSignalFailure = new JButton("Signal Failure");
-		btnSignalFailure.setBounds(394, 38, 117, 29);
-		btnSignalFailure.setEnabled(false);
+		btnSignalFailure = new JButton("Signal");
+		btnSignalFailure.setBounds(370, 315, 80, 25);
 		btnSignalFailure.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				
-				
+				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+				TrainModel train = trainList.get(new Integer(trainSelected));
+				train.toggleSignalFailure();				
+				update();
 			}
 		});
 		add(btnSignalFailure);
 		
-		signalStatus = new JLabel("Status - ");
-		signalStatus.setBounds(404, 63, 61, 16);
-		add(signalStatus);
-		
-		btnBrakeFailure = new JButton("Brake Failure");
-		btnBrakeFailure.setBounds(505, 38, 117, 29);
-		btnBrakeFailure.setEnabled(false);
+		btnBrakeFailure = new JButton("Brake");
+		btnBrakeFailure.setBounds(468, 315, 80, 25);
 		btnBrakeFailure.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
@@ -173,81 +156,25 @@ public class TMPanel extends JPanel
 				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
 				TrainModel train = trainList.get(new Integer(trainSelected));
 				train.toggleBrakeFailure();
-				
+				update();
 			}
 		});
 		add(btnBrakeFailure);
 		
-		brakeStatus = new JLabel("Status - ");
-		brakeStatus.setBounds(515, 63, 61, 16);
-		add(brakeStatus);
-		
-		btnEmergencyBrake = new JButton("Emergency Brake");
-		btnEmergencyBrake.setBounds(452, 90, 142, 29);
-		btnEmergencyBrake.setEnabled(false);
+		btnEmergencyBrake = new JButton("eBrake");
+		btnEmergencyBrake.setBounds(560, 315, 80, 25);
 		btnEmergencyBrake.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				
-				
+				Map<Integer, TrainModel> trainList = m_tm.getTrainList();
+				TrainModel train = trainList.get(new Integer(trainSelected));
+				train.toggleEmergencyBrake();
+				update();
 			}
 		});
 		add(btnEmergencyBrake);
 		
-		eBrakeStatus = new JLabel("Status - ");
-		eBrakeStatus.setBounds(486, 116, 61, 16);
-		add(eBrakeStatus);
-		
-		position = new JButton("Position: ");
-		position.setEnabled(false);
-		position.setBounds(282, 145, 140, 61);
-		add(position);
-		
-		velocity = new JButton("Velocity: ");
-		velocity.setEnabled(false);
-		velocity.setBounds(405, 145, 140, 61);
-		add(velocity);
-		
-		setpoint = new JButton("Setpoint: ");
-		setpoint.setEnabled(false);
-		setpoint.setBounds(527, 145, 117, 61);
-		add(setpoint);
-		
-		doors = new JButton("Doors: ");
-		doors.setEnabled(false);
-		doors.setBounds(527, 202, 117, 61);
-		add(doors);
-		
-		lights = new JButton("Lights: ");
-		lights.setEnabled(false);
-		lights.setBounds(527, 261, 117, 61);
-		add(lights);
-		
-		grade = new JButton("Grade: ");
-		grade.setEnabled(false);
-		grade.setBounds(418, 202, 127, 61);
-		add(grade);
-		
-		crew = new JButton("Crew: ");
-		crew.setEnabled(false);
-		crew.setBounds(404, 261, 127, 61);
-		add(crew);
-		
-		acceleration = new JButton("Accel: ");
-		acceleration.setEnabled(false);
-		acceleration.setBounds(282, 202, 140, 61);
-		add(acceleration);
-		
-		passengers = new JButton("Passengers: ");
-		passengers.setEnabled(false);
-		passengers.setBounds(282, 261, 126, 61);
-		add(passengers);
-		
-		mass = new JButton("Mass: ");
-		mass.setEnabled(false);
-		mass.setBounds(282, 85, 126, 61);
-		add(mass);
 		
 		reset();
 	}
@@ -259,57 +186,69 @@ public class TMPanel extends JPanel
 	
 	public void update()
 	{
-		Set<Integer> keys = m_tm.getTrainIDS();
 		Map<Integer, TrainModel> trainList = m_tm.getTrainList();
-		int numKeys = keys.size();
 		
 		if(comboBox.getSelectedItem().equals("Trains"))
-			reset();
-		else
 		{
-			/*
-			position.setVisible(true);
-			velocity.setVisible(true);
-			setpoint.setVisible(true);
-			acceleration.setVisible(true);
-			lights.setVisible(true);
-			grade.setVisible(true);
-			crew.setVisible(true);
-			doors.setVisible(true);
-			passengers.setVisible(true);
-			mass.setVisible(true);
-			engineStatus.setVisible(true);
-			signalStatus.setVisible(true);
-			brakeStatus.setVisible(true);
-			eBrakeStatus.setVisible(true);
-			btnEngineFailure.setVisible(true);
+			//hide GUI elements
+			reset();
+		}
+		else
+		{		
+			//Show GUI elements
 			btnSignalFailure.setVisible(true);
 			btnBrakeFailure.setVisible(true);
+			btnEngineFailure.setVisible(true);
 			btnEmergencyBrake.setVisible(true);
-			*/
+			table.setVisible(true);
 			logPane.setVisible(true);
 			scrollPane.setVisible(true);
+			
+			//Get Train
 			int trainID = Integer.parseInt(comboBox.getSelectedItem().toString());
 			trainSelected = trainID;
 			TrainModel train = trainList.get(new Integer(trainID));
+			
+			//Populate Table
+			table.setValueAt(new String(""+train.getBlock()), 0, 1);
+			table.setValueAt(new String(""+train.getPosition()).substring(0,4), 1, 1);
+			table.setValueAt(new String(""+train.getSpeedLimit()), 2, 1);
+			table.setValueAt(new String(""+train.getSetpointSpeed()), 3, 1);
+			table.setValueAt(new String(""+train.getVelocity()).substring(0,4), 4, 1);
+			table.setValueAt(new String(""+train.getAcceleration()).substring(0,4), 5, 1);
+			table.setValueAt(new String(""+train.getAuthority()), 6, 1);
+			table.setValueAt(new String(""+train.getGrade()), 7, 1);
+			table.setValueAt(new String(""+train.getPassengers()), 10, 1);
+			table.setValueAt(new String(""+train.getCrew()), 11, 1);
+			
+			String str = "";
+			boolean val = train.getDoors();
+			if(val) str = "Open";
+			else str = "Closed";
+			table.setValueAt(str, 8, 1);
+			val = train.getEngineStatus();
+			if(val) str = "On";
+			else str = "Off";
+			table.setValueAt(str, 9, 1);
+			val = train.getEngineStatus();
+			if(val) str = "Failure";
+			else str = "Functional";
+			table.setValueAt(str, 12, 1);
+			val = train.getSignalStatus();
+			if(val) str = "Failure";
+			else str = "Functional";
+			table.setValueAt(str, 13, 1);
+			val = train.getBrakeStatus();
+			if(val) str = "Failure";
+			else str = "Functional";
+			table.setValueAt(str, 14, 1);
+			val = train.getEmergencyBrake();
+			if(val) str = "Engaged";
+			else str = "Disengaged";
+			table.setValueAt(str, 15, 1);
+			
+			//write out log
 			String log = train.getLog().toString();
-			position.setText("Position: "+train.getPosition());
-			velocity.setText("Velocity: "+train.getVelocity());
-			setpoint.setText("Setpoint: "+train.getSetpointSpeed());
-			acceleration.setText("Acceleration: "+train.getAcceleration());
-			lights.setText("Lights: "+train.getLights());
-			grade.setText("Grade: "+train.getGrade());
-			crew.setText("Crew: "+train.getCrew());
-			doors.setText("Doors: "+train.getDoors());
-			passengers.setText("Passengers: "+train.getPassengers());
-			mass.setText("Mass: "+train.getMass());
-			engineStatus.setText("Status - "+train.getEngineStatus());
-			signalStatus.setText("Status - "+train.getEngineStatus());
-			brakeStatus.setText("Status - "+train.getBrakeStatus());
-			btnEngineFailure.setEnabled(true);
-			btnSignalFailure.setEnabled(true);
-			btnBrakeFailure.setEnabled(true);
-			btnEmergencyBrake.setEnabled(true);
 			writeLog(log);
 		}
 	}
@@ -339,24 +278,11 @@ public class TMPanel extends JPanel
 	}
 	public void reset()
 	{
-		position.setVisible(false);
-		velocity.setVisible(false);
-		setpoint.setVisible(false);
-		acceleration.setVisible(false);
-		lights.setVisible(false);
-		grade.setVisible(false);
-		crew.setVisible(false);
-		doors.setVisible(false);
-		passengers.setVisible(false);
-		mass.setVisible(false);
-		engineStatus.setVisible(false);
-		signalStatus.setVisible(false);
-		brakeStatus.setVisible(false);
-		eBrakeStatus.setVisible(false);
 		btnEngineFailure.setVisible(false);
 		btnSignalFailure.setVisible(false);
 		btnBrakeFailure.setVisible(false);
 		btnEmergencyBrake.setVisible(false);
+		table.setVisible(false);
 		logPane.setVisible(false);
 		scrollPane.setVisible(false);
 		writeLog("");
