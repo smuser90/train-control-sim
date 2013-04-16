@@ -18,6 +18,7 @@ public class TrackControllerModule {
 	private ArrayList<String> lineNames;
 	private ArrayList<Line> lines;
 	private ArrayList<Block> myBlocks;//new ArrayList<Block>();
+	//private ArrayList<ArrayList<Integer>> switchList;
 	private ArrayList<Integer> switchList;
 	private ArrayList<Integer> trainList;
 	private ArrayList<Integer> crossingList;
@@ -48,6 +49,7 @@ public class TrackControllerModule {
 		for (int listCount = 0; listCount < myBlocks.size(); listCount++) {
 			if (myBlocks.get(listCount).getType() == 1) {
 				switchList.add(listCount);
+				
 				//System.out.println("Switch on block: " + listCount);
 			}
 			if (myBlocks.get(listCount).getOccupied()) {

@@ -234,11 +234,13 @@ public class TrackControllerPanel extends JPanel {
 		myTrainList = "";
 		for(index = 0; index < numberSwitch.size(); index++)
 		{
-			System.out.println("number Switch index " + index + " is " + numberSwitch.get(index));
-			System.out.println("is this block controlled " + trackControllerList.get(0).blocksControlled.get(1).getBlockNumber());
-			if(trackControllerList.get(currentController).blocksControlled.contains(numberSwitch.get(index)))
-			{
-				mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + (numberSwitch.get(index).intValue() + 1) +"\n";
+			System.out.println("number Switch size " + numberSwitch.size());
+			//System.out.println("is this block controlled " + trackControllerList.get(0).blocksControlled.get(1).getBlockNumber());
+			for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
+				if(trackControllerList.get(currentController).blocksControlled.get(i).getBlockNumber() == numberSwitch.get(index))
+				{
+					mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + (numberSwitch.get(index).intValue() + 1) +"\n";
+				}
 			}
 		}
 		txtrSwitchAtBlock.setText(mySwitchList);
