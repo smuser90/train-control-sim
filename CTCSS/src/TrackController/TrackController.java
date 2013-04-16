@@ -41,7 +41,7 @@ public class TrackController {
 	}
 	
 	public int getNumBlocks() {
-		return this.blocksControlled.size();
+		return blocks;
 	}
 	
 	public int getTrackNum() {
