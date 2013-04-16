@@ -14,7 +14,9 @@ import java.util.ArrayList;
 public class TrackControllerModule {
 	
 	private TrackControllerPanel currentPanel;
-	private ArrayList<TrackController> trackControllerList;
+	private ArrayList<ArrayList<TrackController>> trackControllerList;
+	private ArrayList<String> lineNames;
+	private ArrayList<Line> lines;
 	private ArrayList<Block> myBlocks;//new ArrayList<Block>();
 	private ArrayList<Integer> switchList;
 	private ArrayList<Integer> trainList;
@@ -32,8 +34,12 @@ public class TrackControllerModule {
 		switchList = new ArrayList<Integer>();
 		trainList = new ArrayList<Integer>();
 		crossingList = new ArrayList<Integer>();
-		trackControllerList = new ArrayList<TrackController>();
+		trackControllerList = new ArrayList<ArrayList<TrackController>>();
+		
+		lineNames = new ArrayList<String>();
+		lineNames.add("Lines");
 		currentPanel = new TrackControllerPanel(this);
+		lines = new ArrayList<Line>();
 	}
 	/************************************************************************************************
 	 CALL THIS TO WAKE ME UP************************************************************************/
@@ -42,6 +48,7 @@ public class TrackControllerModule {
 		for (int listCount = 0; listCount < myBlocks.size(); listCount++) {
 			if (myBlocks.get(listCount).getType() == 1) {
 				switchList.add(listCount);
+				//System.out.println("Switch on block: " + listCount);
 			}
 			if (myBlocks.get(listCount).getOccupied()) {
 				trainList.add(listCount);
@@ -49,7 +56,16 @@ public class TrackControllerModule {
 			if (myBlocks.get(listCount).getType() == 2)
 				crossingList.add(listCount);
 		}
-		trackControllerList = TCListMaker.makeTCList(track);
+		trackControllerList.add(TCListMaker.makeTCList(track));
+		/*for(int i = 0; i < this.trackControllerList.size(); i++) {
+			System.out.print("TC # " + i + ":" + this.trackControllerList.get(i).getNumBlocks() + ":[");
+			for(Block b : this.trackControllerList.get(i).blocksControlled) {
+				System.out.print(b.getBlockNumber() + ", ");
+			}
+			System.out.println("]");
+		}*/
+		lineNames.add(track.getName());
+		lines.add(track);
 		// Set some of the blocks as switches *TESTING*
 //		myBlocks.get(8).isSwitch = true;
 //		myBlocks.get(17).isSwitch = true;
@@ -170,11 +186,15 @@ public class TrackControllerModule {
 	 * CALL ME ONCE PER TICK**************************************************************/
 	public void runPLC(){
 		
-		TrackController.runPLC(trackControllerList);
+		//TrackController.runPLC(trackControllerList);
 	}
 
-	protected ArrayList<Block> getBlockList() {
-		return myBlocks;
+	protected ArrayList<Block> getBlockList(String line) {
+		for(Line l : lines) {
+			if(l.getName().equals(line))
+				return l.getBlocks();
+		}
+		return null;
 	}
 	
 	protected ArrayList<Integer> getTrainList() {
@@ -185,10 +205,14 @@ public class TrackControllerModule {
 		return switchList;
 	}
 	
-	protected ArrayList<TrackController> getTrCList() {
-		return trackControllerList;
+	protected ArrayList<TrackController> getTrCList(int tcIndex) {
+		return trackControllerList.get(tcIndex);
 	}
 	protected ArrayList<Integer> getCrossingList() {
 		return crossingList;
+	}
+	
+	protected ArrayList<String> getLineNames() {
+		return this.lineNames;
 	}
 }
