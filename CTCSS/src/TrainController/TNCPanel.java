@@ -32,13 +32,13 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.UIManager;
 import Log.Log;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.TitledBorder;
 
 public class TNCPanel extends JPanel {
 	private JTextField txtSetSpeed;
 	private JTextField txtSetTemp;
 	private JTextField txtNextStation;
 	public JTable table;
-	private JTextField textField;
 	private String setSpeedInput;
 	private String temp;
 	public TrainController tnc;
@@ -46,6 +46,8 @@ public class TNCPanel extends JPanel {
 	public JComboBox comboBox;
 	public ArrayList<TrainController> list;
 	public JToggleButton tglbtnSetEmergencyBrake, SetBrake, doorToggle, lightToggle;
+	private JPanel panel;
+	private JPanel panel_1;
 	
 	
 	/**
@@ -60,117 +62,132 @@ public class TNCPanel extends JPanel {
 		setLayout(null);
 		setBounds(100, 100, 650, 350);
 		
+		panel_1 = new JPanel();
+		panel_1.setBorder(new TitledBorder(null, "Control Panel", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBounds(347, 84, 274, 217);
+		add(panel_1);
+		panel_1.setLayout(null);
+		
 		
 		// text field
 		txtSetSpeed = new JTextField();
+		txtSetSpeed.setBounds(79, 22, 74, 28);
+		panel_1.add(txtSetSpeed);
 		txtSetSpeed.setText("");
-		txtSetSpeed.setBounds(438, 27, 74, 28);
-		add(txtSetSpeed);
 		txtSetSpeed.setColumns(10);
 				
 		txtSetTemp = new JTextField();
+		txtSetTemp.setBounds(79, 50, 74, 28);
+		panel_1.add(txtSetTemp);
 		txtSetTemp.setText("");
 		txtSetTemp.setColumns(10);
-		txtSetTemp.setBounds(438, 55, 74, 28);
-		add(txtSetTemp);
 		
 		// buttons
 		JButton setSpeed = new JButton("Apply speed");
-		setSpeed.setBounds(510, 28, 117, 29);
-		add(setSpeed);
-		setSpeed.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				double setPointSpeed = Double.parseDouble(txtSetSpeed.getText());
-				System.out.println("setSpeed = " + setPointSpeed);
-				if (tnc!=null){
-					tnc.setSpeed(setPointSpeed);
-				}
-				else {
-					setPointSpeed =0;
-				}
-				table.setValueAt(setPointSpeed, 1, 1);
-			}
-		});
+		setSpeed.setBounds(151, 23, 117, 29);
+		panel_1.add(setSpeed);
 		
 		JButton setTemp = new JButton("Apply temp");
-		setTemp.setBounds(510, 56, 117, 29);
-		add(setTemp);
-		setTemp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int temperature;
-				temperature = Integer.parseInt(txtSetTemp.getText());
-				if (tnc!=null){
-					tnc.setTemp(temperature);
-				}
-				else{
-					temperature = 0;
-				}
-				table.setValueAt(temperature, 5, 1);
-			}
-		});
+		setTemp.setBounds(151, 51, 117, 29);
+		panel_1.add(setTemp);
 		
 		
 		// labels
 		
 		JLabel lblSetSpeed = new JLabel("Set speed");
-		lblSetSpeed.setBounds(365, 33, 61, 16);
-		add(lblSetSpeed);
+		lblSetSpeed.setBounds(6, 28, 61, 16);
+		panel_1.add(lblSetSpeed);
 		
 		JLabel lblNewLabel = new JLabel("Set temp");
-		lblNewLabel.setBounds(365, 61, 61, 16);
-		add(lblNewLabel);
+		lblNewLabel.setBounds(6, 56, 61, 16);
+		panel_1.add(lblNewLabel);
 		
 		JLabel lblSetLights = new JLabel("Set Lights");
-		lblSetLights.setBounds(365, 89, 67, 16);
-		add(lblSetLights);
+		lblSetLights.setBounds(6, 84, 67, 16);
+		panel_1.add(lblSetLights);
 		
 		JLabel lblSetDoors = new JLabel("Set doors");
-		lblSetDoors.setBounds(365, 122, 61, 16);
-		add(lblSetDoors);
+		lblSetDoors.setBounds(6, 117, 61, 16);
+		panel_1.add(lblSetDoors);
 		
 		JLabel lblSetBrake = new JLabel("Set Brake");
-		lblSetBrake.setBounds(365, 153, 61, 16);
-		add(lblSetBrake);
+		lblSetBrake.setBounds(6, 148, 61, 16);
+		panel_1.add(lblSetBrake);
 		
 		JLabel lblSetEbrake = new JLabel("Set EBrake");
-		lblSetEbrake.setBounds(365, 181, 67, 16);
-		add(lblSetEbrake);
+		lblSetEbrake.setBounds(6, 176, 67, 16);
+		panel_1.add(lblSetEbrake);
 		
 		
 		// light toggle
 		
 		lightToggle = new JToggleButton("Lights On");
-		lightToggle.setBounds(438, 84, 189, 29);
-		add(lightToggle);
-		lightToggle.addActionListener(new ActionListener() {
+		lightToggle.setBounds(79, 79, 189, 29);
+		panel_1.add(lightToggle);
+		
+		// door toggle
+		
+		doorToggle = new JToggleButton("Doors On");
+		doorToggle.setBounds(79, 112, 189, 29);
+		panel_1.add(doorToggle);
+		
+		
+		// brake toggle
+		SetBrake = new JToggleButton("Set Brake");
+		SetBrake.setBounds(79, 143, 189, 29);
+		panel_1.add(SetBrake);
+		
+		
+		// emergency toggle
+		tglbtnSetEmergencyBrake = new JToggleButton("Set Emergency Brake");
+		tglbtnSetEmergencyBrake.setBounds(79, 171, 189, 29);
+		panel_1.add(tglbtnSetEmergencyBrake);
+		tglbtnSetEmergencyBrake.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(lightToggle.isSelected()){
-					if (tnc!=null){
-						tnc.setLights(true);
-						table.setValueAt("On", 3, 1);
+				if(tglbtnSetEmergencyBrake.isSelected()){	
+					if(tnc!=null){
+						tnc.setEBrake(true);
+						table.setValueAt("Pull", 6, 1);
 					}
-					else {
-						table.setValueAt("N/A", 3, 1);
+					else{
+						table.setValueAt("N/A", 6, 1);
 					}
 				}
 				else {
-					if(tnc!=null){
-						tnc.setLights(false);
-						table.setValueAt("Off", 3, 1);
+					if (tnc!=null){
+						tnc.setEBrake(false);
+						table.setValueAt("N/A", 6, 1);
 					}
 					else{
-						table.setValueAt("N/A", 3, 1);
+						table.setValueAt("N/A", 6, 1);
 					}
 				}
 				
 			}
 		});
-		
-		// door toggle
-		
-		doorToggle = new JToggleButton("Doors On");
-		doorToggle.setBounds(438, 117, 189, 29);
-		add(doorToggle);
+		SetBrake.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(SetBrake.isSelected()){
+					if (tnc!=null){
+						tnc.setBrake(true);
+						table.setValueAt("Pull", 7, 1);
+					}
+					else{
+						table.setValueAt("N/A", 7, 1);
+					}
+				}
+				else {
+					if(tnc!=null){
+						tnc.setBrake(false);
+						table.setValueAt("N/A", 7, 1);
+					}
+					else{
+						table.setValueAt("N/A", 7, 1);
+					}
+				}
+				
+			}
+		});
 		doorToggle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(doorToggle.isSelected()){
@@ -195,69 +212,68 @@ public class TNCPanel extends JPanel {
 				
 			}
 		});
-		
-		
-		// brake toggle
-		SetBrake = new JToggleButton("Set Brake");
-		SetBrake.setBounds(438, 148, 189, 29);
-		add(SetBrake);
-		SetBrake.addActionListener(new ActionListener() {
+		lightToggle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(SetBrake.isSelected()){
+				if(lightToggle.isSelected()){
 					if (tnc!=null){
-						tnc.setBrake(true);
-						table.setValueAt("Pull", 7, 1);
+						tnc.setLights(true);
+						table.setValueAt("On", 3, 1);
 					}
-					else{
-						table.setValueAt("N/A", 7, 1);
+					else {
+						table.setValueAt("N/A", 3, 1);
 					}
 				}
 				else {
 					if(tnc!=null){
-						tnc.setBrake(false);
-						table.setValueAt("N/A", 7, 1);
+						tnc.setLights(false);
+						table.setValueAt("Off", 3, 1);
 					}
 					else{
-						table.setValueAt("N/A", 7, 1);
+						table.setValueAt("N/A", 3, 1);
 					}
 				}
 				
 			}
 		});
-		
-		
-		// emergency toggle
-		tglbtnSetEmergencyBrake = new JToggleButton("Set Emergency Brake");
-		tglbtnSetEmergencyBrake.setBounds(438, 176, 189, 29);
-		add(tglbtnSetEmergencyBrake);
-		tglbtnSetEmergencyBrake.addActionListener(new ActionListener() {
+		setTemp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(tglbtnSetEmergencyBrake.isSelected()){	
-					if(tnc!=null){
-						tnc.setEBrake(true);
-						table.setValueAt("Pull", 6, 1);
-					}
-					else{
-						table.setValueAt("N/A", 6, 1);
-					}
+				int temperature;
+				temperature = Integer.parseInt(txtSetTemp.getText());
+				if (tnc!=null){
+					tnc.setTemp(temperature);
 				}
-				else {
-					if (tnc!=null){
-						tnc.setEBrake(false);
-						table.setValueAt("N/A", 6, 1);
-					}
-					else{
-						table.setValueAt("N/A", 6, 1);
-					}
+				else{
+					temperature = 0;
 				}
-				
+				table.setValueAt(temperature, 5, 1);
 			}
 		});
+		setSpeed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				double setPointSpeed = Double.parseDouble(txtSetSpeed.getText());
+				System.out.println("setSpeed = " + setPointSpeed);
+				if (tnc!=null){
+					tnc.setSpeed(setPointSpeed);
+				}
+				else {
+					setPointSpeed =0;
+				}
+				table.setValueAt(setPointSpeed, 1, 1);
+			}
+		});
+		
+		panel = new JPanel();
+		panel.setBorder(new TitledBorder(null, "Attribute Overview", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBounds(25, 84, 313, 220);
+		add(panel);
+		panel.setLayout(null);
 		
 		
 		
 		// table
 		table = new JTable();
+		table.setBounds(6, 22, 301, 192);
+		panel.add(table);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setForeground(Color.BLACK);
 		table.setColumnSelectionAllowed(true);
@@ -274,6 +290,11 @@ public class TNCPanel extends JPanel {
 				{"Temperture", "N/A"},
 				{"Emergency Brake", "N/A"},
 				{"Brake", "N/A"},
+				{"Acceleration", "N/A"},
+				{"Output Power", "N/A"},
+				{"SpeedLimit", "N/A"},
+				{"Max Power", "N/A"},
+				
 				
 			},
 			new String[] {
@@ -292,13 +313,11 @@ public class TNCPanel extends JPanel {
 			}
 		});
 		table.getColumnModel().getColumn(0).setPreferredWidth(112);
-		table.setBounds(25, 77, 301, 128);
-		add(table);
 		
 		
 		// comboBox
 		comboBox = new JComboBox();	
-		comboBox.setBounds(25, 6, 236, 28);
+		comboBox.setBounds(25, 16, 596, 28);
 		add(comboBox);
 		comboBox.addItemListener(new ItemListener(){
 			public void itemStateChanged(ItemEvent event){
@@ -363,20 +382,9 @@ public class TNCPanel extends JPanel {
 		
 		txtNextStation = new JTextField();
 		txtNextStation.setText("Next Station\n");
-		txtNextStation.setBounds(27, 33, 134, 28);
+		txtNextStation.setBounds(35, 50, 573, 28);
 		add(txtNextStation);
 		txtNextStation.setColumns(10);
-		
-		
-		
-		textField = new JTextField();
-		textField.setBounds(17, 229, 610, 96);
-		add(textField);
-		textField.setColumns(10);
-		
-		JLabel lblLog = new JLabel("Log");
-		lblLog.setBounds(31, 211, 61, 16);
-		add(lblLog);
 		
 		
 		// testing
