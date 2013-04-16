@@ -129,7 +129,7 @@ public class Block{
 	public void openBlock()
 	{
 		this.open = true;
-	}
+	} 
 	*/
 	public void breakBlock()
 	{

@@ -50,7 +50,7 @@ public class TrackModelModule {
 	{
 		tr.getLine(lineName).getBlock(bNum).fixBlock();
 	}
-	
+	 
 	public void setSpeedLimit(int bNum, String lineName, int newSpLim)
 	{
 		tr.getLine(lineName).getBlock(bNum).setSpeedLimit(newSpLim);
