@@ -205,19 +205,22 @@ public class TMPanel extends JPanel
 			scrollPane.setVisible(true);
 			
 			//Get Train
-			int trainID = Integer.parseInt(comboBox.getSelectedItem().toString());
+			String title = comboBox.getSelectedItem().toString();
+			int parseIndex = title.indexOf(" ");
+			int trainID = Integer.parseInt(title.substring(0,parseIndex));
 			trainSelected = trainID;
 			TrainModel train = trainList.get(new Integer(trainID));
 			
 			//Populate Table
-			table.setValueAt(new String(""+train.getBlock()), 0, 1);
-			table.setValueAt(new String(""+train.getPosition()).substring(0,4), 1, 1);
+			String format = "%3.3f";
+			table.setValueAt(new String(""+train.getBlockIndex()), 0, 1);
+			table.setValueAt(String.format("%3.1f", train.getPosition()), 1, 1);
 			table.setValueAt(new String(""+train.getSpeedLimit()), 2, 1);
 			table.setValueAt(new String(""+train.getSetpointSpeed()), 3, 1);
-			table.setValueAt(new String(""+train.getVelocity()).substring(0,4), 4, 1);
-			table.setValueAt(new String(""+train.getAcceleration()).substring(0,4), 5, 1);
+			table.setValueAt(String.format(format,train.getVelocity()), 4, 1);
+			table.setValueAt(String.format(format,train.getAcceleration()), 5, 1);
 			table.setValueAt(new String(""+train.getAuthority()), 6, 1);
-			table.setValueAt(new String(""+train.getGrade()), 7, 1);
+			table.setValueAt(String.format(format,train.getGrade()), 7, 1);
 			table.setValueAt(new String(""+train.getPassengers()), 10, 1);
 			table.setValueAt(new String(""+train.getCrew()), 11, 1);
 			
@@ -260,11 +263,9 @@ public class TMPanel extends JPanel
 		int numKeys = keys.size();
 		int listSize = comboBox.getItemCount();
 		
-		for(int i = 1; i < listSize; i++)
-		{
-			System.out.println("Items In Box: "+listSize);
-			comboBox.remove(i);
-		}
+		String[] def = new String[1];
+		def[0] = "Trains";
+		comboBox.setModel(new DefaultComboBoxModel(def));
 		
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Trains"}));
 		Iterator<Integer> it = keys.iterator();
@@ -272,7 +273,7 @@ public class TMPanel extends JPanel
 		{
 			int key = it.next();
 			if(trainList.get(key) != null)
-				comboBox.addItem(""+key);
+				comboBox.addItem(""+key+" - "+trainList.get(key).getLine());
 		}
 		
 	}
