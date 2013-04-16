@@ -17,6 +17,7 @@ public class PLC {
 	public static void runPLC(TrackController trackController) {
 		detectTrains(trackController);
 		crossings();
+		detectBrokenRail(trackController);
 		//System.out.println("Here in runPLC in the PLC class with trackcontroller " + trackController.getID());
 	}
 	
