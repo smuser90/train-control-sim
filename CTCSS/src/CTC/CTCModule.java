@@ -8,7 +8,7 @@ import TrackModel.Block;
 import TrackModel.Line;
 
 public class CTCModule {
-	// Fields
+	//// Fields
 	private CTCPanel gui;
 	private Simulator sim = null;
 	private ArrayList<Integer> gTrainIDs = null;
