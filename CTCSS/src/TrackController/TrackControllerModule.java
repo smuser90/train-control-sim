@@ -42,6 +42,10 @@ public class TrackControllerModule {
 		for (int listCount = 0; listCount < myBlocks.size(); listCount++) {
 			if (myBlocks.get(listCount).getType() == 1) {
 				switchList.add(listCount);
+<<<<<<< OURS
+=======
+				//System.out.println("Switch on block: " + listCount);
+>>>>>>> THEIRS
 			}
 			if (myBlocks.get(listCount).getOccupied()) {
 				trainList.add(listCount);

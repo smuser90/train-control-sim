@@ -286,6 +286,11 @@ public class TrackControllerPanel extends JPanel {
 		myTrainList = "";
 		for(index = 0; index < numberSwitch.size(); index++)
 		{
+<<<<<<< OURS
+=======
+			System.out.println("number Switch index " + index + " is " + numberSwitch.get(index));
+			System.out.println("is this block controlled " + trackControllerList.get(0).blocksControlled.get(1).getBlockNumber());
+>>>>>>> THEIRS
 			if(trackControllerList.get(currentController).blocksControlled.contains(numberSwitch.get(index)))
 			{
 				mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + (numberSwitch.get(index).intValue() + 1) +"\n";
