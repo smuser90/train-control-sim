@@ -229,7 +229,7 @@ public class TMPanel extends JPanel
 			if(val) str = "Open";
 			else str = "Closed";
 			table.setValueAt(str, 8, 1);
-			val = train.getEngineStatus();
+			val = train.getLights();
 			if(val) str = "On";
 			else str = "Off";
 			table.setValueAt(str, 9, 1);

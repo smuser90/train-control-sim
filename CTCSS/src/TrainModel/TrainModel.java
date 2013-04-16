@@ -79,7 +79,7 @@ public class TrainModel
 		m_brakeFailure = false;
 		m_lights = false;
 		m_doors = false;
-		m_power = 100.0;
+		m_power = 120000.0; //watts
 		m_velocity = 0.0;
 		m_position = 0.0;
 		m_passengersMax = 222;
@@ -102,9 +102,9 @@ public class TrainModel
 		double force = 0;
 		
 		if(m_velocity < 0.00001) 
-			force = m_power*1000 / 0.01;
+			force = m_power / 0.01;
 		else
-			force = m_power*1000 / m_velocity;
+			force = m_power / m_velocity;
 
 		m_accel = force / m_mass;
 		
@@ -156,7 +156,7 @@ public class TrainModel
 			m_speedLimit = m_routeInfo.get(m_blockIndex).getSpeedLimit();
 		}
 		*/
-		m_trainController.tick();
+		m_trainController.tick(timeLapse);
 	}
 	
 	public void setRouteInfo(ArrayList<Block> routeInfo)
@@ -285,20 +285,28 @@ public class TrainModel
 	public void toggleEmergencyBrake()
 	{
 		m_emergencyBrake = !m_emergencyBrake;
+		if(m_emergencyBrake)
+			m_log.append("Emergency Brake Engaged. Train Stopping!\n");
+		else
+			m_log.append("Engine Functioning. Train Restarting!\n");
 	}
 	
 	public void toggleEngineFailure()
 	{
 		m_engineFailure = !m_engineFailure;
 		if(m_engineFailure)
-			m_log.append("Engine Failure. Stopping Train!\n");
+			m_log.append("Engine Failure. Train Stopping!\n");
 		else
-			m_log.append("Engine Functioning. Train Starting!\n");
+			m_log.append("Engine Functioning. Train Restarting!\n");
 	}
 	
 	public void toggleSignalFailure()
 	{
 		m_signalFailure = !m_signalFailure;
+		if(m_signalFailure)
+			m_log.append("Signal Failure. Train Stopping!\n");
+		else
+			m_log.append("Signals Functioning. Train Restarting!\n");
 	}
 	
 	public void toggleBrakeFailure()
@@ -382,6 +390,11 @@ public class TrainModel
 	public StringBuilder getLog()
 	{
 		return m_log;
+	}
+	
+	public int getPowerLimit()
+	{
+		return m_powerLimit;
 	}
 }
 
