@@ -118,6 +118,11 @@ public class Block{
 		// print updated speed limit to the log
 	}
 	
+	public int getSpeedLimit()
+	{
+		return this.speedLimit;
+	}
+	
 	public int blockTrainID()
 	{
 		return this.trainID;
