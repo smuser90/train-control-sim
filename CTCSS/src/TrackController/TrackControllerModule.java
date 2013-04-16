@@ -10,6 +10,7 @@ import TrackModel.Line;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TrackControllerModule {
 	
@@ -20,7 +21,8 @@ public class TrackControllerModule {
 	private ArrayList<Block> myBlocks;//new ArrayList<Block>();
 	//private ArrayList<ArrayList<Integer>> switchList;
 	private ArrayList<Integer> switchList;
-	private ArrayList<Integer> trainList;
+	//private ArrayList<Integer> trainList;
+	private HashMap trainList;
 	private ArrayList<Integer> crossingList;
 	private int upperLimit;
 	private int lowerLimit;
@@ -33,7 +35,7 @@ public class TrackControllerModule {
 	public TrackControllerModule() {
 		myBlocks = new ArrayList<Block>();
 		switchList = new ArrayList<Integer>();
-		trainList = new ArrayList<Integer>();
+		trainList = new HashMap();
 		crossingList = new ArrayList<Integer>();
 		trackControllerList = new ArrayList<ArrayList<TrackController>>();
 		
@@ -51,9 +53,6 @@ public class TrackControllerModule {
 				switchList.add(listCount);
 				
 				//System.out.println("Switch on block: " + listCount);
-			}
-			if (myBlocks.get(listCount).getOccupied()) {
-				trainList.add(listCount);
 			}
 			if (myBlocks.get(listCount).getType() == 2)
 				crossingList.add(listCount);
@@ -184,6 +183,10 @@ public class TrackControllerModule {
 		}
 	}
 	
+	public void receiveTrains(HashMap newTrainList){
+		trainList = newTrainList;
+	}
+	
 	/**************************************************************************************
 	 * CALL ME ONCE PER TICK**************************************************************/
 	public void runPLC(){
@@ -208,7 +211,7 @@ public class TrackControllerModule {
 		return null;
 	}
 	
-	protected ArrayList<Integer> getTrainList() {
+	protected HashMap getTrainList() {
 		return trainList;
 	}
 	
