@@ -150,7 +150,9 @@ public class TrackControllerModule {
 //		}
 		hasTrack = true;
 		PLC.setup(myBlocks, crossingList);
+		//runPLC();
 		currentPanel.displayChange();
+		runPLC();
 
 		// For the initial list, set up any trains that are placed on the track
 //		for (index = 0; index < trackControllerList.size(); index++) {
@@ -187,8 +189,7 @@ public class TrackControllerModule {
 	/**************************************************************************************
 	 * CALL ME ONCE PER TICK**************************************************************/
 	public void runPLC(){
-		
-		//TrackController.runPLC(trackControllerList);
+		TrackController.runPLC(trackControllerList);
 	}
 
 	protected ArrayList<Block> getBlockList(String line) {

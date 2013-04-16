@@ -73,6 +73,7 @@ public class CTCTester {
 		JButton btnGetTrack = new JButton("Get Track");
 		btnGetTrack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//ctc.setGLine(myBlocks);
 
 			}
 		});

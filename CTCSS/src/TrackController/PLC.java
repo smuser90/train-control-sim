@@ -8,6 +8,8 @@ public class PLC {
 
 	private static ArrayList<Block> myBlocks = new ArrayList<Block>();//TrackControllerModule.myBlocks;
 	private static ArrayList<Integer> crossingList;
+	private static ArrayList<Integer> brokenRailList;
+	private static TrackController _tc;
 	
 	static int index = 0;
 	static int index_2 = 0;
@@ -15,7 +17,8 @@ public class PLC {
 	public static void runPLC(TrackController trackController) {
 		detectTrains(trackController);
 		crossings();
-		
+		detectBrokenRail(trackController);
+		//System.out.println("Here in runPLC in the PLC class with trackcontroller " + trackController.getID());
 	}
 	
 	public static void setup(ArrayList<Block> blocks, ArrayList<Integer> cList) {
@@ -70,6 +73,8 @@ public class PLC {
 		{
 			if(myBlocks.get(trackController.blocksControlled.get(index).getBlockNumber()).getFailure())
 			{
+				trackController.brokenRails.add(index);
+				//brokenRailList.add(myBlocks.get(trackController.blocksControlled.get(index).getBlockNumber());
 				//if not the yard, and train within one block of the broken rail it needs to hit EBrake
 				if(index > 0)
 				{
@@ -77,6 +82,8 @@ public class PLC {
 				}
 			}
 		}
+		//trackController.setBrokenRail(brokenRail);
+		//_tc.setBrokenRail();
 		
 //		for(index = 0; index < myBlocks.size(); index++){
 //			if(myBlocks.get(index).failure){
@@ -88,5 +95,7 @@ public class PLC {
 	public static void reportBrokenRail(int blockNumber){
 		TrackController.reportBrokenRail(blockNumber);
 	}
+	
+	
 	
 }

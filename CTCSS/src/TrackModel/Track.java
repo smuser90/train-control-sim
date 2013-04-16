@@ -88,4 +88,16 @@ public class Track {
 	protected Line getNewLine() {
 		return newLine;
 	}
+	
+	protected Line getLine(String lName)
+	{
+		for(int i = 0; i < lines.size(); i++)
+		{
+			if(lName.equals(lines.get(i).getName()))
+			{
+				return lines.get(i);
+			}
+		}
+		return null;
+	}
 }

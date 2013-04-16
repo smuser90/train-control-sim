@@ -40,9 +40,9 @@ public class CTCPanel extends JPanel {
 	// Fields
 	private CTCModule _ctc;
 	private String [] blockDef= new String[] {"Blocks"};
-	private String [] blockADef= new String[] {"Block Actions", "Speed Limit", "Close", "Open"};
+	private String [] blockADef= new String[] {"Block Actions", "Set Speed Limit", "Close", "Open"};
 	private String [] trainsDef= new String[] {"Trains"};
-	private String [] trainsADef= new String[] {"Train Actions", "Schedule Train", "Route Train"};
+	private String [] trainsADef= new String[] {"Train Actions", "Schedule Train", "Route Train", "Authority"};
 	private String [] stationsDef= new String[] {"Stations"};
 	private String [] lineDef= new String[] {"Lines"};
 	private Log log = Log.Instance();
@@ -83,7 +83,7 @@ public class CTCPanel extends JPanel {
 		blockLabel.setBounds(10, 60, 275, 14);
 		panel.add(blockLabel);
 		
-		speedLabel = new JLabel("Set Speed Limit");
+		speedLabel = new JLabel("Speed Limit");
 		speedLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		speedLabel.setBounds(10, 116, 136, 14);
 		panel.add(speedLabel);
@@ -221,8 +221,13 @@ public class CTCPanel extends JPanel {
 	}
 	
 	public void blockActions() {
-		if(!blocksBox.getSelectedItem().equals("Blocks") && !blocksBox.getSelectedItem().equals("Block Actions")) {
-			log.append(3, "Not Yet Supported\n");
+		if(!blocksBox.getSelectedItem().equals("Blocks") && !blockActionsBox.getSelectedItem().equals("Block Actions")) {
+			if(blockActionsBox.getSelectedItem().equals("Close")) {
+				_ctc.closeBLock((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()));
+			}
+			else {
+				log.append(3, "Not Yet Supported\n");
+			}
 		} else {
 			log.append(3, "Not Yet Supported\n");
 		}	
