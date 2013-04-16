@@ -136,8 +136,13 @@ public class TrainController
 		panel.table.setValueAt(currSpeed, 0, 1);
 		panel.table.setValueAt(authority, 2, 1);
 		
+		if (currSpeed == 0 && setPointSpeed>0){
+			train.setPower(1000);
+		}
+		else{
 		
 		train.setPower(nextPower(setPointSpeed, currSpeed, time));
+		}
 		//		if (!train.getAuthority()){
 		//			train.setEmergencyBrake();				// check authority
 		//		} 
@@ -170,10 +175,9 @@ public class TrainController
 		double powerCommand; /* power to provide to engine */
 		double POWER_MAX = 120000;
 
-		sampleTime = millis/1000f;
 		error = setpoint - currentSpeed;
 
-		integral = integralLast + (sampleTime/2f)*(error + errorLast);
+		integral = integralLast + (millis/2f)*(error + errorLast);
 		powerCommand = (INTEGRAL_GAIN * integral) + 
 		(PROPORTIONAL_GAIN * error);
 
