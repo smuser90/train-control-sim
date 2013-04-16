@@ -1,11 +1,14 @@
 package CTC;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import Log.Log;
 import Simulator.Simulator;
 import TrackModel.Block;
 import TrackModel.Line;
+import TrainModel.TrainModel;
 
 public class CTCModule {
 	//// Fields
@@ -14,6 +17,7 @@ public class CTCModule {
 	private ArrayList<Integer> gTrainIDs = null;
 	private ArrayList<String> lineNames = null;
 	private ArrayList<Line> lines = null;
+	private Map<Integer, TrainModel> trains = null;
 	private Log log = Log.Instance();
 	
 	public CTCModule() {
@@ -22,6 +26,7 @@ public class CTCModule {
 		lineNames.add("Lines");
 		gTrainIDs = new ArrayList<Integer>();
 		lines = new ArrayList<Line>();
+		trains = new HashMap<Integer, TrainModel>();
 	}
 		
 	public CTCPanel getPanel() {
@@ -31,8 +36,6 @@ public class CTCModule {
 	public void setSimulator(Simulator s) {
 		sim = s;
 	}
-	
-
 	
 	protected ArrayList<String> getLines() {
 		return lineNames;
@@ -52,14 +55,7 @@ public class CTCModule {
 		return null;
 	}
 	
-	public void setGLTrains(ArrayList<Integer> tids) {
-		gTrainIDs = tids;
-		gui.update();
-	}
-	
-	public ArrayList<Integer> getGLTrains() {
-		return gTrainIDs;
-	}
+	/* Block Methods **************************************************************/
 	
 	protected void closeBLock(String lName, int bNum) {
 		sim.closeBLock(bNum, lName);
@@ -76,10 +72,33 @@ public class CTCModule {
 		log.append(2, "Setting Speed Limit to " + lim + "KPH at BLock: " + bNum + " on Line: " + lName + "\n");
 	}
 	
+	/* Train Methods **************************************************************/
+	
 	protected void scheduleTrain(String line) {
 		if(sim != null) {
 			sim.scheduleTrain(line);
-			log.append(0, "Train added to " + line + " Line\n");
+			log.append(2, "Train added to " + line + "\n");
 		}
+	}
+	
+	protected void routeTrain(int trainID, String station) {
+		log.append(2, "Routeing Train:" + trainID + " to Station:" + station +"\n");
+	}
+	
+	
+	
+	public ArrayList<Integer> getLineTrains(String line) {
+		ArrayList<Integer> tids = new ArrayList<Integer>();
+		for(int i = 0; i < trains.size(); i++) {
+			if(trains.get(i+1).getLine().equals(line)) {
+				tids.add(i+1);
+			}
+		}
+		return tids;
+	}
+	
+	public void setTrains(Map<Integer, TrainModel> t) {
+		trains = t;
+		gui.update();
 	}
 }

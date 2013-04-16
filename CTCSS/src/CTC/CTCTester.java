@@ -84,7 +84,7 @@ public class CTCTester {
 		btnAddTrain.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tids.add(r.nextInt(10));
-				ctc.setGLTrains(tids);
+				//ctc.setGLTrains(tids);
 			}
 		});
 		btnAddTrain.setBounds(109, 473, 89, 23);

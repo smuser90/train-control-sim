@@ -99,7 +99,7 @@ public class System_GUI {
 			renderSplashFrame(frame);
 			splash.update();
 			try {
-				Thread.sleep(360);
+				Thread.sleep(0);//360);
 			}
 			catch(InterruptedException e) {
 			}
@@ -132,7 +132,7 @@ public class System_GUI {
 		sim = new Simulator(ctc, trc, tm, trm);
 		ctc.setSimulator(sim);
 		log.append(0, "Simulator Started\n");
-		for(int i = 0; i < 5; i++)
+		for(int i = 0; i < 1; i++)
 			updateSplash(7);
 		log.append(0, "System Ready\n");
 		log.append(3, "Please Login\n");
@@ -161,6 +161,7 @@ public class System_GUI {
 			public void run() {
 				try {
 					System_GUI window = new System_GUI();
+					sim.setSys(window);
 					window.frmCtcss.setResizable(false);
 					window.frmCtcss.setVisible(true);
 					window.frmCtcss.toFront();
@@ -343,5 +344,9 @@ public class System_GUI {
 		mnSimulation.remove(0);
 		mnSimulation.insert(mntmPause, 0);
 		frmCtcss.repaint();
+	}
+	
+	public JFrame getFrame() {
+		return this.frmCtcss;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import CTC.CTCModule;
 import Log.Log;
+import System.System_GUI;
 import TrackController.TrackControllerModule;
 import TrackModel.Block;
 import TrackModel.Line;
@@ -29,6 +30,7 @@ public class Simulator implements Runnable{
 	private TrackControllerModule tcm;
 	private TrainModelModule tm;
 	private TrackModelModule trm;
+	private System_GUI sys;
 	private SpeedDialog sd;
 	private Line newLine;
 	
@@ -52,11 +54,13 @@ public class Simulator implements Runnable{
 					newLine = trm.gotTrack();
 					this.loadGTrack();
 				}
+				
 				/*if(trains < trainsMax)
 				{
 					tm.addTrain("Dicks");
 					trains++;
 				}*/
+				
 			} else {
 				Thread.sleep(1000);
 			}
@@ -73,12 +77,15 @@ public class Simulator implements Runnable{
 		tm = TM;
 		tm.linkSimulator(this);
 		trm = Tmm;
-		sd = new SpeedDialog(this);
 		sysTimeNum = System.currentTimeMillis();
 		sysTime = new Date(sysTimeNum);
 		df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
 		log = Log.Instance();
 		loadLogTime();
+	}
+	
+	public void setSys(System_GUI s) {
+		sys = s;
 	}
 	
 	public void loadLogTime() {
@@ -106,7 +113,7 @@ public class Simulator implements Runnable{
 	}
 	
 	public SpeedDialog getSpeedDialog() {
-		return this.sd;
+		return new SpeedDialog(this);
 	}
 	
 	public long getSimTime()
@@ -116,31 +123,15 @@ public class Simulator implements Runnable{
 	
 	public void loadGTrack() {
 		tcm.getTrack(newLine);
-		//ctc.setGLine(myBlocks);
 		ctc.addLine(newLine);
 		log.append(1, "Track Loaded\n");
 	}
-	
-	/*public ArrayList<Integer> getTrainIDs() {
-		return null;
-	}
-	
-	public ArrayList<Integer >getBlockIDs() {
-		return null;
-	}*/
 	
 	/* Train Actions ***********************************************************/
 	
 	public void scheduleTrain(String line) {
 		tm.addTrain(line);
-		Set<Integer> trains = tm.getTrainIDS();
-		Integer [] trs = new Integer[trains.size()];
-		trains.toArray(trs);		
-		ArrayList<Integer> tids = new ArrayList<Integer>();
-		for(int i = 0; i < trains.size(); i++) {
-			tids.add(trs[i]);
-		}
-		ctc.setGLTrains(tids);
+		ctc.setTrains(tm.getTrainList());
 		tcm.receiveTrains(tm.getTrainList());
 	}
 	
@@ -152,19 +143,23 @@ public class Simulator implements Runnable{
 		
 	}
 	
-	/* BLock Actions ***********************************************************/
+	/* Block Actions ***********************************************************/
 	
 	public void setSpeedLimit(int bNum, String lName, int lim) {
-		
+		trm.setSpeedLimit(bNum, lName, lim);
+		trm.printOpen();
 	}
 	
 	public void openBLock(int bNum, String lName) {
-		
+		trm.openBlock(bNum, lName);
 	}
 	
 	public void closeBLock(int bNum, String lName) {
 		trm.closeBlock(bNum, lName);
 	}
 	
+	protected System_GUI getSys() {
+		return sys;
+	}
 	
 }

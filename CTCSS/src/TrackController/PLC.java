@@ -111,7 +111,7 @@ public class PLC {
 			}
 			else{
 				if(trackController.brokenRails.contains(trackController.blocksControlled.get(index).getBlockNumber())){
-					trackController.brokenRails.remove(trackController.blocksControlled.get(index).getBlockNumber());
+					trackController.brokenRails.remove(trackController.brokenRails.indexOf(trackController.blocksControlled.get(index).getBlockNumber()));
 					trackController.isChanged = true;
 				}
 			}
