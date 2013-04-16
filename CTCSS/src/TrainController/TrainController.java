@@ -21,25 +21,33 @@ public class TrainController
 	private final int t = 0;
 	private double pre_error=0, error=0, Vk, pre_Vk=0 ;
 	private TNCPanel panel;
-//	private routeInfo ;
-	
-	
+	//	private routeInfo ;
+
+	public static final double INTEGRAL_INITIAL = 0.0f;
+	public static final double ERROR_INITIAL = 0.0f;
+	public static final double PROPORTIONAL_GAIN = 100000f;
+	public static final double INTEGRAL_GAIN = 0.5f;
+	private double integralLast = INTEGRAL_INITIAL;
+	private double errorLast = ERROR_INITIAL;
+
+
 	public TrainController(TNCPanel gui){
 		panel = gui;
-//		trainID = 0;
-		currSpeed = 100;
-		speedLimit = 120;
+		//		trainID = 0;
+		currSpeed = 0;
+		speedLimit = 0;
 		authority = 0;
 		lights = false;
 		doors = false;
 		temp = 0;		
 		brake = false;
 		eBrake = false;
-		panel.comboBox.addItem(trainID);
+		System.out.println("Train controller created!");
+		//		panel.comboBox.addItem(trainID);
 	}
-	
+
 	// testing without train model
-/*	public TrainController(TNCPanel gui, int tID){
+	/*	public TrainController(TNCPanel gui, int tID){
 		panel = gui;
 		//train = tnm;
 		trainID = tID;
@@ -53,93 +61,98 @@ public class TrainController
 		eBrake = false;
 		panel.comboBox.addItem(trainID);
 	}*/
-	
+
 	public void setTrainModel(TrainModel tm)
 	{
 		train = tm;
 		if (train!=null){
-		trainID = tm.getTrainID();
-		currSpeed = tm.getVelocity();
-//		speedLimit = tm.getSpeedLimit;
-		authority = tm.getAuthority();
-		lights = tm.getLights();
-		doors =tm.getDoors();
-		temp = tm.getTemperature();		
-//		brake = tm.getBrake();
-		eBrake = tm.getEmergencyBrake();
-		panel.comboBox.addItem(tm.getTrainID());
+			trainID = tm.getTrainID();
+			currSpeed = tm.getVelocity();
+			//		speedLimit = tm.getSpeedLimit;
+			authority = tm.getAuthority();
+			lights = tm.getLights();
+			doors =tm.getDoors();
+			temp = tm.getTemperature();		
+			//		brake = tm.getBrake();
+			eBrake = tm.getEmergencyBrake();
+			panel.comboBox.addItem(tm.getTrainID());
 		}
-		
+
 	}
 	public void setSpeed(double s){
 		setPointSpeed = s;
-//		if (setPointSpeed>train.speedLimit){
-//			setPointSpeed = train.speedLimit;	 // check speed limit 
-//		}
-//		regulateSpeed();
+		train.setSetpointSpeed(s);
+		//		if (setPointSpeed>train.speedLimit){
+		//			setPointSpeed = train.speedLimit;	 // check speed limit 
+		//		}
+		//		regulateSpeed();
 	}
-	
+
 	public double getSetPointSpeed(){
 		return setPointSpeed;
 	}
-	
+
 	public void setLights(Boolean l){
 		lights = l;
-//		train.setLight(lights);
+		System.out.println("lights: "+ l);
+		train.toggleLights();
 	}
-	
+
 	public void setDoors(Boolean d){
 		doors = d;
-//		train.setDoor();
+		train.toggleDoors();
 	}
-	
+
 	public void setTemp(int t){
 		temp = t;
-//		train.setTemp(temp);
+		train.setTemperature(temp);
 	}
-	
+
 	public void setBrake(Boolean b){
 		brake = b;
-//		train.setBrake();
+		//		train.setBrake();
 	}
-	
+
 	public void setEBrake(Boolean eb){
 		eBrake = eb;
-//		train.setEBrake();
+		//		train.setEBrake();
 	}
-	
+
 	public void log(){
 	}
-	
-	public void tick(){
+
+	public void tick(double time){
 		currSpeed = train.getVelocity();
-//		speedLimit = train.getSpeedLimit();
+		//		speedLimit = train.getSpeedLimit();
 		authority = train.getAuthority();
-//		lights = train.getLight();
-//		doors = train.getDoor();
+		//		lights = train.getLight();
+		//		doors = train.getDoor();
 		temp = train.getTemperature();
-//		brake = train.getBrake();
-//		eBrake = train.getEmergencyBrake();
-//		routeInfo;
 		
+		//		brake = train.getBrake();
+		//		eBrake = train.getEmergencyBrake();
+		//		routeInfo;
+
 		panel.table.setValueAt(currSpeed, 0, 1);
 		panel.table.setValueAt(authority, 2, 1);
 		
-//		if (!train.getAuthority()){
-//			train.setEmergencyBrake();				// check authority
-//		} 
-/*		else if(brake==true){
+		
+		train.setPower(nextPower(setPointSpeed, currSpeed, time));
+		//		if (!train.getAuthority()){
+		//			train.setEmergencyBrake();				// check authority
+		//		} 
+		/*		else if(brake==true){
 			train.setBrake(true);
 		}
-				
+
 		else {
 			regulateSpeed();
 		}	*/	
 	}
-	
-/*	public void regulateSpeed(){	
+
+	/*	public void regulateSpeed(){	
 		double Pcmd;
-		
+
 		error = setPointSpeed - currSpeed;
 		Pcmd = Kp*error + Ki*currSpeed;
 
@@ -148,10 +161,40 @@ public class TrainController
 		}
 		train.setPower(Pcmd);
 	}*/
-	
-	public void stationAnounce(){
+
+	public double nextPower(double setpoint, double currentSpeed, double millis) {
 		
+		double integral; /* integral used for PID control */
+		double error;    /* difference between setpoint and currentSpeed */
+		double sampleTime; /* sample time */
+		double powerCommand; /* power to provide to engine */
+		double POWER_MAX = 120000;
+
+		sampleTime = millis/1000f;
+		error = setpoint - currentSpeed;
+
+		integral = integralLast + (sampleTime/2f)*(error + errorLast);
+		powerCommand = (INTEGRAL_GAIN * integral) + 
+		(PROPORTIONAL_GAIN * error);
+
+		if (powerCommand > POWER_MAX) {
+			integral = integralLast;
+			powerCommand = POWER_MAX;
+			}
+		else if (powerCommand <= 0.0f) {
+			integral = integralLast;
+			powerCommand = 0.0f;
+			}
+		integralLast = integral;
+		errorLast = error; 
+		System.out.println("Power = "+ powerCommand);
+		return powerCommand;
+
+		}
+
+	public void stationAnounce(){
+
 	}
-	
-	
+
+
 }
