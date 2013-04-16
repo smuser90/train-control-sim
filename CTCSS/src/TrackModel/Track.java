@@ -88,6 +88,7 @@ public class Track {
 	protected Line getNewLine() {
 		return newLine;
 	}
+	
 	protected Line getLine(String lName)
 	{
 		for(int i = 0; i < lines.size(); i++)

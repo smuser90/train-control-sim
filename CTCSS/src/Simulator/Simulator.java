@@ -50,7 +50,7 @@ public class Simulator implements Runnable{
 				*/
 				
 				tm.tick(realTime/1000.0);
-				
+				tcm.receiveTick();
 				if(trm.hasTrack()) {
 					newLine = trm.gotTrack();
 					this.loadGTrack();
@@ -148,10 +148,6 @@ public class Simulator implements Runnable{
 		ctc.setGLTrains(tids);
 	}
 	
-	public void closeBlock(int blockID) {
-		
-	}
-	
 	public void openBlock(int blockID) {
 		
 	}
@@ -162,6 +158,10 @@ public class Simulator implements Runnable{
 	
 	public void setSpeedLimit(int blockID) {
 		
+	}
+	
+	public void closeBLock(int bNum, String lName) {
+		trm.closeBlock(bNum, lName);
 	}
 	
 	public void loadGTrack() {

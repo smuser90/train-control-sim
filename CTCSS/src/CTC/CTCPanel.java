@@ -221,8 +221,13 @@ public class CTCPanel extends JPanel {
 	}
 	
 	public void blockActions() {
-		if(!blocksBox.getSelectedItem().equals("Blocks") && !blocksBox.getSelectedItem().equals("Block Actions")) {
-			log.append(3, "Not Yet Supported\n");
+		if(!blocksBox.getSelectedItem().equals("Blocks") && !blockActionsBox.getSelectedItem().equals("Block Actions")) {
+			if(blockActionsBox.getSelectedItem().equals("Close")) {
+				_ctc.closeBLock((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()));
+			}
+			else {
+				log.append(3, "Not Yet Supported\n");
+			}
 		} else {
 			log.append(3, "Not Yet Supported\n");
 		}	

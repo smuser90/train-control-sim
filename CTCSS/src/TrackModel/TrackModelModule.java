@@ -43,6 +43,6 @@ public class TrackModelModule {
 	
 	public void closeBlock(int bNum, String lineName)
 	{
-		tr.getLine(lineName).getBlock(bNum).closeBlock();
+		tr.getLine(lineName).getBlock(bNum).breakBlock();
 	}
 }

@@ -65,4 +65,9 @@ public class CTCModule {
 	public ArrayList<Integer> getGLTrains() {
 		return gTrainIDs;
 	}
+	
+	public void closeBLock(String lName, int bNum) {
+		System.out.println(lName);
+		sim.closeBLock(bNum, lName);
+	}
 }
