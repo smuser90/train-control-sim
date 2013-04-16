@@ -46,6 +46,16 @@ public class TrackModelModule {
 		tr.getLine(lineName).getBlock(bNum).breakBlock();
 	}
 	
+	public void openBlock(int bNum, String lineName)
+	{
+		tr.getLine(lineName).getBlock(bNum).fixBlock();
+	}
+	
+	public void setSpeedLimit(int bNum, String lineName, int newSpLim)
+	{
+		tr.getLine(lineName).getBlock(bNum).setSpeedLimit(newSpLim);
+	}
+	
 	public void printOpen() {
 		for(int i = 0; i < tr.getLines().size(); i++) {
 			System.out.println(tr.getLines().get(i).getName());

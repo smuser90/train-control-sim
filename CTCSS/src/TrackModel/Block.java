@@ -8,7 +8,7 @@ public class Block{
 	private int speedLimit; // speed limit on this block
 	private boolean occupied = false; // if there is a train on the block or not
 	private boolean open = true; // if the block is open or not
-	private boolean failure = false; // if this block fails
+	private boolean failure = false; // if this block fails, aka this block is broken!
 	private int type; // the type of this block, remember to check that it is either 0, 1, 2, or 3
 	private String section;
 	private boolean crossingUp = true; // if true, the crossing is up, if false then they're down
@@ -119,6 +119,8 @@ public class Block{
 		return this.trainID;
 	}
 	
+	/*
+	 * these methods are not needed, block open/close is equal to block fail/not fail
 	public void closeBlock()
 	{
 		this.open = false;
@@ -128,7 +130,7 @@ public class Block{
 	{
 		this.open = true;
 	}
-	
+	*/
 	public void breakBlock()
 	{
 		this.failure = true;
