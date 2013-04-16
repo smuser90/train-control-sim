@@ -32,12 +32,7 @@ public class CTCModule {
 		sim = s;
 	}
 	
-	protected void scheduleTrain(String line) {
-		if(sim != null) {
-			sim.scheduleTrain(line);
-			log.append(0, "Train added to " + line + " Line\n");
-		}
-	}
+
 	
 	protected ArrayList<String> getLines() {
 		return lineNames;
@@ -66,8 +61,25 @@ public class CTCModule {
 		return gTrainIDs;
 	}
 	
-	public void closeBLock(String lName, int bNum) {
+	protected void closeBLock(String lName, int bNum) {
 		sim.closeBLock(bNum, lName);
-		log.append(2, "BLock: " + bNum + " on Line: " + lName + "\n");
+		log.append(2, "CLosing BLock: " + bNum + " on Line: " + lName + "\n");
+	}
+	
+	protected void openBLock(String lName, int bNum) {
+		sim.openBLock(bNum, lName);
+		log.append(2, "Opening BLock: " + bNum + " on Line: " + lName + "\n");
+	}
+	
+	protected void setSpeedLimit(String lName, int bNum, int lim) {
+		sim.setSpeedLimit(bNum, lName, lim);
+		log.append(2, "Setting Speed Limit to " + lim + "KPH at BLock: " + bNum + " on Line: " + lName + "\n");
+	}
+	
+	protected void scheduleTrain(String line) {
+		if(sim != null) {
+			sim.scheduleTrain(line);
+			log.append(0, "Train added to " + line + " Line\n");
+		}
 	}
 }

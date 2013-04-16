@@ -15,6 +15,8 @@ import TrackModel.Block;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CTCPanel extends JPanel {
 	
@@ -75,6 +77,21 @@ public class CTCPanel extends JPanel {
 		panel.add(trainButton);
 		
 		blocksBox = new JComboBox();
+		blocksBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(blockActionsBox.getSelectedItem().equals("Set Speed Limit")) {
+					speedField.requestFocus();
+				}
+			}
+		});
+		blocksBox.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					blockActions();
+				}
+			}
+		});
 		blocksBox.setModel(new DefaultComboBoxModel(blockDef));
 		blocksBox.setBounds(10, 85, 136, 20);
 		panel.add(blocksBox);
@@ -89,11 +106,37 @@ public class CTCPanel extends JPanel {
 		panel.add(speedLabel);
 		
 		blockActionsBox = new JComboBox();
+		blockActionsBox.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					blockActions();
+				}
+			}
+		});
+		blockActionsBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(blockActionsBox.getSelectedItem().equals("Set Speed Limit")) {
+					speedField.requestFocus();
+					speedField.setEnabled(true);
+				} else {
+					speedField.setEnabled(false);
+				}
+			}
+		});
 		blockActionsBox.setModel(new DefaultComboBoxModel(blockADef));
 		blockActionsBox.setBounds(156, 85, 129, 20);
 		panel.add(blockActionsBox);
 		
 		speedField = new JTextField();
+		speedField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					blockActions();
+				}
+			}
+		});
 		speedField.setColumns(10);
 		speedField.setBounds(158, 113, 127, 20);
 		panel.add(speedField);
@@ -224,12 +267,37 @@ public class CTCPanel extends JPanel {
 		if(!blocksBox.getSelectedItem().equals("Blocks") && !blockActionsBox.getSelectedItem().equals("Block Actions")) {
 			if(blockActionsBox.getSelectedItem().equals("Close")) {
 				_ctc.closeBLock((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()));
+				blocksBox.setSelectedIndex(0);
+				blockActionsBox.setSelectedIndex(0);
+				
+			} else if(blockActionsBox.getSelectedItem().equals("Open")) {
+				_ctc.openBLock((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()));
+				blocksBox.setSelectedIndex(0);
+				blockActionsBox.setSelectedIndex(0);
 			}
 			else {
-				log.append(3, "Not Yet Supported\n");
+				try {
+					int temp = Integer.parseInt(this.speedField.getText());
+					// IT COULD BE OVER 9000!!!
+					if((temp > 0 && temp <= 70) || temp == 9001) {
+						if(temp == 9001)
+							temp = 70;
+						_ctc.setSpeedLimit((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()), temp);
+						speedField.setText("");
+						blocksBox.setSelectedIndex(0);
+						blockActionsBox.setSelectedIndex(0);
+					} else {
+						speedField.setText("");
+						log.append(3, "Speed Limit must be an integer s.t. 0 < x <= 70\n");
+					}
+				} catch(Exception e) {
+					this.speedField.setText("");
+					log.append(3, "Speed Limit must be an integer s.t. 0 < x <= 70\n");
+				}
 			}
+			
 		} else {
-			log.append(3, "Not Yet Supported\n");
+			log.append(3, "Must select a Block and a Block Action\n");
 		}	
 	}
 	
@@ -241,7 +309,7 @@ public class CTCPanel extends JPanel {
 		blocksBox.setEnabled(onoff);
 		trainButton.setEnabled(onoff);
 		blockButton.setEnabled(onoff);
-		speedField.setEnabled(onoff);
+		speedField.setEnabled(false);
 		authorityField.setEnabled(onoff);
 	}
 }

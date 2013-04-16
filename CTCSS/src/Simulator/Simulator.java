@@ -16,8 +16,8 @@ import TrainModel.TrainModelModule;
 public class Simulator implements Runnable{
 	
 	// Fields
-	private static final int trainsMax = 1;
-	private static int trains = 0;
+	//private static final int trainsMax = 1;
+	//private static int trains = 0;
 	private Log log = null;
 	private boolean paused = false;
 	private int realTime = 250;
@@ -30,31 +30,33 @@ public class Simulator implements Runnable{
 	private TrainModelModule tm;
 	private TrackModelModule trm;
 	private SpeedDialog sd;
-	private ArrayList<Block> myBlocks;
 	private Line newLine;
 	
 	public void run() {
 		try {
 			if(!paused) {
+				// Put simulator to sleep for current time step
 				Thread.sleep(realTime/timeStep);
+				
+				// Calculate and load new system time into log
 				sysTimeNum += realTime;
 				sysTime.setTime(sysTimeNum);
 				loadLogTime();
 				
-				
-				if(trains < trainsMax)
-				{
-					tm.addTrain("Dicks");
-					trains++;
-				}
-				
-				
+				// For the current tick tell the Trains and Track Controllers to update
 				tm.tick(realTime/1000.0);
 				tcm.receiveTick();
+				
+				// Check for new tracks and load them
 				if(trm.hasTrack()) {
 					newLine = trm.gotTrack();
 					this.loadGTrack();
 				}
+				/*if(trains < trainsMax)
+				{
+					tm.addTrain("Dicks");
+					trains++;
+				}*/
 			} else {
 				Thread.sleep(1000);
 			}
@@ -66,18 +68,6 @@ public class Simulator implements Runnable{
 	}
 	
 	public Simulator(CTCModule c, TrackControllerModule TcM, TrainModelModule TM, TrackModelModule Tmm) {
-		/*myBlocks = new ArrayList<Block>();
-		for (int blockCount = 0; blockCount < 5; blockCount++) {
-			Block blk = new Block(blockCount);
-			//blk.setBlockNumber(blockCount);
-			if(blockCount == 1)
-				blk.setType(1);
-			if(blockCount == 2)
-				blk.setType(2);
-			if(blockCount == 4)
-				blk.setType(3);
-			myBlocks.add(blk);
-		}*/
 		ctc = c;
 		tcm = TcM;
 		tm = TM;
@@ -124,17 +114,22 @@ public class Simulator implements Runnable{
 		return sysTimeNum;
 	}
 	
-	public ArrayList<Integer> getTrainIDs() {
+	public void loadGTrack() {
+		tcm.getTrack(newLine);
+		//ctc.setGLine(myBlocks);
+		ctc.addLine(newLine);
+		log.append(1, "Track Loaded\n");
+	}
+	
+	/*public ArrayList<Integer> getTrainIDs() {
 		return null;
 	}
 	
 	public ArrayList<Integer >getBlockIDs() {
 		return null;
-	}
+	}*/
 	
-	public void routTrain(int TrainID, int StationID) {
-		
-	}
+	/* Train Actions ***********************************************************/
 	
 	public void scheduleTrain(String line) {
 		tm.addTrain(line);
@@ -146,9 +141,10 @@ public class Simulator implements Runnable{
 			tids.add(trs[i]);
 		}
 		ctc.setGLTrains(tids);
+		tcm.receiveTrains(tm.getTrainList());
 	}
 	
-	public void openBlock(int blockID) {
+	public void routTrain(int TrainID, int StationID) {
 		
 	}
 	
@@ -156,7 +152,13 @@ public class Simulator implements Runnable{
 		
 	}
 	
-	public void setSpeedLimit(int blockID) {
+	/* BLock Actions ***********************************************************/
+	
+	public void setSpeedLimit(int bNum, String lName, int lim) {
+		
+	}
+	
+	public void openBLock(int bNum, String lName) {
 		
 	}
 	
@@ -164,10 +166,5 @@ public class Simulator implements Runnable{
 		trm.closeBlock(bNum, lName);
 	}
 	
-	public void loadGTrack() {
-		tcm.getTrack(newLine);
-		//ctc.setGLine(myBlocks);
-		ctc.addLine(newLine);
-		log.append(1, "Track Loaded\n");
-	}
+	
 }

@@ -14,7 +14,9 @@ import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -42,7 +44,8 @@ public class TrackControllerPanel extends JPanel {
 	private ArrayList<TrackController> trackControllerList = null;
 	private ArrayList<Block> blockList;
 	private ArrayList<Integer> numberSwitch;
-	private ArrayList<Integer> trainList;
+	//private ArrayList<Integer> trainList;
+	private Map trainList;
 	private ArrayList<Integer> crossingList;
 	private ArrayList<Integer> brokenRailList;
 	private int index = 0;
@@ -202,6 +205,7 @@ public class TrackControllerPanel extends JPanel {
 
 	protected void displayChange() {
 			int tempPos = comboBox.getSelectedIndex();
+			trainList = _tcm.getTrainList();
 			reset();
 			comboBox.setSelectedIndex(tempPos);
 			if(comboBox.getSelectedItem().equals("Lines")) {
@@ -222,6 +226,14 @@ public class TrackControllerPanel extends JPanel {
 						crossingList.add(i);
 				}
 				trainList = _tcm.getTrainList();
+				
+				String trainliststring = "";
+				for(int x = 0; x < trainList.size(); x++)
+				{
+					trainliststring = trainliststring + trainList.get(x) + "\n";
+				}
+				
+				System.out.println("Here is the train List: \n" + trainliststring);
 				//System.out.println("Crossing list is size: " + crossingList.size());
 				//numberSwitch = _tcm.getSwitchList();
 				trackControllerList = _tcm.getTrCList(comboBox.getSelectedIndex() - 1);

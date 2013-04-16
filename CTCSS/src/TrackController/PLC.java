@@ -72,7 +72,6 @@ public class PLC {
 	public static void detectBrokenRail(TrackController trackController){
 		for(index = 0; index < trackController.blocksControlled.size(); index++)
 		{
-			
 			if(myBlocks.get(trackController.blocksControlled.get(index).getBlockNumber()).getFailure())
 			{
 				if(!trackController.brokenRails.contains(trackController.blocksControlled.get(index).getBlockNumber())) {
@@ -82,7 +81,12 @@ public class PLC {
 					//if not the yard, and train within one block of the broken rail it needs to hit EBrake
 					if(index > 0)
 					{
-						
+						//for(int i = 0; i < trainList.size(); i++){
+							//if(trainList.get(i).m_routeInfo.contains(trackControlller.blocksControlled.get(index).getBlockNumber()){
+								//CALL REROUTE BECAUSE THAT TRAIN PATH CONTAINS THE BROKEN RAIL
+								//
+						//}
+						//}
 					}
 				}
 			}
