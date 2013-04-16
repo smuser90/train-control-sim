@@ -10,8 +10,10 @@ public class TrackController {
 	private int track;
 	private int trains;
 	protected ArrayList<Block> blocksControlled = new ArrayList<Block>();
+	protected ArrayList<Integer> brokenRails = new ArrayList<Integer>();
 
 	static int index;
+	static int index_2;
 	public TrackController(int tcIndex, ArrayList<Block> controlled){
 		this.blocksControlled = controlled;
 		this.number = tcIndex;
@@ -21,10 +23,13 @@ public class TrackController {
 		//reportBrokenRailToCTC(blockNumber);
 	}
 	
-	public static void runPLC(ArrayList<TrackController> trackControllerList){
+	public static void runPLC(ArrayList<ArrayList<TrackController>> trackControllerList){
 		for(index = 0; index < trackControllerList.size(); index++)
 		{
-			PLC.runPLC(trackControllerList.get(index));
+			for(index_2 = 0; index_2 < trackControllerList.get(index).size(); index_2++)
+			{
+				PLC.runPLC(trackControllerList.get(index).get(index_2));
+			}
 		}
 	}
 	
@@ -41,7 +46,7 @@ public class TrackController {
 	}
 	
 	public int getNumBlocks() {
-		return blocks;
+		return this.blocksControlled.size();
 	}
 	
 	public int getTrackNum() {
@@ -50,5 +55,13 @@ public class TrackController {
 	
 	public int getID() {
 		return number;
+	}
+	
+	public void setBrokenRail(ArrayList<Integer> brokenRail){
+		brokenRails = brokenRail;
+	}
+	
+	public ArrayList<Integer> getBrokenRail(){
+		return brokenRails;
 	}
 }

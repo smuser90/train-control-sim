@@ -44,10 +44,12 @@ public class TrackControllerPanel extends JPanel {
 	private ArrayList<Integer> numberSwitch;
 	private ArrayList<Integer> trainList;
 	private ArrayList<Integer> crossingList;
+	private ArrayList<Integer> brokenRailList;
 	private int index = 0;
 	private String myTrainList = "";
 	private String mySwitchList = "";
 	private String myCrossingList = "";
+	private String myBrokenRailList = "";
 	private boolean hasInfo = false;
 	/**
 	 * Create the panel.
@@ -206,8 +208,22 @@ public class TrackControllerPanel extends JPanel {
 			return;
 		} else {
 			blockList = _tcm.getBlockList((String)comboBox.getSelectedItem());
+			numberSwitch.clear();
+			for(int i = 0; i < blockList.size(); i++)
+			{
+				if(blockList.get(i).getType() == 1)
+					numberSwitch.add(i);
+			}
+			
+			crossingList.clear();
+			for(int i = 0; i < blockList.size(); i++)
+			{
+				if(blockList.get(i).getType() == 2)
+					crossingList.add(i);
+			}
 			trainList = _tcm.getTrainList();
-			numberSwitch = _tcm.getSwitchList();
+			System.out.println("Crossing list is size: " + crossingList.size());
+			//numberSwitch = _tcm.getSwitchList();
 			trackControllerList = _tcm.getTrCList(comboBox.getSelectedIndex() - 1);
 			hasInfo = true;
 			if(trackControllerList.size() > 1) {
@@ -229,20 +245,11 @@ public class TrackControllerPanel extends JPanel {
 			{
 				myTrainList = myTrainList + "Train on Block: " + blockList.get(index).getBlockNumber() + "\n";
 			}
-			//else{}
 		}
 		txtrTrainId.setText(myTrainList);
 		myTrainList = "";
 		for(index = 0; index < numberSwitch.size(); index++)
 		{
-			System.out.println("number Switch index " + index + " is " + numberSwitch.get(index));
-			System.out.println("is this block controlled " + trackControllerList.get(0).blocksControlled.get(1).getBlockNumber());
-
-			if(trackControllerList.get(currentController).blocksControlled.contains(numberSwitch.get(index)))
-			{
-				mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + (numberSwitch.get(index).intValue() + 1) +"\n";
-			System.out.println("number Switch size " + numberSwitch.size());
-			//System.out.println("is this block controlled " + trackControllerList.get(0).blocksControlled.get(1).getBlockNumber());
 			for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
 				if(trackControllerList.get(currentController).blocksControlled.get(i).getBlockNumber() == numberSwitch.get(index))
 				{
@@ -257,17 +264,34 @@ public class TrackControllerPanel extends JPanel {
 		myCrossingList = "";
 		for(index = 0; index < crossingList.size(); index++)
 		{
-			if(trackControllerList.get(currentController).blocksControlled.contains(crossingList.get(index)))
-			{
-				if(blockList.get(crossingList.get(index)).getCrossing() == true)
-					myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is DOWN" ;
-				else if(blockList.get(crossingList.get(index)).getCrossing() == false)
-					myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is UP" ;
+			for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
+				if(trackControllerList.get(currentController).blocksControlled.get(i).getBlockNumber() == crossingList.get(index))
+				{
+					if(blockList.get(crossingList.get(index)).getCrossing() == true)
+						myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is DOWN" ;
+					else if(blockList.get(crossingList.get(index)).getCrossing() == false)
+						myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is UP" ;
+				}
 			}
 		}
 		txtrCrossingAtBlock.setText(myCrossingList);
 		myCrossingList = "";
-		}
+		
+		//for(index = 0; index < numberSwitch.size(); index++)
+		//{
+			for(int i = 0; i < trackControllerList.get(currentController).brokenRails.size(); i++)
+			//for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
+				//if(trackControllerList.get(currentController).blocksControlled.get(i).)
+				{
+					myBrokenRailList = myBrokenRailList + "Broken Rail at Block " + trackControllerList.get(currentController).brokenRails.get(i) + "\n";
+				}
+			//}
+		//}
+		txtrBrokenRailAt.setText(myBrokenRailList);
+		myBrokenRailList = "";
+		
+		
+		
 		}
 	}
 	
