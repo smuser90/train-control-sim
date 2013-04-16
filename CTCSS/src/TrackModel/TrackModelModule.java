@@ -45,4 +45,13 @@ public class TrackModelModule {
 	{
 		tr.getLine(lineName).getBlock(bNum).breakBlock();
 	}
+	
+	public void printOpen() {
+		for(int i = 0; i < tr.getLines().size(); i++) {
+			System.out.println(tr.getLines().get(i).getName());
+			for(int j = 0; j < tr.getLines().get(i).getBlocks().size(); j++) {
+				System.out.println(tr.getLines().get(i).getBlocks().get(j).getBlockNumber() + ":" + tr.getLines().get(i).getBlocks().get(j).getFailure());
+			}
+		}
+	}
 }

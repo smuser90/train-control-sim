@@ -89,7 +89,7 @@ public class Track {
 		return newLine;
 	}
 	
-	protected Line getLine(String lName)
+	public Line getLine(String lName)
 	{
 		for(int i = 0; i < lines.size(); i++)
 		{
@@ -99,5 +99,9 @@ public class Track {
 			}
 		}
 		return null;
+	}
+	
+	public ArrayList<Line> getLines() {
+		return lines;
 	}
 }

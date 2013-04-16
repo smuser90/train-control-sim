@@ -7,16 +7,17 @@ import java.util.ArrayList;
 public class PLC {
 
 	private static ArrayList<Block> myBlocks = new ArrayList<Block>();//TrackControllerModule.myBlocks;
-	private static ArrayList<Integer> crossingList;
+	private static ArrayList<Integer> crossingList = null;
 	private static ArrayList<Integer> brokenRailList;
 	private static TrackController _tc;
 	
 	static int index = 0;
 	static int index_2 = 0;
 	
-	public static void runPLC(TrackController trackController) {
+	public static void runPLC(TrackController trackController, ArrayList<Block> bL) {
+		myBlocks = bL;
 		detectTrains(trackController);
-		crossings();
+		//crossings();
 		detectBrokenRail(trackController);
 		//System.out.println("Here in runPLC in the PLC class with trackcontroller " + trackController.getID());
 	}
@@ -71,16 +72,21 @@ public class PLC {
 	public static void detectBrokenRail(TrackController trackController){
 		for(index = 0; index < trackController.blocksControlled.size(); index++)
 		{
+			
 			if(myBlocks.get(trackController.blocksControlled.get(index).getBlockNumber()).getFailure())
 			{
-				trackController.brokenRails.add(index);
-				//brokenRailList.add(myBlocks.get(trackController.blocksControlled.get(index).getBlockNumber());
-				//if not the yard, and train within one block of the broken rail it needs to hit EBrake
-				if(index > 0)
-				{
-					
+				if(!trackController.brokenRails.contains(trackController.blocksControlled.get(index).getBlockNumber())) {
+					trackController.brokenRails.add(trackController.blocksControlled.get(index).getBlockNumber());
+					trackController.isChanged = true;
+					//brokenRailList.add(myBlocks.get(trackController.blocksControlled.get(index).getBlockNumber());
+					//if not the yard, and train within one block of the broken rail it needs to hit EBrake
+					if(index > 0)
+					{
+						
+					}
 				}
 			}
+			
 		}
 		//trackController.setBrokenRail(brokenRail);
 		//_tc.setBrokenRail();

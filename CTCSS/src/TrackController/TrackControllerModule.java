@@ -149,7 +149,6 @@ public class TrackControllerModule {
 //			trackControllerList.add(tc);
 //		}
 		hasTrack = true;
-		PLC.setup(myBlocks, crossingList);
 		//runPLC();
 		currentPanel.displayChange();
 		runPLC();
@@ -182,14 +181,23 @@ public class TrackControllerModule {
 	public void receiveTick() {
 		if(hasTrack) {
 			runPLC();
-			currentPanel.displayChange();
 		}
 	}
 	
 	/**************************************************************************************
 	 * CALL ME ONCE PER TICK**************************************************************/
 	public void runPLC(){
-		TrackController.runPLC(trackControllerList);
+		TrackController.runPLC(trackControllerList, lines);
+		/*for(int i = 0; i < trackControllerList.size(); i++) {
+			for(int j = 0; j < trackControllerList.get(i).size(); j++) {
+				for(int k = 0; k < trackControllerList.get(i).get(j).brokenRails.size(); k++) {
+					System.out.println(i+":"+j+":"+trackControllerList.get(i).get(j).brokenRails.get(k));
+				}
+			}
+		}*/
+		if(currentPanel.getCL() >= 0 && trackControllerList.get(currentPanel.getCL()).get(currentPanel.getCC()).isChanged) {
+			currentPanel.displayChange();
+		}
 	}
 
 	protected ArrayList<Block> getBlockList(String line) {

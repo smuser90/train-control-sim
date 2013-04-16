@@ -67,7 +67,7 @@ public class CTCModule {
 	}
 	
 	public void closeBLock(String lName, int bNum) {
-		System.out.println(lName);
 		sim.closeBLock(bNum, lName);
+		log.append(2, "BLock: " + bNum + " on Line: " + lName + "\n");
 	}
 }

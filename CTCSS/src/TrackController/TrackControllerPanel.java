@@ -39,7 +39,7 @@ public class TrackControllerPanel extends JPanel {
 	private TrackControllerModule _tcm;
 	private int currentController = 0;
 	
-	private ArrayList<TrackController> trackControllerList;
+	private ArrayList<TrackController> trackControllerList = null;
 	private ArrayList<Block> blockList;
 	private ArrayList<Integer> numberSwitch;
 	private ArrayList<Integer> trainList;
@@ -201,98 +201,100 @@ public class TrackControllerPanel extends JPanel {
 	}
 
 	protected void displayChange() {
-		int tempPos = comboBox.getSelectedIndex();
-		reset();
-		comboBox.setSelectedIndex(tempPos);
-		if(comboBox.getSelectedItem().equals("Lines")) {
-			return;
-		} else {
-			blockList = _tcm.getBlockList((String)comboBox.getSelectedItem());
-			numberSwitch.clear();
-			for(int i = 0; i < blockList.size(); i++)
-			{
-				if(blockList.get(i).getType() == 1)
-					numberSwitch.add(i);
-			}
-			
-			crossingList.clear();
-			for(int i = 0; i < blockList.size(); i++)
-			{
-				if(blockList.get(i).getType() == 2)
-					crossingList.add(i);
-			}
-			trainList = _tcm.getTrainList();
-			System.out.println("Crossing list is size: " + crossingList.size());
-			//numberSwitch = _tcm.getSwitchList();
-			trackControllerList = _tcm.getTrCList(comboBox.getSelectedIndex() - 1);
-			hasInfo = true;
-			if(trackControllerList.size() > 1) {
-				btnNewButton_1.setEnabled(true);
-				btnNewButton.setEnabled(true);
-			}
-			
-			if (currentController == trackControllerList.size())
-				currentController = 0;
-			else if(currentController == -1)
-				currentController = trackControllerList.size()-1;
-					lblNewLabel.setText("Controller: " + trackControllerList.get(currentController).getID());
-					lblNewLabel_2.setText("Blocks: " + trackControllerList.get(currentController).getNumBlocks());
-					lblNewLabel_1.setText("Trains: " + trackControllerList.get(currentController).getNumTrains());
-			
-		for(index = 0; index < trackControllerList.get(currentController).blocksControlled.size(); index++)
-		{
-			if(trackControllerList.get(currentController).blocksControlled.contains(blockList.get(index).getBlockNumber()) && blockList.get(index).getOccupied())
-			{
-				myTrainList = myTrainList + "Train on Block: " + blockList.get(index).getBlockNumber() + "\n";
-			}
-		}
-		txtrTrainId.setText(myTrainList);
-		myTrainList = "";
-		for(index = 0; index < numberSwitch.size(); index++)
-		{
-			for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
-				if(trackControllerList.get(currentController).blocksControlled.get(i).getBlockNumber() == numberSwitch.get(index))
+			int tempPos = comboBox.getSelectedIndex();
+			reset();
+			comboBox.setSelectedIndex(tempPos);
+			if(comboBox.getSelectedItem().equals("Lines")) {
+				return;
+			} else {
+				blockList = _tcm.getBlockList((String)comboBox.getSelectedItem());
+				numberSwitch.clear();
+				for(int i = 0; i < blockList.size(); i++)
 				{
-					mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + (numberSwitch.get(index).intValue() + 1) +"\n";
+					if(blockList.get(i).getType() == 1)
+						numberSwitch.add(i);
+				}
+				
+				crossingList.clear();
+				for(int i = 0; i < blockList.size(); i++)
+				{
+					if(blockList.get(i).getType() == 2)
+						crossingList.add(i);
+				}
+				trainList = _tcm.getTrainList();
+				//System.out.println("Crossing list is size: " + crossingList.size());
+				//numberSwitch = _tcm.getSwitchList();
+				trackControllerList = _tcm.getTrCList(comboBox.getSelectedIndex() - 1);
+				hasInfo = true;
+				if(trackControllerList.size() > 1) {
+					btnNewButton_1.setEnabled(true);
+					btnNewButton.setEnabled(true);
+				}
+				
+				if (currentController == trackControllerList.size())
+					currentController = 0;
+				else if(currentController == -1)
+					currentController = trackControllerList.size()-1;
+						lblNewLabel.setText("Controller: " + trackControllerList.get(currentController).getID());
+						lblNewLabel_2.setText("Blocks: " + trackControllerList.get(currentController).getNumBlocks());
+						lblNewLabel_1.setText("Trains: " + trackControllerList.get(currentController).getNumTrains());
+				
+			for(index = 0; index < trackControllerList.get(currentController).blocksControlled.size(); index++)
+			{
+				if(trackControllerList.get(currentController).blocksControlled.contains(blockList.get(index).getBlockNumber()) && blockList.get(index).getOccupied())
+				{
+					myTrainList = myTrainList + "Train on Block: " + blockList.get(index).getBlockNumber() + "\n";
 				}
 			}
-		}
-		txtrSwitchAtBlock.setText(mySwitchList);
-		mySwitchList = "";
-			
-		
-		myCrossingList = "";
-		for(index = 0; index < crossingList.size(); index++)
-		{
-			for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
-				if(trackControllerList.get(currentController).blocksControlled.get(i).getBlockNumber() == crossingList.get(index))
-				{
-					if(blockList.get(crossingList.get(index)).getCrossing() == true)
-						myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is DOWN" ;
-					else if(blockList.get(crossingList.get(index)).getCrossing() == false)
-						myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is UP" ;
+			txtrTrainId.setText(myTrainList);
+			myTrainList = "";
+			for(index = 0; index < numberSwitch.size(); index++)
+			{
+				for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
+					if(trackControllerList.get(currentController).blocksControlled.get(i).getBlockNumber() == numberSwitch.get(index))
+					{
+						mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + (numberSwitch.get(index).intValue() + 1) +"\n";
+					}
 				}
 			}
-		}
-		txtrCrossingAtBlock.setText(myCrossingList);
-		myCrossingList = "";
-		
-		//for(index = 0; index < numberSwitch.size(); index++)
-		//{
-			for(int i = 0; i < trackControllerList.get(currentController).brokenRails.size(); i++)
-			//for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
-				//if(trackControllerList.get(currentController).blocksControlled.get(i).)
-				{
-					myBrokenRailList = myBrokenRailList + "Broken Rail at Block " + trackControllerList.get(currentController).brokenRails.get(i) + "\n";
+			txtrSwitchAtBlock.setText(mySwitchList);
+			mySwitchList = "";
+				
+			
+			myCrossingList = "";
+			for(index = 0; index < crossingList.size(); index++)
+			{
+				for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
+					if(trackControllerList.get(currentController).blocksControlled.get(i).getBlockNumber() == crossingList.get(index))
+					{
+						if(blockList.get(crossingList.get(index)).getCrossing() == true)
+							myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is DOWN" ;
+						else if(blockList.get(crossingList.get(index)).getCrossing() == false)
+							myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is UP" ;
+					}
 				}
+			}
+			txtrCrossingAtBlock.setText(myCrossingList);
+			myCrossingList = "";
+			
+			//for(index = 0; index < numberSwitch.size(); index++)
+			//{
+			
+				for(int i = 0; i < trackControllerList.get(currentController).brokenRails.size(); i++)
+				//for(int i = 0; i < trackControllerList.get(currentController).blocksControlled.size(); i++){
+					//if(trackControllerList.get(currentController).blocksControlled.get(i).)
+					{
+						myBrokenRailList = myBrokenRailList + "Broken Rail at Block " + trackControllerList.get(currentController).brokenRails.get(i) + "\n";
+					}
+				//}
 			//}
-		//}
-		txtrBrokenRailAt.setText(myBrokenRailList);
-		myBrokenRailList = "";
-		
-		
-		
-		}
+			txtrBrokenRailAt.setText(myBrokenRailList);
+			myBrokenRailList = "";
+			
+			
+			trackControllerList.get(currentController).isChanged = false;
+			}
+			
 	}
 	
 	private void reset() {
@@ -310,5 +312,13 @@ public class TrackControllerPanel extends JPanel {
 		btnNewButton_1.setEnabled(false);
 		btnNewButton.setEnabled(false);
 
+	}
+	
+	protected int getCC() {
+		return this.currentController;
+	}
+	
+	protected int getCL() {
+		return this.comboBox.getSelectedIndex() - 1;
 	}
 }
