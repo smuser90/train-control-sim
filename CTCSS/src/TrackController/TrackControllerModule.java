@@ -11,6 +11,7 @@ import TrackModel.Line;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class TrackControllerModule {
 	
@@ -22,7 +23,7 @@ public class TrackControllerModule {
 	//private ArrayList<ArrayList<Integer>> switchList;
 	private ArrayList<Integer> switchList;
 	//private ArrayList<Integer> trainList;
-	private HashMap trainList;
+	private Map trainList;
 	private ArrayList<Integer> crossingList;
 	private int upperLimit;
 	private int lowerLimit;
@@ -183,7 +184,7 @@ public class TrackControllerModule {
 		}
 	}
 	
-	public void receiveTrains(HashMap newTrainList){
+	public void receiveTrains(Map newTrainList){
 		trainList = newTrainList;
 	}
 	
@@ -211,7 +212,7 @@ public class TrackControllerModule {
 		return null;
 	}
 	
-	protected HashMap getTrainList() {
+	protected Map getTrainList() {
 		return trainList;
 	}
 	

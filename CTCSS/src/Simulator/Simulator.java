@@ -66,18 +66,6 @@ public class Simulator implements Runnable{
 	}
 	
 	public Simulator(CTCModule c, TrackControllerModule TcM, TrainModelModule TM, TrackModelModule Tmm) {
-		/*myBlocks = new ArrayList<Block>();
-		for (int blockCount = 0; blockCount < 5; blockCount++) {
-			Block blk = new Block(blockCount);
-			//blk.setBlockNumber(blockCount);
-			if(blockCount == 1)
-				blk.setType(1);
-			if(blockCount == 2)
-				blk.setType(2);
-			if(blockCount == 4)
-				blk.setType(3);
-			myBlocks.add(blk);
-		}*/
 		ctc = c;
 		tcm = TcM;
 		tm = TM;
@@ -146,17 +134,20 @@ public class Simulator implements Runnable{
 			tids.add(trs[i]);
 		}
 		ctc.setGLTrains(tids);
+		tcm.receiveTrains(tm.getTrainList());
 	}
 	
-	public void openBlock(int blockID) {
-		
-	}
+	
 	
 	public void setAuthority(int trainID) {
 		
 	}
 	
-	public void setSpeedLimit(int blockID) {
+	public void setSpeedLimit(int bNum, String lName, int lim) {
+		
+	}
+	
+	public void openBLock(int bNum, String lName) {
 		
 	}
 	

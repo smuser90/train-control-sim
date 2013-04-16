@@ -16,6 +16,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -44,7 +45,7 @@ public class TrackControllerPanel extends JPanel {
 	private ArrayList<Block> blockList;
 	private ArrayList<Integer> numberSwitch;
 	//private ArrayList<Integer> trainList;
-	private HashMap trainList;
+	private Map trainList;
 	private ArrayList<Integer> crossingList;
 	private ArrayList<Integer> brokenRailList;
 	private int index = 0;
