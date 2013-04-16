@@ -11,10 +11,12 @@ public class Block{
 	private boolean failure = false; // if this block fails, aka this block is broken!
 	private int type; // the type of this block, remember to check that it is either 0, 1, 2, or 3
 	private String section;
+	private String stationName;
 	private boolean crossingUp = true; // if true, the crossing is up, if false then they're down
+	private int isBelowGround; // 0 for above ground, 1 for below ground 
 	/*
 	 * in text file:
-	 * bID nextB bType bLength bGrade bSpLim bSection
+	 * bID nextB bType bLength bGrade bSpLim bSection belowGround stationName
 	 */
 	
 	// how are we gonna implement switching???
@@ -45,7 +47,7 @@ public class Block{
 	// final: all this shit
 	
 	
-	public Block(int len, double gr, int bID, int spLim, int ty, String sec)
+	public Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName)
 	{
 		this.number = bID;
 		this.type = ty;
@@ -53,6 +55,8 @@ public class Block{
 		this.grade = gr;		
 		this.speedLimit = spLim;
 		this.section = sec;
+		this.isBelowGround = belGnd;
+		this.stationName = statName;
 	}
 	
 	
@@ -153,7 +157,19 @@ public class Block{
 		this.trainID = 0;
 	}
 	
+	public boolean isUnderground()
+	{
+		if (isBelowGround == 0)
+		{
+			return false;
+		}
+		return true;
+	}
 	
+	public String getStationName()
+	{
+		return this.stationName;
+	}
 	
 	
 }

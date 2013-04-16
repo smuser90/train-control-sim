@@ -41,7 +41,8 @@ public class TrackModelModuleTester {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 845, 470);
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 690, 470);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
