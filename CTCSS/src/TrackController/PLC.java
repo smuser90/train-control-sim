@@ -68,7 +68,7 @@ public class PLC {
 	public static void detectBrokenRail(TrackController trackController){
 		for(index = 0; index < trackController.blocksControlled.size(); index++)
 		{
-			if(myBlocks.get(trackController.blocksControlled.get(index)).getFailure())
+			if(myBlocks.get(trackController.blocksControlled.get(index).getBlockNumber()).getFailure())
 			{
 				//if not the yard, and train within one block of the broken rail it needs to hit EBrake
 				if(index > 0)

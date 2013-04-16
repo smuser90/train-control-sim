@@ -2,19 +2,19 @@ package TrackController;
 
 import java.util.ArrayList;
 
+import TrackModel.Block;
+
 public class TrackController {
 	private int blocks;
 	private int number;
 	private int track;
 	private int trains;
-	protected ArrayList<Integer> blocksControlled = new ArrayList<Integer>();
+	protected ArrayList<Block> blocksControlled = new ArrayList<Block>();
 
 	static int index;
-	public TrackController(int num, int block, int trk, int train){
-		this.blocks = block;
-		this.number = num;
-		this.track = trk;		
-		this.trains = train;
+	public TrackController(int tcIndex, ArrayList<Block> controlled){
+		this.blocksControlled = controlled;
+		this.number = tcIndex;
 	}
 
 	public static void reportBrokenRail(int blockNumber) {
@@ -41,11 +41,11 @@ public class TrackController {
 	}
 	
 	public int getNumBlocks() {
-		return blocks;
+		return this.blocksControlled.size();
 	}
 	
 	public int getTrackNum() {
-		return track;
+		return 0;
 	}
 	
 	public int getID() {

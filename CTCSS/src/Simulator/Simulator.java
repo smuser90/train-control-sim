@@ -165,7 +165,7 @@ public class Simulator implements Runnable{
 	}
 	
 	public void loadGTrack() {
-		//tcm.getTrack(myBlocks);
+		tcm.getTrack(newLine);
 		//ctc.setGLine(myBlocks);
 		ctc.addLine(newLine);
 		log.append(1, "Track Loaded\n");
