@@ -27,7 +27,7 @@ public class CTCTester {
 		myBlocks = new ArrayList<Block>();
 		tids = new ArrayList<Integer>();
 		/*
-		/*for (int blockCount = 0; blockCount < 5; blockCount++) {
+		for (int blockCount = 0; blockCount < 5; blockCount++) {
 			Block blk = new Block(blockCount);
 			//blk.setBlockNumber(blockCount);
 			if(blockCount == 1)
@@ -74,6 +74,7 @@ public class CTCTester {
 		btnGetTrack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//ctc.setGLine(myBlocks);
+
 			}
 		});
 		btnGetTrack.setBounds(10, 473, 89, 23);
