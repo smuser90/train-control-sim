@@ -311,7 +311,7 @@ public class TrainModel
 		return m_lights;
 	}
 	
-	public void toggleLights(boolean lights)
+	public void toggleLights()
 	{
 		m_lights = !m_lights;
 		if(m_lights)
@@ -325,7 +325,7 @@ public class TrainModel
 		return m_doors;
 	}
 	
-	public void toggleDoors(boolean doors)
+	public void toggleDoors()
 	{
 		m_doors = !m_doors;
 		if(m_doors)
