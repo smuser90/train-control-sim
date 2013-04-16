@@ -81,7 +81,7 @@ public class TrackControllerTester {
 		JButton btnGettrack = new JButton("GetTrack");
 		btnGettrack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				trc.getTrack(myBlocks);
+				//trc.getTrack(myBlocks);
 			}
 		});
 		btnGettrack.setBounds(109, 432, 89, 23);

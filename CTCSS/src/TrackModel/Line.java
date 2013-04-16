@@ -28,7 +28,11 @@ public class Line {
 	}
 	
 	// these will be for testing, to make sure stuff loads I suppose
-	protected int V() { return V; }
+	public int V() { return V; }
+	
+	public ArrayList<Integer> adj(int v) {
+		return this.trackAdjList.get(v);
+	}
 	protected int E() { return E; }
 	
 	
@@ -64,5 +68,9 @@ public class Line {
 	
 	public String getName() {
 		return this.lineName;
+	}
+	
+	public Block getBlock(int blockID){
+		return this.blockList.get(blockID);
 	}
 }
