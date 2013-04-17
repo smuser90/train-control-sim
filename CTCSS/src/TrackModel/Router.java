@@ -19,7 +19,7 @@ public class Router {
 		route(r, start, end);
 		if(done)
 			train.setRouteInfo(r);
-		else if(blocks.get(start).getType() == 3)
+		else if(!done && blocks.get(start).getType() == 3)
 			train.setRouteInfo(null);
 	}
 	
