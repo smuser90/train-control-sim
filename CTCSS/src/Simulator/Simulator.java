@@ -34,6 +34,8 @@ public class Simulator implements Runnable{
 	private SpeedDialog sd;
 	private Line newLine;
 	
+	/* Simulator Ops **********************************************************************/
+	
 	public void run() {
 		try {
 			if(!paused) {

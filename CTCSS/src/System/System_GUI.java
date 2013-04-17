@@ -254,6 +254,7 @@ public class System_GUI {
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mntmAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				new AboutDialog();
 			}
 		});
 		mnFile.add(mntmAbout);
