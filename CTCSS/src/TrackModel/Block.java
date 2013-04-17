@@ -13,7 +13,10 @@ public class Block{
 	private String section;
 	private String stationName;
 	private boolean crossingUp = true; // if true, the crossing is up, if false then they're down
-	private int isBelowGround; // 0 for above ground, 1 for below ground 
+	private int isBelowGround; // 0 for above ground, 1 for below ground
+	private int switchedTo;
+	// maybe, in the switch block to alternate, i will just switch the two blocks in the arrayList, so that the default is the first on in the list?
+	// add an attribute to tell which switch a switch block is pointed towards
 	/*
 	 * in text file:
 	 * bID nextB bType bLength bGrade bSpLim bSection belowGround stationName
@@ -47,7 +50,7 @@ public class Block{
 	// final: all this shit
 	
 	
-	public Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName)
+	public Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int swiTo)
 	{
 		this.number = bID;
 		this.type = ty;
@@ -57,6 +60,7 @@ public class Block{
 		this.section = sec;
 		this.isBelowGround = belGnd;
 		this.stationName = statName;
+		this.switchedTo = swiTo;
 	}
 	
 	
@@ -176,5 +180,14 @@ public class Block{
 		return this.stationName;
 	}
 	
+	public int getSwitchedTo()
+	{
+		return this.switchedTo;
+	}
+	
+	public void setSwitchedTo(int s)
+	{
+		this.switchedTo = s;
+	}
 	
 }

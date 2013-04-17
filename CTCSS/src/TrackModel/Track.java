@@ -48,16 +48,17 @@ public class Track {
             	} else {
             		String [] lineItms = line.split(" ");
             		if(curBlock == -1) {
-            			// addBlock(int bID, int type, int len, double grade, int speedLimit, String sect, int belowGnd, String stationName)
-            			cLine.addBlock(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[2]) , Integer.parseInt(lineItms[3]) , Double.parseDouble(lineItms[4]) , Integer.parseInt(lineItms[5]) , lineItms[6] , Integer.parseInt(lineItms[7]) , lineItms[8] );
+            			// addBlock(int bID, int type, int len, double grade, int speedLimit, String sect, int belowGnd, String stationName, int switchedTo)
+            			cLine.addBlock(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[2]) , Integer.parseInt(lineItms[3]) , Double.parseDouble(lineItms[4]) , Integer.parseInt(lineItms[5]) , lineItms[6] , Integer.parseInt(lineItms[7]) , lineItms[8] , Integer.parseInt(lineItms[1]) );
             			cLine.addEdge(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[1]));
             			curBlock = Integer.parseInt(lineItms[0]);
             		} else {
             			if(curBlock != Integer.parseInt(lineItms[0])) {
-            				cLine.addBlock(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[2]) , Integer.parseInt(lineItms[3]) , Double.parseDouble(lineItms[4]) , Integer.parseInt(lineItms[5]) , lineItms[6] , Integer.parseInt(lineItms[7]) , lineItms[8] );
+            				cLine.addBlock(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[2]) , Integer.parseInt(lineItms[3]) , Double.parseDouble(lineItms[4]) , Integer.parseInt(lineItms[5]) , lineItms[6] , Integer.parseInt(lineItms[7]) , lineItms[8] , Integer.parseInt(lineItms[1]) );
             				//cLine.addBlock(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[2]) , Integer.parseInt(lineItms[3]) , Double.parseDouble(lineItms[4]) , Integer.parseInt(lineItms[5]) , lineItms[6] );
             			}
             			cLine.addEdge(Integer.parseInt(lineItms[0]), Integer.parseInt(lineItms[1]));
+            			cLine.getBlock(curBlock).setSwitchedTo(Integer.parseInt(lineItms[2]));
             			curBlock = Integer.parseInt(lineItms[0]);
             		}
             	}

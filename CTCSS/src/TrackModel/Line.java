@@ -34,7 +34,6 @@ public class Line {
 	public ArrayList<Integer> adj(int v) {
 		return this.trackAdjList.get(v);
 	}
-
 	
 	
 	public void addEdge(int v, int w) // adds a one-way reference from this block to another
@@ -42,12 +41,11 @@ public class Line {
 		trackAdjList.get(v).add(w);
 	}
 	
-	public void addBlock(int bID, int type, int len, double grade, int speedLimit, String sect, int belowGnd, String stationName)
+	public void addBlock(int bID, int type, int len, double grade, int speedLimit, String sect, int belowGnd, String stationName, int sw)
 	{
-		// Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName)
-		Block t = new Block(len, grade, bID, speedLimit, type, sect, belowGnd, stationName);
+		// Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int switchedTo)
+		Block t = new Block(len, grade, bID, speedLimit, type, sect, belowGnd, stationName, sw);
 		this.blockList.add(t);
-		
 	}
 	
 	protected void print() {
@@ -60,7 +58,11 @@ public class Line {
 			}
 			if (this.blockList.get(i).getType() == 3)
 			{
-				track.append("Station: " + this.blockList.get(i).getStationName());
+				track.append("Station " + this.blockList.get(i).getStationName());
+			}
+			if (this.blockList.get(i).getType() == 1)
+			{
+				track.append("Switch is switched to block " + this.blockList.get(i).getSwitchedTo());
 			}
 			track.append("\n");
 		}
