@@ -12,6 +12,7 @@ import TrackController.TrackControllerModule;
 import TrackModel.Block;
 import TrackModel.Line;
 import TrackModel.TrackModelModule;
+import TrainModel.TrainModel;
 import TrainModel.TrainModelModule;
 
 public class Simulator implements Runnable{
@@ -115,7 +116,7 @@ public class Simulator implements Runnable{
 	}
 	
 	public SpeedDialog getSpeedDialog() {
-		return new SpeedDialog(this);
+		return new SpeedDialog(this, timeStep);
 	}
 	
 	public long getSimTime()
@@ -137,8 +138,8 @@ public class Simulator implements Runnable{
 		tcm.receiveTrains(tm.getTrainList());
 	}
 	
-	public void routTrain(int TrainID, int StationID) {
-		
+	public void routTrain(TrainModel train, int StationID, Line l) {
+		trm.route(train, train.getBlockIndex(), StationID, l);
 	}
 	
 	public void setAuthority(int trainID) {

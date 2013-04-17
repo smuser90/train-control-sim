@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Log.Log;
+import TrainModel.TrainModel;
 
 public class Track {
 	
@@ -105,5 +106,9 @@ public class Track {
 	
 	public ArrayList<Line> getLines() {
 		return lines;
+	}
+	
+	public void route(TrainModel train, int start, int end, Line l) {
+		Router.route(train, start, end, l);
 	}
 }

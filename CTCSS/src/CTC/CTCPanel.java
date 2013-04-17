@@ -321,7 +321,7 @@ public class CTCPanel extends JPanel {
 				if(stationBox.getSelectedItem().equals("Stations")) {
 					log.append(3, "Must select a station\n");
 				} else {
-					_ctc.routeTrain(Integer.parseInt((String)trainBox.getSelectedItem()), (String)stationBox.getSelectedItem());
+					_ctc.routeTrain(Integer.parseInt((String)trainBox.getSelectedItem()), (String)stationBox.getSelectedItem(), (String)lineBox.getSelectedItem());
 					trainActionsBox.setSelectedIndex(0);
 					trainBox.setSelectedIndex(0);
 					stationBox.setSelectedIndex(0);

@@ -9,15 +9,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class SpeedDialog extends JDialog {
-	private JTextField textField;
+	JSlider slider;
+	JLabel lblEnterTheSimulation;
+	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			SpeedDialog dialog = new SpeedDialog(null);
+			SpeedDialog dialog = new SpeedDialog(null, 1);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -28,12 +33,12 @@ public class SpeedDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public SpeedDialog(final Simulator s) {
-		setTitle("Set Simulation Speed");
+	public SpeedDialog(final Simulator s, int speed) {
+		setTitle("Set Simulation Time");
 		setBounds(100, 100, 450, 150);
 		getContentPane().setLayout(null);
 		
-		JButton btnSetSpeed = new JButton("Set Speed");
+		JButton btnSetSpeed = new JButton("Set Time");
 		btnSetSpeed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSpeed(s);
@@ -50,15 +55,18 @@ public class SpeedDialog extends JDialog {
 		});
 		btnCancel.setBounds(224, 78, 200, 23);
 		getContentPane().add(btnCancel);
-		
-		JLabel lblEnterTheSimulation = new JLabel("Enter the Simulation Speed (1 for real time)");
+		if(speed == 1) {
+			lblEnterTheSimulation = new JLabel("Real Time");
+		} else {
+			lblEnterTheSimulation = new JLabel(speed + "x Real Time");
+		}
 		lblEnterTheSimulation.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEnterTheSimulation.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblEnterTheSimulation.setBounds(10, 11, 414, 14);
 		getContentPane().add(lblEnterTheSimulation);
 		
-		textField = new JTextField();
-		textField.addKeyListener(new KeyAdapter() {
+		slider = new JSlider();
+		slider.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -66,27 +74,30 @@ public class SpeedDialog extends JDialog {
 				}
 			}
 		});
-		textField.setBounds(110, 36, 212, 20);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		slider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if(slider.getValue() == 1) {
+					lblEnterTheSimulation.setText("Real Time");
+				} else {
+					lblEnterTheSimulation.setText(slider.getValue() + "x Real Time");
+				}
+			}
+		});
+		slider.setMinimum(1);
+		slider.setMaximum(10);
+		slider.setValue(speed);
+		slider.setMinorTickSpacing(1);
+		//slider.setPaintTicks(true);
+		slider.setBounds(10, 36, 414, 23);
+		getContentPane().add(slider);
 	}
 	
 	private void hideSD() {
-		textField.setText("");
 		setVisible(false);
 	}
 	
 	private void setSpeed(Simulator s) {
-		try {
-			int t = Integer.parseInt(textField.getText());
-			if(t > 0 && t <= 10) {
-				s.setSimSpeed(t);
-			} else {
-				s.setSimSpeed(-1);
-			}
-		} catch (NumberFormatException ex) {
-			s.setSimSpeed(-1);
-		}
+		s.setSimSpeed(slider.getValue());
 		hideSD();
 	}
 }

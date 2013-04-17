@@ -14,7 +14,6 @@ public class CTCModule {
 	//// Fields
 	private CTCPanel gui;
 	private Simulator sim = null;
-	private ArrayList<Integer> gTrainIDs = null;
 	private ArrayList<String> lineNames = null;
 	private ArrayList<Line> lines = null;
 	private Map<Integer, TrainModel> trains = null;
@@ -24,7 +23,6 @@ public class CTCModule {
 		gui = new CTCPanel(this);
 		lineNames = new ArrayList<String>();
 		lineNames.add("Lines");
-		gTrainIDs = new ArrayList<Integer>();
 		lines = new ArrayList<Line>();
 		trains = new HashMap<Integer, TrainModel>();
 	}
@@ -81,8 +79,20 @@ public class CTCModule {
 		}
 	}
 	
-	protected void routeTrain(int trainID, String station) {
-		log.append(2, "Routeing Train:" + trainID + " to Station:" + station +"\n");
+	protected void routeTrain(int trainID, String station, String lName) {
+		for(Line l : lines) {
+			if(l.getName().equals(lName)) {
+				for(Block b : l.getBlocks()) {
+					if(b.getStationName().equals(station)) {
+						sim.routTrain(trains.get(trainID), b.getBlockNumber(), l);
+						log.append(2, "Routeing Train:" + trainID + " to Station:" + station +"\n");
+						break;
+					}
+				}
+				break;
+			}
+		}
+		
 	}
 	
 	

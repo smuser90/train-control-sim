@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import TrainModel.TrainModel;
+
 public class TrackModelModule {
 	private TrackModelPanel gui = null;
 	private Track tr;
@@ -54,6 +56,10 @@ public class TrackModelModule {
 	public void setSpeedLimit(int bNum, String lineName, int newSpLim)
 	{
 		tr.getLine(lineName).getBlock(bNum).setSpeedLimit(newSpLim);
+	}
+	
+	public void route(TrainModel train, int start, int end, Line l) {
+		tr.route(train, start, end, l);
 	}
 	
 	public void printOpen() {

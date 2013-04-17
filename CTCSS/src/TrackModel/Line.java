@@ -4,6 +4,7 @@ package TrackModel;
 import java.util.ArrayList;
 
 import Log.Log;
+import TrainModel.TrainModel;
 
 public class Line {
 	private int V; // number of vertices
@@ -79,5 +80,9 @@ public class Line {
 	
 	public Block getBlock(int blockID){
 		return this.blockList.get(blockID);
+	}
+	
+	protected ArrayList<ArrayList<Integer>> adjList() {
+		return this.trackAdjList;
 	}
 }
