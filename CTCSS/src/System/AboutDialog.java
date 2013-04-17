@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class AboutDialog extends JDialog {
 
@@ -56,6 +57,7 @@ public class AboutDialog extends JDialog {
 		panel.add(lblNewLabel);
 		
 		JLabel lblNikolasParshook = new JLabel("Nikolas Parshook");
+		lblNikolasParshook.setFont(new Font("Dialog", Font.PLAIN, 10));
 		lblNikolasParshook.setBounds(320, 36, 104, 14);
 		getContentPane().add(lblNikolasParshook);
 		
@@ -65,18 +67,22 @@ public class AboutDialog extends JDialog {
 		getContentPane().add(lblTeam);
 		
 		JLabel lblChalesMusso = new JLabel("Charles Musso");
+		lblChalesMusso.setFont(new Font("Dialog", Font.PLAIN, 10));
 		lblChalesMusso.setBounds(320, 61, 104, 14);
 		getContentPane().add(lblChalesMusso);
 		
 		JLabel lblZacharyShelhamer = new JLabel("Zachary Shelhamer");
+		lblZacharyShelhamer.setFont(new Font("Dialog", Font.PLAIN, 10));
 		lblZacharyShelhamer.setBounds(320, 86, 119, 14);
 		getContentPane().add(lblZacharyShelhamer);
 		
 		JLabel lblKaiManuel = new JLabel("Kai Manuel");
+		lblKaiManuel.setFont(new Font("Dialog", Font.PLAIN, 10));
 		lblKaiManuel.setBounds(320, 111, 104, 14);
 		getContentPane().add(lblKaiManuel);
 		
 		JLabel lblKeLuo = new JLabel("Ke Luo");
+		lblKeLuo.setFont(new Font("Dialog", Font.PLAIN, 10));
 		lblKeLuo.setBounds(320, 136, 104, 14);
 		getContentPane().add(lblKeLuo);
 		setVisible(true);
