@@ -17,15 +17,14 @@ public class Router {
 		marked = new boolean[blocks.size()];
 		done = false;
 		route(r, start, end);
-		train.setRouteInfo(r);
-		for(int i = 0; i < r.size(); i++) {
-			System.out.print(r.get(i).getBlockNumber() + " ");
-		}
-		System.out.println();
+		if(done)
+			train.setRouteInfo(r);
+		else if(blocks.get(start).getType() == 3)
+			train.setRouteInfo(null);
 	}
 	
 	private static void route(ArrayList<Block> r, int start, int end) {
-		if(!marked[start]) {
+		if(!marked[start] && !blocks.get(start).getFailure()) {
 			marked[start] = true;
 			if(start == end) 
 				done = true;
