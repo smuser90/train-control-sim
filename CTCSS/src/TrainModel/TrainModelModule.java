@@ -15,8 +15,8 @@ public class TrainModelModule
 	private static TMPanel m_gui = null;
 	private Map<Integer, TrainModel> m_trainList;
 	private TrainControllerModule m_tcModule = null;
-	private Log	log = null;
 	private int m_trainID;
+	private Log log;
 	
 	
 	public TrainModelModule()
@@ -51,13 +51,14 @@ public class TrainModelModule
 		return m_trainList.keySet();
 	}
 	
-	public void addTrain(String line)
+	public TrainModel addTrain(String line)
 	{
 		TrainModel train = new TrainModel(m_trainID, line, m_tcModule.getTrainController(), this);
 		train.setTrainController();
 		m_trainList.put( new Integer(m_trainID), train);
 		m_trainID++;
 		m_gui.populateBox();
+		return train;
 	}
 	
 	public void toggleLock()

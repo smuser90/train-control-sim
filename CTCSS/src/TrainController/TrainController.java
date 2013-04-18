@@ -130,10 +130,6 @@ public class TrainController
 		
 		train.setPower(nextPower(setPointSpeed, currSpeed, time));
 		}
-		System.out.println("Speed = " + train.getVelocity());
-		System.out.println("Power = "+ train.getPower());
-		System.out.println("Acceleration = "+ train.getAcceleration());
-
 
 	}
 

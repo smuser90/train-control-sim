@@ -34,7 +34,6 @@ public class TMPanel extends JPanel
 	private static final long serialVersionUID = -5672590130944164297L;
 
 	private TrainModelModule 	m_tm;
-	private boolean 			locked = true;
 	private JTable				table;
 	private JComboBox 			comboBox;
 	private JScrollPane scrollPane;
@@ -179,11 +178,6 @@ public class TMPanel extends JPanel
 		reset();
 	}
 	
-	public void toggleLock()
-	{
-		locked = !locked;
-	}
-	
 	public void update()
 	{
 		Map<Integer, TrainModel> trainList = m_tm.getTrainList();
@@ -213,8 +207,8 @@ public class TMPanel extends JPanel
 			
 			//Populate Table
 			String format = "%3.3f";
-			table.setValueAt(new String(""+train.getBlockIndex()), 0, 1);
-			table.setValueAt(String.format("%3.1f", train.getPosition()), 1, 1);
+			table.setValueAt(""+train.getBlockIndex()+" / "+train.getRouteLength(), 0, 1);
+			table.setValueAt(String.format("%3.1f", train.getPosition())+" / "+train.getBlockLength(), 1, 1);
 			table.setValueAt(new String(""+train.getSpeedLimit()), 2, 1);
 			table.setValueAt(new String(""+train.getSetpointSpeed()), 3, 1);
 			table.setValueAt(String.format(format,train.getVelocity()), 4, 1);
@@ -250,9 +244,10 @@ public class TMPanel extends JPanel
 			else str = "Disengaged";
 			table.setValueAt(str, 15, 1);
 			
-			//write out log
+			//Write Out Log
 			String log = train.getLog().toString();
-			writeLog(log);
+			if(train.getWriteLog()) writeLog(log);
+			train.setWriteLog(false);
 		}
 	}
 	
@@ -261,7 +256,6 @@ public class TMPanel extends JPanel
 		Set<Integer> keys = m_tm.getTrainIDS();
 		Map<Integer, TrainModel> trainList = m_tm.getTrainList();
 		int numKeys = keys.size();
-		int listSize = comboBox.getItemCount();
 		
 		String[] def = new String[1];
 		def[0] = "Trains";
