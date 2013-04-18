@@ -4,7 +4,6 @@ import TrainModel.*;
 
 public class TrainController 
 {
-	private StringBuilder 		log;
 	public TrainModel train;
 	public int trainID;
 	public double currSpeed;
@@ -26,10 +25,11 @@ public class TrainController
 
 	public static final double INTEGRAL_INITIAL = 0.0f;
 	public static final double ERROR_INITIAL = 0.0f;
-	public static final double PROPORTIONAL_GAIN = 100000f;
+	public static final double PROPORTIONAL_GAIN = 6000f;
 	public static final double INTEGRAL_GAIN = 2f;
 	private double integralLast = INTEGRAL_INITIAL;
 	private double errorLast = ERROR_INITIAL;
+//	private double powerCommand; 
 
 
 	public TrainController(TNCPanel gui){
@@ -116,25 +116,22 @@ public class TrainController
 		//		eBrake = train.getEmergencyBrake();
 		//		routeInfo;
 
-		panel.table.setValueAt(currSpeed, 0, 1);
+		panel.table.setValueAt(currSpeed + " m/s", 0, 1);
 		panel.table.setValueAt(authority, 2, 1);
-		panel.table.setValueAt(train.getAcceleration(), 8, 1);
-		panel.table.setValueAt(train.getPower(), 9, 1);
-		panel.table.setValueAt(train.getSpeedLimit(), 10, 1);
+		if (train.getAcceleration()>0.5){
+			System.out.println("Over Acc " + train.getAcceleration() + " Power "+ train.getPower());
+		}
+		panel.table.setValueAt(train.getAcceleration() + " m/s^2", 8, 1);
+		panel.table.setValueAt(train.getPower() + " W", 9, 1);
+		panel.table.setValueAt(train.getSpeedLimit() + "MPH", 10, 1);
 //		panel.table.setValueAt(train.getMaxPower(), 9, 1);
 		
-		if (currSpeed < 3 && setPointSpeed>0 ){
-			train.setPower(5000);
+		if (currSpeed == 0 && setPointSpeed>0 ){
+			train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.01);
 		}
-		else{
-		
+		else{		
 		train.setPower(nextPower(setPointSpeed, currSpeed, time));
 		}
-		System.out.println("Speed = " + train.getVelocity());
-		System.out.println("Power = "+ train.getPower());
-		System.out.println("Acceleration = "+ train.getAcceleration());
-
-
 	}
 
 	public double nextPower(double setpoint, double currentSpeed, double millis) {
@@ -164,7 +161,7 @@ public class TrainController
 		
 		return powerCommand;
 
-		}
+	}
 
 	public void stationAnounce(){
 
