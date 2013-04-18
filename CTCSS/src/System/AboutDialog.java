@@ -55,7 +55,7 @@ public class AboutDialog extends JDialog {
 		getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel(new ImageIcon("images/splash.png"));
+		JLabel lblNewLabel = new JLabel(new ImageIcon(getClass().getResource("images/splash.png")));
 		lblNewLabel.setBounds(0, 0, 300, 200);
 		panel.add(lblNewLabel);
 		

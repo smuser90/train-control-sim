@@ -77,7 +77,7 @@ public class System_GUI {
 				        }
 				    }
 				} catch (Exception e) {
-				    // If Nimbus is not available, you can set the GUI to another look and feel.
+				    // If Nimbus is not available the look and feel will be set to the default java look and feel.
 				}
 		} 
 	    catch (UnsupportedLookAndFeelException e) {
