@@ -3,6 +3,7 @@ package Simulator;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 import CTC.CTCModule;
@@ -11,6 +12,7 @@ import System.System_GUI;
 import TrackController.TrackControllerModule;
 import TrackModel.Block;
 import TrackModel.Line;
+import TrackModel.Track;
 import TrackModel.TrackModelModule;
 import TrainModel.TrainModel;
 import TrainModel.TrainModelModule;
@@ -133,7 +135,11 @@ public class Simulator implements Runnable{
 	/* Train Actions ***********************************************************/
 	
 	public void scheduleTrain(String line) {
-		tm.addTrain(line);
+		TrainModel train = tm.addTrain(line);
+		Track tr = trm.getTrack();
+		Line ln = tr.getLine(line);
+		routTrain(train, 4, ln);
+		
 		ctc.setTrains(tm.getTrainList());
 		tcm.receiveTrains(tm.getTrainList());
 	}

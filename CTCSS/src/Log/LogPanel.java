@@ -51,7 +51,7 @@ public class LogPanel extends JPanel {
 			c = Color.GREEN;
 			break;
 		case 2:
-			c = Color.ORANGE;
+			c = Color.BLUE;
 			break;
 		case 3:
 			c = Color.RED;

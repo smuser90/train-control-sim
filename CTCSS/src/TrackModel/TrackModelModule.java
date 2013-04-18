@@ -30,6 +30,10 @@ public class TrackModelModule {
 			addLine(tr.getNewLine());
 	}
 	
+	public Track getTrack()
+	{
+		return tr;
+	}
 	public boolean hasTrack() {
 		return hasTrack;
 	}
