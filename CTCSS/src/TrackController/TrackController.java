@@ -14,7 +14,7 @@ public class TrackController {
 	protected ArrayList<Block> blocksControlled = new ArrayList<Block>();
 	protected ArrayList<Integer> brokenRails;
 	protected ArrayList<Block> crossingsControlled = new ArrayList<Block>();
-	protected ArrayList<Integer> switchesControlled = new ArrayList<Integer>();
+	protected ArrayList<Block> switchesControlled = new ArrayList<Block>();
 	protected String line;
 
 	static int index;
@@ -42,12 +42,12 @@ public class TrackController {
 	}
 	
 	//DOESNT HANDLE IF THERE ARE NO SWITCHES
-	public ArrayList<Integer> buildSwitchList(ArrayList<Block> blocks){
-		ArrayList<Integer> tempSwitchList = new ArrayList<Integer>();
+	public ArrayList<Block> buildSwitchList(ArrayList<Block> blocks){
+		ArrayList<Block> tempSwitchList = new ArrayList<Block>();
 		for(int x = 0; x < blocks.size(); x++)
 		{
 			if(blocks.get(x).getType() == 1){
-				tempSwitchList.add(blocks.get(x).getBlockNumber());
+				tempSwitchList.add(blocks.get(x));
 			}
 		}
 		return tempSwitchList;

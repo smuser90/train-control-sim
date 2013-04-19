@@ -265,8 +265,8 @@ public class TrackControllerPanel extends JPanel {
 			 	if(trainList.get(index).getLine().equals(trackControllerList.get(currentController).getLine())){
 			 		
 			 		if(trackControllerList.get(currentController).blocksControlled.contains(trainList.get(index).getBlock())){
-			 			System.out.println("HERE:" + trainList.get(index).getLine());
-				 		System.out.println(trackControllerList.get(currentController).getLine());
+			 			//System.out.println("HERE:" + trainList.get(index).getLine());
+				 		//System.out.println(trackControllerList.get(currentController).getLine());
 			 			//THIS MEANS THAT WE ARE LOOKING AT THE RIGHT LINE AND OUR CONTROLLER CONTAINS THE BLOCK FOR THE TRAIN LIST
 			 			myTrainList = myTrainList + "Train on Block: " + trainList.get(index).getBlock().getBlockNumber() + "\n";
 			 		}
@@ -305,7 +305,8 @@ public class TrackControllerPanel extends JPanel {
 			for(index = 0; index < trackControllerList.get(currentController).switchesControlled.size(); index++)
 			{
 				//for switched to block call block.switchedTo() to return an int to be printed for that block
-				mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + (numberSwitch.get(index).intValue() + 1) +"\n";
+				//eventually, it will be block.switchedTo(), which will be an int value that is determined in the PLC
+				mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + trackControllerList.get(currentController).switchesControlled.get(index).getSwitchedTo() +"\n";
 			}
 			
 			
