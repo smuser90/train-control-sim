@@ -65,10 +65,10 @@ public class TrainController
 	public void setSpeed(double s){
 		setPointSpeed = s;
 		train.setSetpointSpeed(s);
-/*		if (setPointSpeed>train.getSpeedLimit()){
+		if (setPointSpeed>train.getSpeedLimit()){
 			setPointSpeed = train.getSpeedLimit();	 // check speed limit 
 	
-		}*/
+		}
 	}
 
 	public double getSetPointSpeed(){
@@ -116,15 +116,15 @@ public class TrainController
 		//		eBrake = train.getEmergencyBrake();
 		//		routeInfo;
 
-		panel.table.setValueAt(currSpeed + " m/s", 0, 1);
+		panel.table.setValueAt(String.format("%3.3f", currSpeed) + " m/s", 0, 1);
 		panel.table.setValueAt(authority, 2, 1);
 		if (train.getAcceleration()>0.5){
 			System.out.println("Over Acc " + train.getAcceleration() + " Power "+ train.getPower());
 		}
-		panel.table.setValueAt(train.getAcceleration() + " m/s^2", 8, 1);
-		panel.table.setValueAt(train.getPower() + " W", 9, 1);
-		panel.table.setValueAt(train.getSpeedLimit() + "MPH", 10, 1);
-//		panel.table.setValueAt(train.getMaxPower(), 9, 1);
+		panel.table.setValueAt(String.format("%3.3f", train.getAcceleration()) + " m/s^2", 8, 1);
+		panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
+		panel.table.setValueAt(train.getSpeedLimit() + " m/s", 10, 1);
+		panel.table.setValueAt(train.getPowerLimit() + " W", 11, 1);
 		
 		if (currSpeed == 0 && setPointSpeed>0 ){
 			train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.01);
@@ -140,7 +140,7 @@ public class TrainController
 		double error;    /* difference between setpoint and currentSpeed */
 		double sampleTime; /* sample time */
 		double powerCommand; /* power to provide to engine */
-		double POWER_MAX = 120000;
+		double POWER_MAX = train.getPowerLimit();
 
 		error = setpoint - currentSpeed;
 
