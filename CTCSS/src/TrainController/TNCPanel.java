@@ -278,7 +278,7 @@ public class TNCPanel extends JPanel {
 		table.setForeground(Color.BLACK);
 		table.setColumnSelectionAllowed(true);
 		table.setCellSelectionEnabled(true);
-		table.setBackground(SystemColor.textHighlight);
+		table.setBackground(Color.LIGHT_GRAY);
 		
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -319,6 +319,7 @@ public class TNCPanel extends JPanel {
 		comboBox = new JComboBox();	
 		comboBox.setBounds(25, 16, 596, 28);
 		add(comboBox);
+		comboBox.addItem("Train Lists");
 		comboBox.addItemListener(new ItemListener(){
 			public void itemStateChanged(ItemEvent event){
 				if(event.getStateChange()==ItemEvent.SELECTED){
@@ -328,7 +329,7 @@ public class TNCPanel extends JPanel {
 //					System.out.println("list empty: "+list.isEmpty());
 					
 					if (!list.isEmpty()){
-						tnc = list.get(ID);
+						tnc = list.get(ID-1);
 					
 						
 					

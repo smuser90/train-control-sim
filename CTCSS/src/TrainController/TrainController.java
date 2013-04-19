@@ -4,7 +4,6 @@ import TrainModel.*;
 
 public class TrainController 
 {
-	private StringBuilder 		log;
 	public TrainModel train;
 	public int trainID;
 	public double currSpeed;
@@ -26,10 +25,11 @@ public class TrainController
 
 	public static final double INTEGRAL_INITIAL = 0.0f;
 	public static final double ERROR_INITIAL = 0.0f;
-	public static final double PROPORTIONAL_GAIN = 100000f;
+	public static final double PROPORTIONAL_GAIN = 6000f;
 	public static final double INTEGRAL_GAIN = 2f;
 	private double integralLast = INTEGRAL_INITIAL;
 	private double errorLast = ERROR_INITIAL;
+//	private double powerCommand; 
 
 
 	public TrainController(TNCPanel gui){
@@ -65,10 +65,10 @@ public class TrainController
 	public void setSpeed(double s){
 		setPointSpeed = s;
 		train.setSetpointSpeed(s);
-/*		if (setPointSpeed>train.getSpeedLimit()){
+		if (setPointSpeed>train.getSpeedLimit()){
 			setPointSpeed = train.getSpeedLimit();	 // check speed limit 
 	
-		}*/
+		}
 	}
 
 	public double getSetPointSpeed(){
@@ -117,21 +117,22 @@ public class TrainController
 		//		eBrake = train.getEmergencyBrake();
 		//		routeInfo;
 
-		panel.table.setValueAt(currSpeed, 0, 1);
+		panel.table.setValueAt(String.format("%3.3f", currSpeed) + " m/s", 0, 1);
 		panel.table.setValueAt(authority, 2, 1);
-		panel.table.setValueAt(train.getAcceleration(), 8, 1);
-		panel.table.setValueAt(train.getPower(), 9, 1);
-		panel.table.setValueAt(train.getSpeedLimit(), 10, 1);
-//		panel.table.setValueAt(train.getMaxPower(), 9, 1);
-		
-		if (currSpeed < 3 && setPointSpeed>0 ){
-			train.setPower(5000);
+		if (train.getAcceleration()>0.5){
+			System.out.println("Over Acc " + train.getAcceleration() + " Power "+ train.getPower());
 		}
-		else{
+		panel.table.setValueAt(String.format("%3.3f", train.getAcceleration()) + " m/s^2", 8, 1);
+		panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
+		panel.table.setValueAt(train.getSpeedLimit() + " m/s", 10, 1);
+		panel.table.setValueAt(train.getPowerLimit() + " W", 11, 1);
 		
+		if (currSpeed == 0 && setPointSpeed>0 ){
+			train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.01);
+		}
+		else{		
 		train.setPower(nextPower(setPointSpeed, currSpeed, time));
 		}
-
 	}
 
 	public double nextPower(double setpoint, double currentSpeed, double millis) {
@@ -140,7 +141,7 @@ public class TrainController
 		double error;    /* difference between setpoint and currentSpeed */
 		double sampleTime; /* sample time */
 		double powerCommand; /* power to provide to engine */
-		double POWER_MAX = 120000;
+		double POWER_MAX = train.getPowerLimit();
 
 		error = setpoint - currentSpeed;
 
@@ -161,7 +162,7 @@ public class TrainController
 		
 		return powerCommand;
 
-		}
+	}
 
 	public void stationAnounce(){
 
