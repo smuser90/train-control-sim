@@ -1,6 +1,6 @@
 Testy Line
 7
-0 1 0 0 0.0 0 YARD 0 null
+0 1 0 0 0.0 0 YARD 0 YARD
 1 0 1 100 -2.0 25 A 0 null
 1 2 1 100 -2.5 30 A 0 null
 2 3 2 100 -1.75 25 B 1 null
