@@ -12,7 +12,6 @@ public class PLC {
 	private static ArrayList<Integer> crossingList = null;
 	private static ArrayList<Integer> brokenRailList;
 	private static TrackController _tc;
-	//private static Map trainList;
 	private static Map<Integer, TrainModel> trainList;
 	private static TrackControllerModule _tcm;
 	
@@ -21,15 +20,12 @@ public class PLC {
 	
 	public static void runPLC(TrackController trackController, ArrayList<Block> bL) {
 		myBlocks = bL;
-		//if(trackController.crossingsControlled == null)
-			
 		trainList =_tcm.getTrainList();
-		//System.out.println("here in PLC, the trainList size is " + trainList.size());
 		detectTrains(trackController);
 		crossings(trackController);
 		detectBrokenRail(trackController);
 		switches(trackController);
-		//System.out.println("Here in runPLC in the PLC class with trackcontroller " + trackController.getID());
+		handleAuthority(trackController);
 	}
 	
 	public static void setup(TrackControllerModule tcm) {
@@ -46,98 +42,89 @@ public class PLC {
 			if(trackController.blocksControlled.contains(myBlocks.get(index).getBlockNumber()) && myBlocks.get(index).getOccupied())
 			{
 				temp++;
-				//TrackControllerPanel.test3();
 			}
 		}
 		trackController.setNumTrains(temp);
-		//TrackControllerPanel.updateTrainDisplay(trackController);
-//		for(index = 0; index < trackControllerList.size();index++){
-//			trackControllerList.get(index).trains = 0;
-//			for(index_2 = 0; index_2 < myBlocks.size(); index_2++)
-//				if(trackControllerList.get(index).blocksControlled.contains((index_2)) && myBlocks.get(index_2).occupied)
-//					trackControllerList.get(index).trains++;
-//					//TrackControllerGui.test2();	
-//		}
 	}
 	
 	public static void crossings(TrackController trackController){
-		//for(index = 0; index < trackController.crossingsControlled.size(); index++){
-			//CYCLE THROUGH TRAIN LIST AND IF ONE OF THE TRAINS NEXT BLOCK IS THIS CROSSING THEN PUT THE CROSSING DOWN
-		//System.out.println("here before train list is null");
 		if(trainList != null)
 		{
-			//System.out.println("here we are in crossings if");
-			for(int i = 0; i < trainList.size(); i++){
-				//System.out.println("here we are in crossings for");
-				if(trainList.get(i + 1).getLine().equals(trackController.getLine()))//on the same line
+			for(int i = 0; i < trainList.size(); i++)
+			{
+				if(trainList.get(i + 1).getLine().equals(trackController.getLine()) && trainList.get(i + 1).getRouteInfo() != null)
 				{
-					//System.out.println("here we are in crossings, if to check line");
-					if(trackController.crossingsControlled.contains(trainList.get(i + 1).getBlock()))//trainList.get(i).getBlockIndex()))
+					if(trainList.get(i + 1).getRouteInfo().size() > trainList.get(i + 1).getBlockIndex() + 1)
 					{
-						//System.out.println("here we are in crossings and the block is contained");
-						trackController.crossingsControlled.get(i).setCrossing(false);//trainList.get(i).getBlock().getBlockNumber()).setCrossing(false);
+						if(trackController.crossingsControlled.contains(trainList.get(i + 1).getBlock()) || trackController.crossingsControlled.contains(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1)))//trainList.get(i).getBlockIndex()))
+						{
+							trackController.crossingsControlled.get(i).setCrossing(false);
+						}
+						else
+						{
+							trackController.crossingsControlled.get(i).setCrossing(true);
+						}
 					}
 					else
 					{
-						//System.out.println("here we are in crossings and the block is not contained");
-						trackController.crossingsControlled.get(i).setCrossing(true);//trainList.get(i).getBlock().getBlockNumber()).setCrossing(true);
+						trackController.crossingsControlled.get(i).setCrossing(true);
 					}
 				}
 			}
 		}
 	}
-//			  	if(trainList.get(i).m_routeInfo.contains(trackController.crossingsControlled.get(index).getBlockNumber() && trainList.get(i).m_line.equals(trackController.getLine()){
-//			  		if((trainList.get(i).m_routeInfo.get(trainList.get(i).m_blockIndex() + 1) == trackController.crossingsControlled.get(index).getBlockNumber() || trainList.get(i).m_routeInfo.get(trainList.get(i).m_blockIndex()) == trackController.crossingsControlled.get(index).getBlockNumber()){
-//			  			//THIS MEANS THAT THE TRAIN HAS THIS CROSSING ON ITS ROUTE INFO AND THAT ITS INDEX + 1 IS THE CROSSING
-//			  			//OR THAT THE TRAIN IS CURRENTLY ON THE BLOCK WITH THE CROSSING...ARMS NEED TO GO DOWN ASAP!
-//			  			trackController.crossingsControlled.get(index).setCrossing(false);
-//			  		}
-//			  	}
-//			  	else
-//			  		trackController.crossingsControlled.get(index).setCrossing(true);
-//			  }
-		//}
-//		for(index = 0; index <crossingList.size(); index++)
-//		{
-//			if(myBlocks.get(crossingList.get(index) - 1).getOccupied() || myBlocks.get(crossingList.get(index) + 1).getOccupied())
-//			{
-//				myBlocks.get(crossingList.get(index)).setCrossing(true);
-//			}
-//			
-//			else
-//				myBlocks.get(crossingList.get(index)).setCrossing(false);
-//		}
-	//}
-	
-	
 	
 	public static void switches(TrackController trackController){
-//		if(trainList != null)
-//		{
-//			for(int i = 0; i < trainList.size(); i++)
-//			{
-//				//trains are on this list
-//				if(trainList.get(i).getLine().equals(trackController.getLine()))
-//				{
-//					//train's has at least two more blocks in route
-//					if(trainList.get(i).getRouteInfo().get(trainList.get(i).getBlockIndex() + 1) != null && trainList.get(i).getRouteInfo().get(trainList.get(i).getBlockIndex() + 2) != null)
-//					{
-//						if(trackController.switchesControlled.contains((trainList.get(i).getRouteInfo().get(trainList.get(i).getBlockIndex() + 1))))
-//						{
-//							//System.out.println("We have made it into the switch depth where we start to check adjacency list");
-//							
-//							
-//							
-//							
-//							
-//							
-//							//for each adjacent , check if it is contained. if so, set switch to trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex() + 2)
-//							//else, switch to trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex())
-//						}
-//					}
-//				}
-//			}
-//		}
+		/*System.out.println("here in switches");
+		if(trainList != null)
+		{
+			System.out.println("train list isn't null!!!");
+			for(int i = 0; i < trainList.size(); i++)
+			{
+				System.out.println("Were in the for loop to go through the trains");
+				if(trainList.get(i + 1).getLine().equals(trackController.getLine()) && trainList.get(i + 1).getRouteInfo() != null)
+				{
+					//trains are on this list
+					System.out.println("route info isn't null!");
+					if(trainList.get(i + 1).getLine().equals(trackController.getLine()))
+					{
+						System.out.println("were on the same line as a track controller");
+						//train's has at least two more blocks in route
+						if(trainList.get(i + 1).getRouteInfo().size() > trainList.get(i + 1).getBlockIndex() + 2)
+						{
+							if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1) != null && trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 2) != null)
+							{
+								System.out.println("The next two blocks in the route info aren't null!");
+								if(trackController.switchesControlled.contains((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1))))
+								{
+									System.out.println("We have made it into the switch depth where we start to check adjacency list");
+									//for(int j = 0; j < sim.getLine(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber()).size(); j++)
+									for(int j = 0; j < sim.getLine(trainList.get(i + 1).getLine()).adj(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1); j++)
+									{
+										//if(sim.getLine(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber()).get(j) == trainList.get(i + 1).getBlock().getBlockNumber())
+										if(sim.getLine(trainList.get(i + 1).getLine()).adj(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).get(j) == trainList.get(i + 1).getBlock().getBlockNumber())
+										{
+											//switch to next next
+											trackController.switchesControlled.get((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1))).setSwitchedTo(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 2).getBlockNumber());
+										}
+										else
+										{
+											//switch to current
+											trackController.switchesControlled.get((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1))).setSwitchedTo(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex()).getBlockNumber());
+										}
+									}
+									//sim.getLine will be used to get the current line that the train is on. using this list we just need to check if the cur value is on
+									//the adj list for the switch. If so, switch to next next value, if not switch to cur
+									
+									//for each adjacent , check if it is contained. if so, set switch to trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex() + 2)
+									//else, switch to trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex())
+								}
+							}
+						}
+					}
+				}
+			}
+		}*/
 		
 		
 	
@@ -180,17 +167,6 @@ public class PLC {
 					trackController.brokenRails.add(trackController.blocksControlled.get(index).getBlockNumber());
 					trackController.isChanged = true;
 					reportBrokenRail(trackController.blocksControlled.get(index).getBlockNumber());
-					//brokenRailList.add(myBlocks.get(trackController.blocksControlled.get(index).getBlockNumber());
-					//if not the yard, and train within one block of the broken rail it needs to hit EBrake
-					/*if(index > 0)
-					{
-						//for(int i = 0; i < trainList.size(); i++){
-							//if(trainList.get(i).m_routeInfo.contains(trackControlller.blocksControlled.get(index).getBlockNumber()){
-								//CALL REROUTE BECAUSE THAT TRAIN PATH CONTAINS THE BROKEN RAIL
-								//
-						//}
-						//}
-					}*/
 				}
 			}
 			else{
@@ -203,31 +179,62 @@ public class PLC {
 		}
 		
 		handleBrokenRail(trackController);
-		//trackController.setBrokenRail(brokenRail);
-		//_tc.setBrokenRail();
-		
-//		for(index = 0; index < myBlocks.size(); index++){
-//			if(myBlocks.get(index).failure){
-//				reportBrokenRail(index);
-//			}
-//		}
 	}
 	
 	public static void handleBrokenRail(TrackController trackController) {
 		for(index = 0; index < trackController.brokenRails.size(); index++){
-			/*for(int i = 0; i < trainList.size(); i++){
-				if(trainList.get(i).m_routeInfo.contains(trackController.brokenRails.get(index))){
-					if(trainList.get(i).m_routeInfo.get(trainList.get(i).m_blockIndex() + 1) == trackController.brokenRails.get(index) && !trainList.get(i).getEmergencyBrake())
-						trainList.get(i).toggleEmergencyBrake();
-					else
-						REROUTE
+			if(trainList != null)
+			{
+				for(int i = 0; i < trainList.size(); i++)
+				{
+					if(trainList.get(i + 1).getRouteInfo() != null)
+					{
+						for(int j = 0; j < trainList.get(i + 1).getRouteInfo().size(); j++)
+						{
+							if(trackController.brokenRails.contains(trainList.get(i + 1).getRouteInfo().get(j).getBlockNumber()))
+							{
+								if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber() == trackController.brokenRails.get(index) && !trainList.get(i + 1).getEmergencyBrake())
+								{
+									trainList.get(i + 1).toggleEmergencyBrake();
+								}
+								else
+								{
+									//Reroute
+								}
+							}
+						}
+					}	
 				}
-			 }*/
+			}
 		}
 	}
 
 	public static void reportBrokenRail(int blockNumber){
 		TrackController.reportBrokenRail(blockNumber);
+	}
+	
+	public static void handleAuthority(TrackController trackController){
+		//if train list is not null
+		if(trainList != null)
+		{
+			//for all trains
+			for(int i = 0; i < trainList.size(); i++)
+			{
+				//if train is on same line as track controller and route is not null
+				if(trainList.get(i + 1).getLine().equals(trackController.getLine()) && trainList.get(i + 1).getRouteInfo() != null)// && trackController.blocksControlled.contains(trainList.get(i + 1).getBlock().getBlockNumber()))
+				{
+					//if the track controller controls said block
+					if(trackController.blocksControlled.contains(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex())))
+					{
+						trainList.get(i + 1).setAuthority(0);
+						if(!trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied() && !trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getFailure())
+						{
+							trainList.get(i + 1).setAuthority(1);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	

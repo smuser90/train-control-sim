@@ -1,5 +1,6 @@
 package TrackController;
 
+import Simulator.Simulator;
 import TrackModel.Block;
 import TrackModel.Line;
 import TrainModel.TrainModel;
@@ -24,6 +25,7 @@ public class TrackControllerModule {
 	private ArrayList<Integer> switchList;
 	private Map<Integer, TrainModel> trainList;
 	private ArrayList<Integer> crossingList;
+	private Simulator _sim;
 	private boolean hasTrack = false;
 	/**
 	 * Create the frame.
@@ -42,6 +44,7 @@ public class TrackControllerModule {
 	}
 	/************************************************************************************************
 	 CALL THIS TO WAKE ME UP************************************************************************/
+	//public void getTrack(Line track, Simulator sim){
 	public void getTrack(Line track){
 		myBlocks = track.getBlocks();
 		trackControllerList.add(TCListMaker.makeTCList(track));
@@ -53,9 +56,11 @@ public class TrackControllerModule {
 			System.out.println("]");
 		}*/
 		lineNames.add(track.getName());
+		//_sim = sim;
 		lines.add(track);
 		hasTrack = true;
 		currentPanel.displayChange();
+		//PLC.setup(this,_sim);
 		PLC.setup(this);
 		runPLC();
 

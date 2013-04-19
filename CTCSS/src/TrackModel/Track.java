@@ -1,4 +1,4 @@
-// this will use the Line and Block classes to create the Red and Green Lines 
+// this will use the Line and Block classes to create the Red and Green Lines  
 package TrackModel;
 
 import java.io.BufferedReader;
@@ -69,10 +69,10 @@ public class Track {
 	            lines.add(cLine);
 	            newLine = cLine;
 	            cLine.print();
+	            cLine.sectionInit();
             }
 			} catch (IOException q)
 			{return false;}
-		
 		return goodLine;
 	}
 	
