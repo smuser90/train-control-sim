@@ -1,6 +1,9 @@
 package TrainController;
 
+import java.util.ArrayList;
+
 import TrainModel.*;
+import TrackModel.Block;
 
 public class TrainController 
 {
@@ -16,12 +19,10 @@ public class TrainController
 	public int temp;
 	public Boolean brake;
 	public Boolean eBrake;
-	private final int Kp = 1;
-	private final int Ki = 1;
-	private final int t = 0;
-	private double pre_error=0, error=0, Vk, pre_Vk=0 ;
 	private TNCPanel panel;
-	//	private routeInfo ;
+	private ArrayList<Block> routeInfo = null;
+	private Block currBlock;
+	private String nextStation = "Wait for route info";
 
 	public static final double INTEGRAL_INITIAL = 0.0f;
 	public static final double ERROR_INITIAL = 0.0f;
@@ -42,7 +43,7 @@ public class TrainController
 		temp = 0;		
 		brake = false;
 		eBrake = false;
-//		System.out.println("Train controller created!");
+		currBlock = null;
 	}
 
 	public void setTrainModel(TrainModel tm)
@@ -58,10 +59,16 @@ public class TrainController
 			temp = tm.getTemperature();		
 			//		brake = tm.getBrake();
 			eBrake = tm.getEmergencyBrake();
+//			routeInfo = tm.getRouteInfo();
+			currBlock = tm.getBlock();
 			panel.comboBox.addItem(tm.getTrainID());
+/*			if (!routeInfo.isEmpty()){
+				nextStation(routeInfo);
+			}*/
 		}
 
 	}
+	
 	public void setSpeed(double s){
 		setPointSpeed = s;
 		train.setSetpointSpeed(s);
@@ -105,26 +112,27 @@ public class TrainController
 	}
 
 	public void tick(double time){
+		
+		/* update train attributes */
 		currSpeed = train.getVelocity();
 		speedLimit = train.getSpeedLimit();
 		authority = train.getAuthority();
-		//      lights = train.getLight();
-		//		doors = train.getDoor();
 		temp = train.getTemperature();
-		
+		currBlock = train.getBlock();
 		//		brake = train.getBrake();
 		//		eBrake = train.getEmergencyBrake();
 		//		routeInfo;
 
+		/* update table */
+		if (!panel.comboBox.getSelectedItem().equals("Train List")){
 		panel.table.setValueAt(String.format("%3.3f", currSpeed) + " m/s", 0, 1);
 		panel.table.setValueAt(authority, 2, 1);
-		if (train.getAcceleration()>0.5){
-			System.out.println("Over Acc " + train.getAcceleration() + " Power "+ train.getPower());
-		}
 		panel.table.setValueAt(String.format("%3.3f", train.getAcceleration()) + " m/s^2", 8, 1);
 		panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 		panel.table.setValueAt(train.getSpeedLimit() + " m/s", 10, 1);
 		panel.table.setValueAt(train.getPowerLimit() + " W", 11, 1);
+		}
+		
 		
 		if (currSpeed == 0 && setPointSpeed>0 ){
 			train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.01);
@@ -163,8 +171,15 @@ public class TrainController
 
 	}
 
-	public void stationAnounce(){
-
+	public void nextStation(ArrayList<Block> route){
+		if(currBlock.getStationName().equals(nextStation)){
+			for (int i=route.indexOf(currBlock); i<route.size();i++){
+				if (!route.get(i+1).getStationName().equals(null)){
+					nextStation = route.get(i+1).getStationName();
+					panel.nextStation.setText(nextStation);
+				}
+			}
+		}
 	}
 
 
