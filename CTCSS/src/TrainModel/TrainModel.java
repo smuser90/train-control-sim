@@ -91,6 +91,7 @@ public class TrainModel
 		m_accel = 0.0;
 		m_grade = 0.0;
 		m_log = new StringBuilder();
+		m_printFlag = true;
 	}
 	
 	
@@ -180,8 +181,12 @@ public class TrainModel
 			
 			m_routeInfo.get(m_blockIndex).setOccupied(false);
 			m_blockIndex++;
+			
 			if(m_blockIndex == m_routeInfo.size())
+			{
 				m_routeInfo = null;
+				m_blockIndex = 0;
+			}
 			else
 			{
 				m_routeInfo.get(m_blockIndex).setOccupied(true);
@@ -207,6 +212,13 @@ public class TrainModel
 		m_routeInfo = routeInfo;
 		m_routeLength = m_routeInfo.size();
 		m_routeInfo.get(m_blockIndex).setOccupied(true);
+		m_setpointVelocity = m_routeInfo.get(m_blockIndex).getSpeedLimit();
+		m_log.append("Route Data Received. *Train Starting*\n\n");
+	}
+	
+	public ArrayList<Block> getRouteInfo()
+	{
+		return m_routeInfo;
 	}
 	
 	public int getRouteLength()

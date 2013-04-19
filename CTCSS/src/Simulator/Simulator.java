@@ -138,7 +138,7 @@ public class Simulator implements Runnable{
 		TrainModel train = tm.addTrain(line);
 		Track tr = trm.getTrack();
 		Line ln = tr.getLine(line);
-		routTrain(train, 4, ln);
+		routTrain(train, 0, ln);
 		
 		ctc.setTrains(tm.getTrainList());
 		tcm.receiveTrains(tm.getTrainList());

@@ -108,6 +108,7 @@ public class TrainController
 		currSpeed = train.getVelocity();
 		speedLimit = train.getSpeedLimit();
 		authority = train.getAuthority();
+		setPointSpeed = train.getSetpointSpeed();
 		//      lights = train.getLight();
 		//		doors = train.getDoor();
 		temp = train.getTemperature();
