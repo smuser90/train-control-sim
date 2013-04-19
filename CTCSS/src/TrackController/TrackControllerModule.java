@@ -28,12 +28,13 @@ public class TrackControllerModule {
 	/**
 	 * Create the frame.
 	 */
-	public TrackControllerModule() {
+	public TrackControllerModule() 
+	{
 		myBlocks = new ArrayList<Block>();
 		switchList = new ArrayList<Integer>();
 		crossingList = new ArrayList<Integer>();
 		trackControllerList = new ArrayList<ArrayList<TrackController>>();
-		
+
 		lineNames = new ArrayList<String>();
 		lineNames.add("Lines");
 		currentPanel = new TrackControllerPanel(this);
@@ -55,6 +56,7 @@ public class TrackControllerModule {
 		lines.add(track);
 		hasTrack = true;
 		currentPanel.displayChange();
+		PLC.setup(this);
 		runPLC();
 
 	}
@@ -71,6 +73,7 @@ public class TrackControllerModule {
 	
 	public void receiveTrains(Map<Integer, TrainModel> newTrainList){
 		trainList = newTrainList;
+		currentPanel.displayChange();
 	}
 	
 	/**************************************************************************************

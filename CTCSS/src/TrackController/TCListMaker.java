@@ -23,11 +23,11 @@ public class TCListMaker {
 						blockList.add(myLine.getBlock(j));
 					}
 				}
-				tcList.add(new TrackController(id++, blockList));
+				tcList.add(new TrackController(id++, blockList, myLine.getName()));
 			}
 		}
 		if(tcList.size() == 0)
-			tcList.add(new TrackController(id, myLine.getBlocks()));
+			tcList.add(new TrackController(id, myLine.getBlocks(), myLine.getName()));
 		return tcList ;
 	}
 	

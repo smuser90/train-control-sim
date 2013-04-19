@@ -13,27 +13,29 @@ public class TrackController {
 	protected boolean isChanged = false;
 	protected ArrayList<Block> blocksControlled = new ArrayList<Block>();
 	protected ArrayList<Integer> brokenRails;
-	protected ArrayList<Integer> crossingsControlled = new ArrayList<Integer>();
+	protected ArrayList<Block> crossingsControlled = new ArrayList<Block>();
 	protected ArrayList<Integer> switchesControlled = new ArrayList<Integer>();
+	protected String line;
 
 	static int index;
 	static int index_2;
 	
-	public TrackController(int tcIndex, ArrayList<Block> controlled){
+	public TrackController(int tcIndex, ArrayList<Block> controlled, String lineName){
 		this.blocksControlled = controlled;
 		this.number = tcIndex;
 		brokenRails = new ArrayList<Integer>();
 		crossingsControlled = buildCrossingList(controlled);
 		switchesControlled = buildSwitchList(controlled);
+		line = lineName;
 	}
 	
 	//DOESNT HANDLE IF THERE ARE NO CROSSINGS
-	public ArrayList<Integer> buildCrossingList(ArrayList<Block> blocks){
-		ArrayList<Integer> tempCrossingList = new ArrayList<Integer>();
+	public ArrayList<Block> buildCrossingList(ArrayList<Block> blocks){
+		ArrayList<Block> tempCrossingList = new ArrayList<Block>();
 		for(int x = 0; x < blocks.size(); x++)
 		{
 			if(blocks.get(x).getType() == 2){
-				tempCrossingList.add(blocks.get(x).getBlockNumber());
+				tempCrossingList.add(blocks.get(x));
 			}
 		}
 		return tempCrossingList;
@@ -95,5 +97,9 @@ public class TrackController {
 	
 	public ArrayList<Integer> getBrokenRail(){
 		return brokenRails;
+	}
+	
+	public String getLine(){
+		return line;
 	}
 }
