@@ -74,12 +74,12 @@ public class PLC {
 					//System.out.println("here we are in crossings, if to check line");
 					if(trackController.crossingsControlled.contains(trainList.get(i + 1).getBlock()))//trainList.get(i).getBlockIndex()))
 					{
-						System.out.println("here we are in crossings and the block is contained");
+						//System.out.println("here we are in crossings and the block is contained");
 						trackController.crossingsControlled.get(i).setCrossing(false);//trainList.get(i).getBlock().getBlockNumber()).setCrossing(false);
 					}
 					else
 					{
-						System.out.println("here we are in crossings and the block is not contained");
+						//System.out.println("here we are in crossings and the block is not contained");
 						trackController.crossingsControlled.get(i).setCrossing(true);//trainList.get(i).getBlock().getBlockNumber()).setCrossing(true);
 					}
 				}
@@ -112,24 +112,34 @@ public class PLC {
 	
 	
 	public static void switches(TrackController trackController){
-	/*	for(int i = 0; i < trainList.size(); i++)
-		{
-			//trains are on this list
-			if(trainList.get(i).getLine().equals(trackController.getLine()))
-			{
-				//train's has at least two more blocks in route
-				if(trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex() + 1) != null && trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex() + 2) != null
-				{
-					if(trackController.switchesControlled.contains((trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex() + 1))))
-					{
-						//for each adjacent , check if it is contained. if so, set switch to trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex() + 2)
-						//else, switch to trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex())
-					}
-				}
-			}
-		}
+//		if(trainList != null)
+//		{
+//			for(int i = 0; i < trainList.size(); i++)
+//			{
+//				//trains are on this list
+//				if(trainList.get(i).getLine().equals(trackController.getLine()))
+//				{
+//					//train's has at least two more blocks in route
+//					if(trainList.get(i).getRouteInfo().get(trainList.get(i).getBlockIndex() + 1) != null && trainList.get(i).getRouteInfo().get(trainList.get(i).getBlockIndex() + 2) != null)
+//					{
+//						if(trackController.switchesControlled.contains((trainList.get(i).getRouteInfo().get(trainList.get(i).getBlockIndex() + 1))))
+//						{
+//							//System.out.println("We have made it into the switch depth where we start to check adjacency list");
+//							
+//							
+//							
+//							
+//							
+//							
+//							//for each adjacent , check if it is contained. if so, set switch to trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex() + 2)
+//							//else, switch to trainList.get(i).getRouteInfo.get(trainList.get(i).getBlockIndex())
+//						}
+//					}
+//				}
+//			}
+//		}
 		
-		*/
+		
 	
 	
 		//use adjacentcy list 
