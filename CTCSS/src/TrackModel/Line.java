@@ -2,6 +2,7 @@
 // the TrackModel.java class will hold multiple instances of this, red line green line etc.
 package TrackModel;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Log.Log;
 import TrainModel.TrainModel;
@@ -12,6 +13,9 @@ public class Line {
 	private ArrayList<ArrayList<Integer>> trackAdjList; // list of all the vertices and where they link
 	private ArrayList<Block> blockList; // list of all the blocks and their data
 	private String lineName;
+	private HashMap<String, Section> sectionList; // list of all the sections <String sectionName, Section s>
+	private HashMap<String, ArrayList<String>> sectionGraph; // graph of all the sections, stored like the trackAdjList 
+	
 	
 	public Line() {}
 	
@@ -85,4 +89,41 @@ public class Line {
 	protected ArrayList<ArrayList<Integer>> adjList() {
 		return this.trackAdjList;
 	}
+	
+	protected void sectionInit()
+	{
+		//  private ArrayList<ArrayList<Integer>> trackAdjList; // list of all the vertices and where they link
+		//	private ArrayList<Block> blockList; // list of all the blocks and their data
+		//  private HashMap<String, Section> sectionList; // list of all the sections <String sectionName, Section s>
+		//  private HashMap<String, ArrayList<String>> sectionGraph; // graph of all the sections, stored like the trackAdjList
+		//  first pass, get a list of sections (and related blocks?)
+		//  second pass, set the vertices of the sections
+		String curSecName = "";
+		ArrayList<String> s = new ArrayList<String>(); // list of section names
+		
+		for (int i = 0; i < blockList.size(); i++)
+		{
+			curSecName = blockList.get(i).getSection();
+			// if we have the section already
+			if(sectionList.containsKey(curSecName))
+			{
+				sectionList.get(curSecName).addBlock(blockList.get(i));
+			} else
+			{
+				Section sec = new Section(curSecName);
+				sectionList.put(curSecName, sec);
+				sectionList.get(curSecName).addBlock(blockList.get(i));
+			}			
+		}
+	}
+	/*
+	protected void addSection(String secName)
+	{
+		// give this a list of blocks and section name?
+		
+		// create Section, then add it to sectionList
+		Section s = new Section(secName);
+		this.sectionList.put(secName, s);
+	}
+	*/
 }

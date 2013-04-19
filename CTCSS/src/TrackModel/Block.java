@@ -190,4 +190,9 @@ public class Block{
 		this.switchedTo = s;
 	}
 	
+	public String getSection()
+	{
+		return this.section;
+	}
+	
 }
