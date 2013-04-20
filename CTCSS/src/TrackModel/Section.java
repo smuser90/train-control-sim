@@ -9,6 +9,7 @@ public class Section {
 	public Section(String n)
 	{
 		this.secName = n;
+		this.bList = new ArrayList<Block>();
 	}
 	
 	public void addBlock(Block b)
