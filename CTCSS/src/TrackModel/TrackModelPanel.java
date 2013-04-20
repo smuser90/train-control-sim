@@ -53,8 +53,7 @@ public class TrackModelPanel extends JPanel {
 			tabbedPane.setBounds(10, 11, 630, 237);
 			add(tabbedPane);
 		}
-		JPanel panel = new JPanel();
-		tabbedPane.addTab(l.getName(), null, panel, null);
+		tabbedPane.addTab(l.getName(), null, l.getPanel(), null);
 		
 	}
 }
