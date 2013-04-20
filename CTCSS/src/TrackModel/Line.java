@@ -110,8 +110,11 @@ public class Line {
 		String curSecName = "";
 		sectionKeys = new ArrayList<String>(); // list of section names
 		
+
 		sectionList = new HashMap<String, Section>();
 		sectionGraph = new HashMap<String, ArrayList<String>>();
+		if(sectionList == null)
+			sectionList = new HashMap<String, Section>();
 		for (int i = 0; i < blockList.size(); i++)
 		{
 			curSecName = blockList.get(i).getSection();
@@ -119,7 +122,8 @@ public class Line {
 			if(sectionList.containsKey(curSecName))
 			{
 				sectionList.get(curSecName).addBlock(blockList.get(i));
-			} else
+			} 
+			else
 			{
 				Section sec = new Section(curSecName);
 				sec.addBlock(blockList.get(i));

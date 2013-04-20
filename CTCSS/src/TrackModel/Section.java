@@ -13,6 +13,7 @@ public class Section {
 	{
 		this.secName = n;
 		bList = new ArrayList<Block>();
+		this.bList = new ArrayList<Block>();
 	}
 	
 	public void addBlock(Block b)
