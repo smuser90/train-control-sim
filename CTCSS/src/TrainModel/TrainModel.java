@@ -57,6 +57,7 @@ public class TrainModel
 	private boolean				m_doors;
 	private boolean				m_printFlag;
 	private boolean 			m_writeLog = true;
+	private boolean				m_atStation = true;
 	
 	
 	public TrainModel(int ID, String line, TrainController tc, TrainModelModule tm)
@@ -104,10 +105,11 @@ public class TrainModel
 	{
 		double force = 0;
 		
-		if(m_routeInfo == null )
+		if(m_atStation)
 		{
 			if(m_printFlag)
 			{
+				m_log.append("At Station\n\n");
 				m_log.append("Awaiting Route Data\n\n");
 				m_printFlag = false;
 			}
@@ -182,15 +184,15 @@ public class TrainModel
 			m_routeInfo.get(m_blockIndex).setOccupied(false);
 			m_blockIndex++;
 			
-			if(m_blockIndex == m_routeInfo.size())
-			{
-				m_routeInfo = null;
-				m_blockIndex = 0;
-			}
-			else
+			if(m_blockIndex != m_routeInfo.size())
 			{
 				m_routeInfo.get(m_blockIndex).setOccupied(true);
 				m_speedLimit = m_routeInfo.get(m_blockIndex).getSpeedLimit();
+			}
+			else
+			{
+				if(m_velocity == 0.0)
+					m_atStation = true;
 			}
 		}
 		
@@ -213,6 +215,7 @@ public class TrainModel
 		m_routeLength = m_routeInfo.size();
 		m_routeInfo.get(m_blockIndex).setOccupied(true);
 		m_setpointVelocity = m_routeInfo.get(m_blockIndex).getSpeedLimit();
+		m_blockIndex = 1;
 		m_log.append("Route Data Received. *Train Starting*\n\n");
 	}
 	
@@ -247,7 +250,7 @@ public class TrainModel
 	
 	public Block getBlock()
 	{
-		if(m_routeInfo == null)
+		if(m_blockIndex == m_routeInfo.size())
 			return null;
 		return m_routeInfo.get(m_blockIndex);
 	}
