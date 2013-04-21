@@ -30,7 +30,7 @@ public class TrainController
 
 	public static final double INTEGRAL_INITIAL = 0.0f;
 	public static final double ERROR_INITIAL = 0.0f;
-	public static final double PROPORTIONAL_GAIN = 60000f;
+	public static final double PROPORTIONAL_GAIN = 10000f;
 	public static final double INTEGRAL_GAIN = 2f;
 	private double integralLast = INTEGRAL_INITIAL;
 	private double errorLast = ERROR_INITIAL;
@@ -153,7 +153,7 @@ public class TrainController
 		if (!panel.comboBox.getSelectedItem().equals("Train List")){
 		panel.table.setValueAt(String.format("%3.3f", currSpeed) + " m/s", 0, 1);
 		panel.table.setValueAt(authority, 2, 1);
-		panel.table.setValueAt(String.format("%3.3f", setPointSpeed) + " m/s^2", 1, 1);
+		panel.table.setValueAt(String.format("%3.3f", setPointSpeed) + " m/s", 1, 1);
 		panel.table.setValueAt(String.format("%3.3f", train.getAcceleration()) + " m/s^2", 8, 1);
 		panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 		panel.table.setValueAt(train.getSpeedLimit() + " m/s", 10, 1);
@@ -167,6 +167,7 @@ public class TrainController
 			panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 		}
 		
+		/* set power command */
 		if (currSpeed == 0 && setPointSpeed>0 && stationApproach==false ){
 			train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.1);
 			panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
@@ -226,19 +227,19 @@ public class TrainController
 		
 		
 		getDistToNextStation();
-//		System.out.println("Distance to next station = "+distToNextStation);
+		System.out.println("Distance to next station = "+distToNextStation);
 		if (distToNextStation <= 375 && currSpeed >= 10){
 			stationApproach = true;
-//			train.setBrake(true);
-			train.setPower(0);
-			slowDownDist = currSpeed*currSpeed/2/0.5;
-//			System.out.println("slow down dist = "+ slowDownDist);
+			slowDownDist = currSpeed*currSpeed/2/1.2;
+			System.out.println("slow down dist = "+ slowDownDist);
 		}
 		
 		if (distToNextStation <= slowDownDist){
+			train.setPower(0);
 			train.setBrake(true);
 			
-			panel.SetBrake.isSelected();
+			panel.SetBrake.setSelected(true);
+			panel.table.setValueAt("Pull", 7, 1);
 		}
 	}
 	
