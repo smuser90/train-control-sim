@@ -190,6 +190,6 @@ public class PanelButton extends JPanel
 	
 	/* Return wether this button is highlighed or not */
 	protected boolean isHighLighted() {
-		return isHighLighted();
+		return isHighLighted;
 	}
 }
