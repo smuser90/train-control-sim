@@ -42,7 +42,7 @@ public class CTCPanel extends JPanel {
 	// Fields
 	private CTCModule _ctc;
 	private String [] blockDef= new String[] {"Blocks"};
-	private String [] blockADef= new String[] {"Block Actions", "Set Speed Limit", "Close", "Open"};
+	private String [] blockADef= new String[] {"Block Actions", "Set Speed Limit", "Close", "Open", "Add", "Remove"};
 	private String [] trainsDef= new String[] {"Trains"};
 	private String [] trainsADef= new String[] {"Train Actions", "Schedule Train"};
 	private String [] trainsHADef= new String[] {"Train Actions", "Schedule Train", "Route Train", "Set Authority"};
@@ -441,6 +441,18 @@ public class CTCPanel extends JPanel {
 			else if(blockActionsBox.getSelectedItem().equals("Open")) 
 			{
 				_ctc.openBLock((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()));
+				blocksBox.setSelectedIndex(0);
+				blockActionsBox.setSelectedIndex(0);
+			}
+			else if(blockActionsBox.getSelectedItem().equals("Add")) 
+			{
+				_ctc.addBLock((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()));
+				blocksBox.setSelectedIndex(0);
+				blockActionsBox.setSelectedIndex(0);
+			}
+			else if(blockActionsBox.getSelectedItem().equals("Remove")) 
+			{
+				_ctc.removeBLock((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()));
 				blocksBox.setSelectedIndex(0);
 				blockActionsBox.setSelectedIndex(0);
 			}

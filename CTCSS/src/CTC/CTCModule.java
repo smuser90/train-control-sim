@@ -70,6 +70,16 @@ public class CTCModule {
 		log.append(2, "Setting Speed Limit to " + lim + "KPH at BLock: " + bNum + " on Line: " + lName + "\n");
 	}
 	
+	public void addBLock(String lName, int prevBlock) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void removeBLock(String lName, int blockNums) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/* Train Methods **************************************************************/
 	
 	protected void scheduleTrain(String line) {
@@ -114,4 +124,8 @@ public class CTCModule {
 		trains = t;
 		gui.update();
 	}
+
+	
+
+	
 }

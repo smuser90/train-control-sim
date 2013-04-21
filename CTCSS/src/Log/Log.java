@@ -58,6 +58,7 @@ public class Log {
 				current = log1;
 				lCurrent = 0;
 			}
+			append(0, "Log written to file\n");
 		}
 		if(st != null) {
 			current.append(st + " | ");
