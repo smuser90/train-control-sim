@@ -74,4 +74,12 @@ public class TrackModelModule {
 			}
 		}
 	}
+	
+	public void addBlock(String lName, int prevBlock) {
+		
+	}
+	
+	public void removeBlock(String lName, int blockNum) {
+		
+	}
 }

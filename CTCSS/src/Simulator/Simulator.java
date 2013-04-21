@@ -175,4 +175,12 @@ public class Simulator implements Runnable{
 		return trm.getTrack().getLine(lName);
 	}
 	
+	public void addBlock(String lName, int prevBlock) {
+		trm.addBlock(lName, prevBlock);
+	}
+	
+	public void removeBlock(String lName, int blockNum) {
+		trm.removeBlock(lName, blockNum);
+	}
+	
 }

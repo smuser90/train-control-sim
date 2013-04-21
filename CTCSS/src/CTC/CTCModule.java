@@ -71,12 +71,12 @@ public class CTCModule {
 	}
 	
 	public void addBLock(String lName, int prevBlock) {
-		// TODO Auto-generated method stub
+		sim.addBlock(lName, prevBlock);
 		
 	}
 	
-	public void removeBLock(String lName, int blockNums) {
-		// TODO Auto-generated method stub
+	public void removeBLock(String lName, int blockNum) {
+		sim.removeBlock(lName, blockNum);
 		
 	}
 	
