@@ -52,7 +52,8 @@ public class CTCPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CTCPanel(CTCModule ctc) {
+	public CTCPanel(CTCModule ctc) 
+	{
 		_ctc = ctc;
 		setLayout(null);
 		
@@ -69,8 +70,10 @@ public class CTCPanel extends JPanel {
 		panel.add(lineLabel);
 		
 		trainButton = new JButton("Perform Train Action");
-		trainButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		trainButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				trainActions();
 			}
 		});
@@ -78,17 +81,23 @@ public class CTCPanel extends JPanel {
 		panel.add(trainButton);
 		
 		blocksBox = new JComboBox();
-		blocksBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(blockActionsBox.getSelectedItem().equals("Set Speed Limit")) {
+		blocksBox.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(blockActionsBox.getSelectedItem().equals("Set Speed Limit")) 
+				{
 					speedField.requestFocus();
 				}
 			}
 		});
-		blocksBox.addKeyListener(new KeyAdapter() {
+		blocksBox.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			public void keyPressed(KeyEvent e) 
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
 					blockActions();
 				}
 			}
@@ -107,17 +116,23 @@ public class CTCPanel extends JPanel {
 		panel.add(speedLabel);
 		
 		blockActionsBox = new JComboBox();
-		blockActionsBox.addKeyListener(new KeyAdapter() {
+		blockActionsBox.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			public void keyPressed(KeyEvent e) 
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
 					blockActions();
 				}
 			}
 		});
-		blockActionsBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(blockActionsBox.getSelectedItem().equals("Set Speed Limit")) {
+		blockActionsBox.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				if(blockActionsBox.getSelectedItem().equals("Set Speed Limit")) 
+				{
 					speedField.requestFocus();
 					speedField.setEnabled(true);
 				} else {
@@ -130,10 +145,13 @@ public class CTCPanel extends JPanel {
 		panel.add(blockActionsBox);
 		
 		speedField = new JTextField();
-		speedField.addKeyListener(new KeyAdapter() {
+		speedField.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			public void keyPressed(KeyEvent e) 
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
 					blockActions();
 				}
 			}
@@ -143,8 +161,10 @@ public class CTCPanel extends JPanel {
 		panel.add(speedField);
 		
 		blockButton = new JButton("Perform Block Action");
-		blockButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		blockButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 				blockActions();
 			}
 		});
@@ -156,17 +176,23 @@ public class CTCPanel extends JPanel {
 		panel.add(trainLabel);
 		
 		trainBox = new JComboBox();
-		trainBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(trainActionsBox.getSelectedItem().equals("Set Authority")) {
+		trainBox.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(trainActionsBox.getSelectedItem().equals("Set Authority")) 
+				{
 					authorityField.requestFocus();
 				}
 			}
 		});
-		trainBox.addKeyListener(new KeyAdapter() {
+		trainBox.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			public void keyPressed(KeyEvent e) 
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
 					trainActions();
 				}
 			}
@@ -176,10 +202,13 @@ public class CTCPanel extends JPanel {
 		panel.add(trainBox);
 		
 		stationBox = new JComboBox();
-		stationBox.addKeyListener(new KeyAdapter() {
+		stationBox.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			public void keyPressed(KeyEvent e) 
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
 					trainActions();
 				}
 			}
@@ -189,25 +218,35 @@ public class CTCPanel extends JPanel {
 		panel.add(stationBox);
 		
 		trainActionsBox = new JComboBox();
-		trainActionsBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(trainActionsBox.getSelectedItem().equals("Set Authority")) {
+		trainActionsBox.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(trainActionsBox.getSelectedItem().equals("Set Authority")) 
+				{
 					authorityField.setEnabled(true);
 					authorityField.requestFocus();
 					stationBox.setEnabled(false);
-				} else if(trainActionsBox.getSelectedItem().equals("Route Train")){
+				} 
+				else if(trainActionsBox.getSelectedItem().equals("Route Train"))
+				{
 					stationBox.setEnabled(true);
 					authorityField.setEnabled(false);
-				} else {
+				} 
+				else 
+				{
 					stationBox.setEnabled(false);
 					authorityField.setEnabled(false);
 				}
 			}
 		});
-		trainActionsBox.addKeyListener(new KeyAdapter() {
+		trainActionsBox.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			public void keyPressed(KeyEvent e) 
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
 					trainActions();
 				}
 			}
@@ -222,10 +261,13 @@ public class CTCPanel extends JPanel {
 		panel.add(authorityLabel);
 		
 		authorityField = new JTextField();
-		authorityField.addKeyListener(new KeyAdapter() {
+		authorityField.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			public void keyPressed(KeyEvent e) 
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
 					trainActions();
 				}
 			}
@@ -235,8 +277,10 @@ public class CTCPanel extends JPanel {
 		panel.add(authorityField);
 		
 		lineBox = new JComboBox();
-		lineBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		lineBox.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				update();
 			}
 		});
@@ -247,13 +291,17 @@ public class CTCPanel extends JPanel {
 		toggle(false);
 	}
 	
-	protected void update() {
+	protected void update() 
+	{
 		int tempPos = lineBox.getSelectedIndex();
 		reset();
 		lineBox.setSelectedIndex(tempPos);
-		if(lineBox.getSelectedItem().equals("Lines")) {
+		if(lineBox.getSelectedItem().equals("Lines")) 
+		{
 			return;
-		} else {
+		} 
+		else 
+		{
 			/* Block Element Updates ************************************************/
 			ArrayList<Block> t = _ctc.getLine((String) lineBox.getSelectedItem());
 			if(t == null)
@@ -262,13 +310,20 @@ public class CTCPanel extends JPanel {
 			ArrayList<String> t3 = new ArrayList<String>();
 			ArrayList<String> t5 = new ArrayList<String>();
 			t3.add("Stations");
-			for(int i = 0; i < t.size(); i++) {
+			for(int i = 0; i < t.size(); i++) 
+			{
 				if(i == 0) {
 					t2.add("Blocks");
-				} else {
-					if(t.get(i).getType() == 3) {
+					t3.add(t.get(i).getStationName());
+				} 
+				else 
+				{
+					if(t.get(i).getType() == 3) 
+					{
 						t3.add(t.get(i).getStationName());
-					} else {
+					} 
+					else 
+					{
 						t2.add(Integer.toString(t.get(i).getBlockNumber()));
 					}
 				}
@@ -281,7 +336,8 @@ public class CTCPanel extends JPanel {
 			/* Train Element Updates ************************************************/
 			ArrayList<Integer> t4 = _ctc.getLineTrains((String)lineBox.getSelectedItem());
 			t5.add("Trains");
-			for(int i = 0; i < t4.size(); i++) {
+			for(int i = 0; i < t4.size(); i++) 
+			{
 				t5.add(t4.get(i).toString());
 			}
 			
@@ -292,14 +348,16 @@ public class CTCPanel extends JPanel {
 			t5.toArray(temp);
 			trainBox.setModel(new DefaultComboBoxModel(temp));
 			toggle(true);
-			if(t4.size() > 0) {
+			if(t4.size() > 0) 
+			{
 				trainBox.setEnabled(true);
 				trainActionsBox.setModel(new DefaultComboBoxModel(trainsHADef));
 			}
 		}
 	}
 	
-	private void reset() {
+	private void reset() 
+	{
 		blocksBox.setModel(new DefaultComboBoxModel(blockDef));
 		blockActionsBox.setModel(new DefaultComboBoxModel(blockADef));
 		trainBox.setModel(new DefaultComboBoxModel(trainsDef));
@@ -312,71 +370,117 @@ public class CTCPanel extends JPanel {
 		toggle(false);
 	}
 	
-	public void trainActions() {
-		if(!trainActionsBox.getSelectedItem().equals("Train Actions")) {
-			if(trainActionsBox.getSelectedItem().equals("Schedule Train")) {
+	public void trainActions() 
+	{
+		if(!trainActionsBox.getSelectedItem().equals("Train Actions")) 
+		{
+			if(trainActionsBox.getSelectedItem().equals("Schedule Train")) 
+			{
 					_ctc.scheduleTrain((String)lineBox.getSelectedItem());
 					trainActionsBox.setSelectedIndex(0);
-			} else if(!trainBox.getSelectedItem().equals("Trains") && trainActionsBox.getSelectedItem().equals("Route Train")) {
-				if(stationBox.getSelectedItem().equals("Stations")) {
+			} 
+			else if(!trainBox.getSelectedItem().equals("Trains") && trainActionsBox.getSelectedItem().equals("Route Train")) 
+			{
+				if(stationBox.getSelectedItem().equals("Stations")) 
+				{
 					log.append(3, "Must select a station\n");
-				} else {
+				} 
+				else 
+				{
 					_ctc.routeTrain(Integer.parseInt((String)trainBox.getSelectedItem()), (String)stationBox.getSelectedItem(), (String)lineBox.getSelectedItem());
 					trainActionsBox.setSelectedIndex(0);
 					trainBox.setSelectedIndex(0);
 					stationBox.setSelectedIndex(0);
 				}
-			} else if(!trainBox.getSelectedItem().equals("Trains")) {
-				authorityField.setText("");
-				trainActionsBox.setSelectedIndex(0);
-				trainBox.setSelectedIndex(0);
-			} else {
+			}
+			else if(!trainBox.getSelectedItem().equals("Trains")) 
+			{
+				try 
+				{
+					int temp = Integer.parseInt(this.authorityField.getText());
+					if(temp > 0) 
+					{
+						_ctc.setAuthority(Integer.parseInt((String)trainBox.getSelectedItem()), temp);
+						authorityField.setText("");
+						trainActionsBox.setSelectedIndex(0);
+						trainBox.setSelectedIndex(0);
+					} 
+					else 
+					{
+						authorityField.setText("");
+						log.append(3, "Authority must be an integer s.t. x > 0\n");
+					}
+				} 
+				catch(Exception e) 
+				{
+					this.authorityField.setText("");
+					log.append(3, "Authority must be an integer s.t. x > 0\n");
+				}
+			} 
+			else 
+			{
 				log.append(3, "Must select a train\n");
 			}
-		} else {
+		} 
+		else 
+		{
 			log.append(3, "Must select a train action\n");
 		}	
 	}
 	
 	public void blockActions() {
-		if(!blocksBox.getSelectedItem().equals("Blocks") && !blockActionsBox.getSelectedItem().equals("Block Actions")) {
-			if(blockActionsBox.getSelectedItem().equals("Close")) {
+		if(!blocksBox.getSelectedItem().equals("Blocks") && !blockActionsBox.getSelectedItem().equals("Block Actions")) 
+		{
+			if(blockActionsBox.getSelectedItem().equals("Close")) 
+			{
 				_ctc.closeBLock((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()));
 				blocksBox.setSelectedIndex(0);
 				blockActionsBox.setSelectedIndex(0);
 				
-			} else if(blockActionsBox.getSelectedItem().equals("Open")) {
+			} 
+			else if(blockActionsBox.getSelectedItem().equals("Open")) 
+			{
 				_ctc.openBLock((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()));
 				blocksBox.setSelectedIndex(0);
 				blockActionsBox.setSelectedIndex(0);
 			}
-			else {
-				try {
+			else 
+			{
+				try 
+				{
 					int temp = Integer.parseInt(this.speedField.getText());
 					// IT COULD BE OVER 9000!!!
-					if((temp > 0 && temp <= 70) || temp == 9001) {
+					if((temp > 0 && temp <= 70) || temp == 9001) 
+					{
 						if(temp == 9001)
 							temp = 70;
 						_ctc.setSpeedLimit((String)lineBox.getSelectedItem(), Integer.parseInt((String)blocksBox.getSelectedItem()), temp);
 						speedField.setText("");
 						blocksBox.setSelectedIndex(0);
 						blockActionsBox.setSelectedIndex(0);
-					} else {
+					} 
+					else 
+					{
 						speedField.setText("");
 						log.append(3, "Speed Limit must be an integer s.t. 0 < x <= 70\n");
 					}
-				} catch(Exception e) {
+				} 
+				catch(Exception e) 
+				{
 					this.speedField.setText("");
 					log.append(3, "Speed Limit must be an integer s.t. 0 < x <= 70\n");
 				}
 			}
 			
-		} else {
+		} 
+		else 
+		{
 			log.append(3, "Must select a Block and a Block Action\n");
 		}	
 	}
 	
-	public void toggle(boolean onoff) {
+	public void toggle(boolean onoff) 
+	{
 		blockActionsBox.setEnabled(onoff);
 		trainBox.setEnabled(false);
 		stationBox.setEnabled(false);

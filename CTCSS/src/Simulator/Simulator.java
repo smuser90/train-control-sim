@@ -148,8 +148,8 @@ public class Simulator implements Runnable{
 		trm.route(train, train.getBlockIndex(), StationID, l);
 	}
 	
-	public void setAuthority(int trainID) {
-		
+	public void setAuthority(int trainID, int a) {
+		tm.getTrainList().get(trainID).setAuthority(a);
 	}
 	
 	/* Block Actions ***********************************************************/

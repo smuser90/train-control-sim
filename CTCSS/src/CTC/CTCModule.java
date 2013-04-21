@@ -95,7 +95,10 @@ public class CTCModule {
 		
 	}
 	
-	
+	protected void setAuthority(int trainID, int a) {
+		sim.setAuthority(trainID, a);
+		log.append(2, "Authority for Train: " + trainID + " set to " + a + " blocks\n");
+	}
 	
 	public ArrayList<Integer> getLineTrains(String line) {
 		ArrayList<Integer> tids = new ArrayList<Integer>();
