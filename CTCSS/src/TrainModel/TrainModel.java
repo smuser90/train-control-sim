@@ -111,6 +111,7 @@ public class TrainModel
 			{
 				m_log.append("At Station\n\n");
 				m_log.append("Awaiting Route Data\n\n");
+				m_writeLog = true;
 				m_printFlag = false;
 			}
 			
@@ -176,24 +177,38 @@ public class TrainModel
 		
 		m_position = m_position + m_velocity * timeLapse;
 		
-		//Ending Trip
-		if(m_position >= m_routeInfo.get(m_blockIndex).getLength() )
+		//Shifting blocks
+		if(m_position >= m_routeInfo.get(m_blockIndex).getLength() && m_routeInfo.size() > m_blockIndex+1)
 		{
 			m_position = m_position - m_routeInfo.get(m_blockIndex).getLength();
 			
 			m_routeInfo.get(m_blockIndex).setOccupied(false);
 			m_blockIndex++;
 			
-			if(m_blockIndex <= m_routeInfo.size() - 1)
+			m_routeInfo.get(m_blockIndex).setOccupied(true);
+			m_speedLimit = m_routeInfo.get(m_blockIndex).getSpeedLimit();
+		}
+		
+		//On last block
+		if(m_routeInfo.size() == m_blockIndex+1)
+		{
+			//Ideal
+			if(m_velocity == 0.0)
 			{
-				m_routeInfo.get(m_blockIndex).setOccupied(true);
-				m_speedLimit = m_routeInfo.get(m_blockIndex).getSpeedLimit();
+				m_atStation = true;
+				m_printFlag = true;
+				m_writeLog = true;
 			}
-			else
+			//We oopsed
+			if(m_position >= m_routeInfo.get(m_blockIndex).getLength())
 			{
-				if(m_velocity == 0.0)
-					m_atStation = true;
+				m_position = m_routeInfo.get(m_blockIndex).getLength();
+				m_atStation = true;
+				m_printFlag = true;
+				m_writeLog = true;
+				m_log.append("You missed the station asshole \n\n");
 			}
+			
 		}
 		
 		m_trainController.tick(timeLapse);
@@ -233,17 +248,12 @@ public class TrainModel
 	}
 	
 	public int getRouteLength()
-	{
-		if(m_atStation)
-			return 0;
-		
+	{	
 		return m_routeLength;
 	}
 	
 	public int getBlockLength()
 	{
-		if(m_atStation)
-			return 0;
 		
 		return m_routeInfo.get(m_blockIndex).getLength();
 	}
@@ -258,8 +268,6 @@ public class TrainModel
 	
 	public Block getBlock()
 	{
-		if(m_blockIndex == m_routeInfo.size())
-			return null;
 		return m_routeInfo.get(m_blockIndex);
 	}
 	
@@ -374,9 +382,12 @@ public class TrainModel
 	{
 		m_emergencyBrake = !m_emergencyBrake;
 		if(m_emergencyBrake)
+		{
 			m_log.append("Emergency Brake Engaged. *Train Stopping*\n\n");
+			m_setpointVelocity = 0.0;
+		}
 		else
-			m_log.append("Emergency Brake Disengaged.. *Train Restarting*\n\n");
+			m_log.append("Emergency Brake Disengaged. *Train Restarting*\n\n");
 		m_writeLog = true;
 	}
 	
