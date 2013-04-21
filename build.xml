@@ -45,7 +45,7 @@
 	
 	<!--Creates the deployable jar file  -->
 	<target name="jar" depends="compile, move">
-		<jar destfile="${dist.dir}/CTCSS.jar" basedir="${build.dir}" filesetmanifest="mergewithoutmain">
+		<jar destfile="${dist.dir}/CTCSSv0.3.jar" basedir="${build.dir}" filesetmanifest="mergewithoutmain">
 			<manifest>
                 <attribute name="Main-Class" value="System.System_GUI"/>
                 <attribute name="Class-Path" value="."/>

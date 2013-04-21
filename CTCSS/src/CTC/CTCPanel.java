@@ -1,3 +1,11 @@
+/*
+ * CTCPanel.java
+ * Displays the CTC in a custom JPanel
+ * Author: Nikolas Parshook
+ * Date Created: 04/08/2013
+ * Date Last Updated: 04/21/2013
+ */
+
 package CTC;
 
 import javax.swing.JPanel;
@@ -18,6 +26,11 @@ import java.util.ArrayList;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * Panel for use as a display for the CTC Module
+ * @author Nikolas Parshook
+ *
+ */
 public class CTCPanel extends JPanel {
 	
 	// GUI Elements
@@ -49,8 +62,9 @@ public class CTCPanel extends JPanel {
 	private String [] stationsDef= new String[] {"Stations"};
 	private String [] lineDef= new String[] {"Lines"};
 	private Log log = Log.Instance();
+	
 	/**
-	 * Create the panel.
+	 * @param ctc Module to display
 	 */
 	public CTCPanel(CTCModule ctc) 
 	{
@@ -291,6 +305,9 @@ public class CTCPanel extends JPanel {
 		toggle(false);
 	}
 	
+	/**
+	 * Update the gui to reflect changes to the system
+	 */
 	protected void update() 
 	{
 		int tempPos = lineBox.getSelectedIndex();
@@ -370,7 +387,7 @@ public class CTCPanel extends JPanel {
 		toggle(false);
 	}
 	
-	public void trainActions() 
+	private void trainActions() 
 	{
 		if(!trainActionsBox.getSelectedItem().equals("Train Actions")) 
 		{
@@ -428,7 +445,7 @@ public class CTCPanel extends JPanel {
 		}	
 	}
 	
-	public void blockActions() {
+	private void blockActions() {
 		if(!blocksBox.getSelectedItem().equals("Blocks") && !blockActionsBox.getSelectedItem().equals("Block Actions")) 
 		{
 			if(blockActionsBox.getSelectedItem().equals("Close")) 
@@ -491,7 +508,7 @@ public class CTCPanel extends JPanel {
 		}	
 	}
 	
-	public void toggle(boolean onoff) 
+	private void toggle(boolean onoff) 
 	{
 		blockActionsBox.setEnabled(onoff);
 		trainBox.setEnabled(false);

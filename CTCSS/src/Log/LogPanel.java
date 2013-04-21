@@ -1,3 +1,11 @@
+/*
+ * LogPanel.java
+ * Displays the log in a custom JPanel
+ * Author: Nikolas Parshook
+ * Date Created: 04/07/2013
+ * Date Last Updated: 04/21/2013
+ */
+
 package Log;
 
 import java.awt.Color;
@@ -12,7 +20,13 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import java.awt.Rectangle;
 
-public class LogPanel extends JPanel {
+/**
+ * JPanel for displaying the log
+ * @author Optimus
+ *
+ */
+public class LogPanel extends JPanel 
+{
 
 	private JTabbedPane tabbedPane = null;
 	private JPanel panel = null;
@@ -22,7 +36,8 @@ public class LogPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public LogPanel() {
+	public LogPanel() 
+	{
 		setLayout(null);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -44,9 +59,16 @@ public class LogPanel extends JPanel {
 
 	}
 	
-	public void append(int severity, String s) {
+	/**
+	 * Append to the logs display
+	 * @param severity
+	 * @param s
+	 */
+	public void append(int severity, String s) 
+	{
 		Color c = null;
-		switch (severity) {
+		switch (severity) 
+		{
 		case 1:
 			c = Color.GREEN;
 			break;
@@ -69,7 +91,11 @@ public class LogPanel extends JPanel {
 		textPane.setEditable(false);
 	}
 	
-	public void clear() {
+	/**
+	 * Clears the display
+	 */
+	public void clear() 
+	{
 		textPane = new JTextPane();
 		textPane.setEditable(false);
 		textPane.setBounds(new Rectangle(0, 0, 960, 102));

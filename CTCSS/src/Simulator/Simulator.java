@@ -132,6 +132,16 @@ public class Simulator implements Runnable{
 		log.append(1, "Track Loaded\n");
 	}
 	
+	/* TrackActions ***********************************************************/
+	
+	public Line getLine(String lName) {
+		return trm.getTrack().getLine(lName);
+	}
+	
+	public ArrayList<Line> getLines() {
+		return trm.getTrack().getLines();
+	}
+	
 	/* Train Actions ***********************************************************/
 	
 	public void scheduleTrain(String line) {
@@ -171,9 +181,7 @@ public class Simulator implements Runnable{
 		return sys;
 	}
 	
-	public Line getLine(String lName) {
-		return trm.getTrack().getLine(lName);
-	}
+	
 	
 	public void addBlock(String lName, int prevBlock) {
 		trm.addBlock(lName, prevBlock);

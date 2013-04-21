@@ -16,7 +16,8 @@ import java.io.IOException;
  * @author Nikolas Parshook
  *
  */
-public class Log {
+public class Log 
+{
 	
 	// Fields
 	private static Log _instance = null;
@@ -47,8 +48,10 @@ public class Log {
 	 * Call to get the instance of the log
 	 * @return returns an instance of Log
 	 */
-	public static Log Instance() {
-		if(_instance == null) {
+	public static Log Instance() 
+	{
+		if(_instance == null) 
+		{
 			_instance = new Log();
 		}
 		return _instance;
@@ -58,8 +61,10 @@ public class Log {
 	 * Call to get the logs JPanel
 	 * @return returns the logs display panel
 	 */
-	public LogPanel getPanel() {
-		if(logPanel == null) {
+	public LogPanel getPanel()
+	{
+		if(logPanel == null) 
+		{
 			Instance();
 		}
 		return logPanel;
@@ -71,25 +76,32 @@ public class Log {
 	 * @param severity an int to describe how severe the event that is writing to log is
 	 * @param text message to the log
 	 */
-	public void append(int severity, String text) {
-		if(size >= limit) {
+	public void append(int severity, String text) 
+	{
+		if(size >= limit) 
+		{
 			size = 0;
-			if(dumpFileName == null)
+			if(dumpFileName == null) {
 				dumpFileName = "Log.txt";
+			}
 			tCurrent = lCurrent;
 			logPanel.clear();
 			Thread t = new Thread(new fileWrite(1, dumpFileName));
 			t.start();
-			if(lCurrent == 0) {
+			if(lCurrent == 0) 
+			{
 				current = log2;
 				lCurrent = 1;
-			} else {
+			} 
+			else 
+			{
 				current = log1;
 				lCurrent = 0;
 			}
 			append(0, "Log written to file\n");
 		}
-		if(st != null) {
+		if(st != null) 
+		{
 			current.append(st + " | ");
 			size += st.length() + 3;
 			System.out.print(st + " | ");
@@ -103,32 +115,42 @@ public class Log {
 		logPanel.append(severity, text);
 	}
 	
-	private static class fileWrite implements Runnable {
+	private static class fileWrite implements Runnable 
+	{
 		private int _mode;
 		private String name;
 		
-		public fileWrite(int mode, String fName) {
+		public fileWrite(int mode, String fName) 
+		{
 			_mode = mode;
 			name = fName;
 		}
 		
-		public void run() {
-			try {
+		public void run() 
+		{
+			try 
+			{
 				FileWriter fw = new FileWriter(name, true);
-				if(_mode == 0)
+				if(_mode == 0) {
 					fw.write(getLog());
-				else {
-					if(tCurrent == 0) {
+				}
+				else 
+				{
+					if(tCurrent == 0)
+					{
 						fw.append(log1.toString());
 						log1 = new StringBuilder();
 					}
-					else {
+					else 
+					{
 						fw.append(log2.toString());
 						log2 = new StringBuilder();
 					}
 				}
 				fw.close();
-			} catch (IOException e) {
+			} 
+			catch (IOException e) 
+			{
 				e.printStackTrace();
 			}
 		}
@@ -138,7 +160,8 @@ public class Log {
 	 * Writes to the specified file
 	 * @param name file to be written to.
 	 */
-	public void writeToFile(String name) {
+	public void writeToFile(String name) 
+	{
 		Thread t = new Thread(new fileWrite(0, name));
 		t.start();
 	}
@@ -147,7 +170,8 @@ public class Log {
 	 * Sets the time for the log to use in messages
 	 * @param sysTime
 	 */
-	public void setSysTime(String sysTime) {
+	public void setSysTime(String sysTime) 
+	{
 		if(st == null)
 			dumpFileName = "Log" + sysTime.split(" ")[1].replaceAll(":", "") + ".txt";
 		st = sysTime;
@@ -157,14 +181,16 @@ public class Log {
 	 * Get the string representation of the log
 	 * @return String
 	 */
-	public static String getLog() {
+	public static String getLog() 
+	{
 		return current.toString();
 	}
 	
 	/**
 	 * Causes the log to write to its dumpfile
 	 */
-	public void writeToDumpFile() {
+	public void writeToDumpFile() 
+	{
 		Thread t = new Thread(new fileWrite(1, dumpFileName));
 		t.start();
 	}
