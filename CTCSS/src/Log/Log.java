@@ -14,7 +14,7 @@ public class Log {
 	private static int lCurrent;
 	private static int tCurrent;
 	private String st = null;
-	private int limit = 1000;
+	private int limit = 10000;
 	private int size;
 	private String dumpFileName;
 	private String temp;
