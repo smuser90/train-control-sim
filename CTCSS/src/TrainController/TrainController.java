@@ -65,6 +65,7 @@ public class TrainController
 			eBrake = tm.getEmergencyBrake();
 			routeInfo = tm.getRouteInfo();
 			
+			
 //			currBlock = tm.getBlock();
 			panel.comboBox.addItem(tm.getTrainID());
 			
@@ -129,6 +130,10 @@ public class TrainController
 		brake = train.getBrake();
 		eBrake = train.getEmergencyBrake();
 		routeInfo = train.getRouteInfo();
+		System.out.println("RouteInfo: ");
+/*		for (int i=0; i<routeInfo.size();i++){
+			System.out.println("Station Name: " + routeInfo.get(i).getStationName());
+		}*/
 		
 		// check route info 
 		if (routeInfo==null || panel.comboBox.getSelectedItem().equals("Train List")){
@@ -220,11 +225,11 @@ public class TrainController
 		
 		getDistToNextStation();
 //		System.out.println("Distance to next station = "+distToNextStation);
-		if (distToNextStation <= 375 && currSpeed >= 5){
+		if (distToNextStation <= 375 && currSpeed >= 10){
 			stationApproach = true;
 //			train.setBrake(true);
 			train.setPower(0);
-			slowDownDist = currSpeed*currSpeed/2/1.23/distToNextStation;
+			slowDownDist = currSpeed*currSpeed/2/0.5;
 //			System.out.println("slow down dist = "+ slowDownDist);
 		}
 		
