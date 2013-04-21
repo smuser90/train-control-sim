@@ -9,10 +9,19 @@ public class Login {
 	public static boolean login(String username, String password) {
 		Log.Instance().append(1, "Logged in as " + username + "\n");
 		uName = username;
-		return true;
+		
+		return authenticate(password);
 	}
 	
 	public static void logout() {
 		Log.Instance().append(3, "Logged out " + uName + "\n");
+	}
+	
+	private static boolean authenticate(String pw) {
+		if(uName.equals("admin") && pw.equals("123456")) 
+		{
+			return true;
+		}
+		return false;
 	}
 }

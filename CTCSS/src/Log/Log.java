@@ -120,4 +120,9 @@ public class Log {
 		return current.toString();
 	}
 	
+	public void writeToDumpFile() {
+		Thread t = new Thread(new fileWrite(1, dumpFileName));
+		t.start();
+	}
+	
 }

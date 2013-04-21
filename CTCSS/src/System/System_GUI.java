@@ -25,6 +25,8 @@ import TrainController.TrainControllerModule;
 import TrainModel.TrainModelModule;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class System_GUI {
 
@@ -187,9 +189,15 @@ public class System_GUI {
 	 */
 	private void initialize() {
 		frmCtcss = new JFrame();
+		frmCtcss.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				exitProcedure();
+			}
+		});
 		frmCtcss.setTitle("CTCSS");
 		frmCtcss.setBounds(100, 100, 988, 600);
-		frmCtcss.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmCtcss.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frmCtcss.getContentPane().setLayout(null);
 		
 		// Log
@@ -263,7 +271,7 @@ public class System_GUI {
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
+				exitProcedure();
 			}
 		});
 		mnFile.add(mntmExit);
@@ -314,6 +322,7 @@ public class System_GUI {
 		}
 		else {
 			log.append(3, "Login failed\n");
+			mntmLogin.setEnabled(true);
 		}
 	}
 	
@@ -350,5 +359,10 @@ public class System_GUI {
 	
 	public JFrame getFrame() {
 		return this.frmCtcss;
+	}
+	
+	private void exitProcedure() {
+		log.writeToDumpFile();
+		System.exit(0);
 	}
 }
