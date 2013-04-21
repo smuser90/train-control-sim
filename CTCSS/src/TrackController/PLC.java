@@ -1,5 +1,6 @@
 package TrackController;
 
+import Simulator.Simulator;
 import TrackModel.Block;
 import TrainModel.TrainModel;
 
@@ -14,6 +15,7 @@ public class PLC {
 	private static TrackController _tc;
 	private static Map<Integer, TrainModel> trainList;
 	private static TrackControllerModule _tcm;
+	private static Simulator _sim;
 	
 	static int index = 0;
 	static int index_2 = 0;
@@ -28,8 +30,9 @@ public class PLC {
 		handleAuthority(trackController);
 	}
 	
-	public static void setup(TrackControllerModule tcm) {
+	public static void setup(TrackControllerModule tcm, Simulator sim) {
 		_tcm = tcm;
+		_sim = sim;
 	}
 	
 	//Method cycles through all the track controllers and sets the number of trains on each block to zero
@@ -52,22 +55,25 @@ public class PLC {
 		{
 			for(int i = 0; i < trainList.size(); i++)
 			{
-				if(trainList.get(i + 1).getLine().equals(trackController.getLine()) && trainList.get(i + 1).getRouteInfo() != null)
+				for(int j = 0; j < trackController.crossingsControlled.size(); j++)
 				{
-					if(trainList.get(i + 1).getRouteInfo().size() > trainList.get(i + 1).getBlockIndex() + 1)
+					if(trainList.get(i + 1).getLine().equals(trackController.getLine()) && trainList.get(i + 1).getRouteInfo() != null)
 					{
-						if(trackController.crossingsControlled.contains(trainList.get(i + 1).getBlock()) || trackController.crossingsControlled.contains(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1)))//trainList.get(i).getBlockIndex()))
+						if(trainList.get(i + 1).getRouteInfo().size() > trainList.get(i + 1).getBlockIndex() + 1)
 						{
-							trackController.crossingsControlled.get(i).setCrossing(false);
+							if(trackController.crossingsControlled.contains(trainList.get(i + 1).getBlock()) || trackController.crossingsControlled.contains(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1)))//trainList.get(i).getBlockIndex()))
+							{
+								trackController.crossingsControlled.get(j).setCrossing(false);
+							}
+							else
+							{
+								trackController.crossingsControlled.get(j).setCrossing(true);
+							}
 						}
 						else
 						{
-							trackController.crossingsControlled.get(i).setCrossing(true);
+							trackController.crossingsControlled.get(j).setCrossing(true);
 						}
-					}
-					else
-					{
-						trackController.crossingsControlled.get(i).setCrossing(true);
 					}
 				}
 			}
@@ -75,44 +81,51 @@ public class PLC {
 	}
 	
 	public static void switches(TrackController trackController){
-		/*System.out.println("here in switches");
-		if(trainList != null)
+		//System.out.println("here in switches");
+	/*	if(trainList != null)
 		{
-			System.out.println("train list isn't null!!!");
+			//System.out.println("train list isn't null!!!");
 			for(int i = 0; i < trainList.size(); i++)
 			{
-				System.out.println("Were in the for loop to go through the trains");
+				//System.out.println("Were in the for loop to go through the trains");
 				if(trainList.get(i + 1).getLine().equals(trackController.getLine()) && trainList.get(i + 1).getRouteInfo() != null)
 				{
 					//trains are on this list
-					System.out.println("route info isn't null!");
+					//System.out.println("route info isn't null!");
 					if(trainList.get(i + 1).getLine().equals(trackController.getLine()))
 					{
-						System.out.println("were on the same line as a track controller");
+						//System.out.println("were on the same line as a track controller");
 						//train's has at least two more blocks in route
+						//System.out.println("route info size " + trainList.get(i + 1).getRouteInfo().size());
 						if(trainList.get(i + 1).getRouteInfo().size() > trainList.get(i + 1).getBlockIndex() + 2)
 						{
 							if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1) != null && trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 2) != null)
 							{
 								System.out.println("The next two blocks in the route info aren't null!");
+								//next block is a switch
+								System.out.println("switch controlled is " + trackController.switchesControlled.get(0).getBlockNumber());
+								System.out.println("train next block is " + trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber());
 								if(trackController.switchesControlled.contains((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1))))
 								{
 									System.out.println("We have made it into the switch depth where we start to check adjacency list");
 									//for(int j = 0; j < sim.getLine(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber()).size(); j++)
-									for(int j = 0; j < sim.getLine(trainList.get(i + 1).getLine()).adj(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1); j++)
-									{
-										//if(sim.getLine(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber()).get(j) == trainList.get(i + 1).getBlock().getBlockNumber())
-										if(sim.getLine(trainList.get(i + 1).getLine()).adj(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).get(j) == trainList.get(i + 1).getBlock().getBlockNumber())
+									
+										for(int j = 0; j < _sim.getLine(trainList.get(i + 1).getLine()).adj(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber()).size(); j++)
 										{
-											//switch to next next
-											trackController.switchesControlled.get((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1))).setSwitchedTo(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 2).getBlockNumber());
+											//if(sim.getLine(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber()).get(j) == trainList.get(i + 1).getBlock().getBlockNumber())
+	
+											//if(_sim.getLine(trainList.get(i + 1).getLine()).adj((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber()) == trainList.get(i + 1).getBlock().getBlockNumber()))
+											if(_sim.getLine(trainList.get(i + 1).getLine()).adj(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber()).get(j) == trainList.get(i + 1).getBlock().getBlockNumber())
+											{
+												//switch to next next
+												trackController.switchesControlled.get((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber())).setSwitchedTo(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 2).getBlockNumber());
+											}
+											else
+											{
+												//switch to current
+												trackController.switchesControlled.get((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber())).setSwitchedTo(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex()).getBlockNumber());
+											}
 										}
-										else
-										{
-											//switch to current
-											trackController.switchesControlled.get((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1))).setSwitchedTo(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex()).getBlockNumber());
-										}
-									}
 									//sim.getLine will be used to get the current line that the train is on. using this list we just need to check if the cur value is on
 									//the adj list for the switch. If so, switch to next next value, if not switch to cur
 									
@@ -215,7 +228,7 @@ public class PLC {
 	
 	public static void handleAuthority(TrackController trackController){
 		//if train list is not null
-		if(trainList != null)
+	/*	if(trainList != null)
 		{
 			//for all trains
 			for(int i = 0; i < trainList.size(); i++)
@@ -227,14 +240,17 @@ public class PLC {
 					if(trackController.blocksControlled.contains(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex())))
 					{
 						trainList.get(i + 1).setAuthority(0);
-						if(!trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied() && !trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getFailure())
+						if((i + 1) != trainList.size())
 						{
-							trainList.get(i + 1).setAuthority(1);
+							if(!trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied() && !trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getFailure())
+							{
+								trainList.get(i + 1).setAuthority(1);
+							}
 						}
 					}
 				}
 			}
-		}
+		}*/
 	}
 	
 	
