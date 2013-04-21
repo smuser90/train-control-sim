@@ -207,7 +207,7 @@ public class TMPanel extends JPanel
 			
 			//Populate Table
 			String format = "%3.3f";
-			table.setValueAt(""+train.getBlockIndex()+" / "+train.getRouteLength(), 0, 1);
+			table.setValueAt(""+(train.getBlockIndex())+" / "+(train.getRouteLength()-1), 0, 1);
 			table.setValueAt(String.format("%3.1f", train.getPosition())+" / "+train.getBlockLength(), 1, 1);
 			table.setValueAt(new String(""+train.getSpeedLimit()), 2, 1);
 			table.setValueAt(new String(""+train.getSetpointSpeed()), 3, 1);

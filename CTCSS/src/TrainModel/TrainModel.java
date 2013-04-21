@@ -117,10 +117,10 @@ public class TrainModel
 			return;
 			
 		}
-		
+			
 		m_printFlag = true;
 		
-		//Check Failsafes
+		//Check FailSafes
 		if(m_engineFailure == true || m_signalFailure == true || m_brakeFailure == true)
 		{
 			m_power = 0.0;
@@ -184,7 +184,7 @@ public class TrainModel
 			m_routeInfo.get(m_blockIndex).setOccupied(false);
 			m_blockIndex++;
 			
-			if(m_blockIndex != m_routeInfo.size())
+			if(m_blockIndex <= m_routeInfo.size() - 1)
 			{
 				m_routeInfo.get(m_blockIndex).setOccupied(true);
 				m_speedLimit = m_routeInfo.get(m_blockIndex).getSpeedLimit();
@@ -211,12 +211,20 @@ public class TrainModel
 	
 	public void setRouteInfo(ArrayList<Block> routeInfo)
 	{
+		System.out.println("Setting Route Info");
 		m_routeInfo = routeInfo;
 		m_routeLength = m_routeInfo.size();
 		m_routeInfo.get(m_blockIndex).setOccupied(true);
 		m_setpointVelocity = m_routeInfo.get(m_blockIndex).getSpeedLimit();
-		m_blockIndex = 1;
-		m_log.append("Route Data Received. *Train Starting*\n\n");
+		m_blockIndex = 0;
+		
+		//Routed somewhere besides yard
+		if(m_routeInfo.size() > 1 )
+		{
+			System.out.println("Routed to legit");
+			m_log.append("Route Data Received. *Train Starting*\n\n");
+			m_atStation = false;
+		}
 	}
 	
 	public ArrayList<Block> getRouteInfo()
@@ -226,7 +234,7 @@ public class TrainModel
 	
 	public int getRouteLength()
 	{
-		if(m_routeInfo == null)
+		if(m_atStation)
 			return 0;
 		
 		return m_routeLength;
@@ -234,7 +242,7 @@ public class TrainModel
 	
 	public int getBlockLength()
 	{
-		if(m_routeInfo == null)
+		if(m_atStation)
 			return 0;
 		
 		return m_routeInfo.get(m_blockIndex).getLength();
