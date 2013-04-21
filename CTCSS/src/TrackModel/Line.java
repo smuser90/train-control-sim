@@ -1,8 +1,12 @@
 // this is the class to hold blocks in a directed graph, and also hold a list of the related blocks
 // the TrackModel.java class will hold multiple instances of this, red line green line etc.
 package TrackModel;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import panelButtons.GraphPanel;
+import panelButtons.SectionLocator;
 
 import Log.Log;
 import TrainModel.TrainModel;
@@ -15,8 +19,8 @@ public class Line {
 	private String lineName;
 	private HashMap<String, Section> sectionList; // list of all the sections <String sectionName, Section s>
 	private HashMap<String, ArrayList<String>> sectionGraph; // graph of all the sections, stored like the trackAdjList 
-	
-	
+	private GraphPanel panel;
+	private ArrayList<String> sectionKeys;
 	public Line() {}
 	
 	public Line(int numBlocks, String lName)
@@ -30,11 +34,16 @@ public class Line {
 		{
 			trackAdjList.add(new ArrayList<Integer>()); // init all of the lists of blocks that each block references
 		}
+		panel = new GraphPanel();
 	}
 	
 	// these will be for testing, to make sure stuff loads I suppose
 	public int V() { return V; }
 	protected int E() { return E; }
+	
+	public GraphPanel getPanel() {
+		return panel;
+	}
 	
 	public ArrayList<Integer> adj(int v) {
 		return this.trackAdjList.get(v);
@@ -99,11 +108,13 @@ public class Line {
 		//  first pass, get a list of sections (and related blocks?)
 		//  second pass, set the vertices of the sections
 		String curSecName = "";
-		ArrayList<String> s = new ArrayList<String>(); // list of section names
+		sectionKeys = new ArrayList<String>(); // list of section names
 		
+
+		sectionList = new HashMap<String, Section>();
+		sectionGraph = new HashMap<String, ArrayList<String>>();
 		if(sectionList == null)
 			sectionList = new HashMap<String, Section>();
-		
 		for (int i = 0; i < blockList.size(); i++)
 		{
 			curSecName = blockList.get(i).getSection();
@@ -115,9 +126,37 @@ public class Line {
 			else
 			{
 				Section sec = new Section(curSecName);
+				sec.addBlock(blockList.get(i));
+				sectionKeys.add(curSecName);
 				sectionList.put(curSecName, sec);
-				sectionList.get(curSecName).addBlock(blockList.get(i));
 			}			
+		}
+		
+		for(int i = 0; i < sectionKeys.size(); i++) {
+			ArrayList<Block> blocks = sectionList.get(sectionKeys.get(i)).getBlocks();
+			ArrayList<String> goesTo = new ArrayList<String>();
+			for(int j = 0; j < blocks.size(); j++) {
+				for(int k = 0; k < trackAdjList.get(blocks.get(j).getBlockNumber()).size(); k++) {
+					if(!goesTo.contains(trackAdjList.get(blocks.get(j).getBlockNumber()).get(k))) {
+						goesTo.add(blockList.get(trackAdjList.get(blocks.get(j).getBlockNumber()).get(k)).getSection());
+					}
+				}
+			}
+			sectionGraph.put(sectionKeys.get(i), goesTo);
+		}
+		SectionLocator sl = new SectionLocator(sectionKeys.size(), 600, 190);
+		ArrayList<Point2D.Double> points = sl.getPoints();
+		for(int i = 0; i < sectionKeys.size(); i++) {
+			sectionList.get(sectionKeys.get(i)).makeButton(new Double(points.get(i).getX()).intValue() , new Double(points.get(i).getY()).intValue());
+			this.panel.addButton(sectionList.get(sectionKeys.get(i)).getButton());
+			
+		}
+		for(int i = 0; i < sectionKeys.size(); i++) {
+			for(int j = 0; j < sectionGraph.get(sectionKeys.get(i)).size(); j++) {
+				this.panel.addConnection(i, sectionKeys.indexOf(   sectionGraph.get(sectionKeys.get(i)).get(j)));
+				//System.out.print(sectionGraph.get(sectionKeys.get(i)).get(j) + " " + sectionKeys.indexOf(sectionGraph.get(sectionKeys.get(i)).get(j)));
+			}
+			//System.out.println();
 		}
 	}
 	/*
