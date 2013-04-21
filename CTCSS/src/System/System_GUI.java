@@ -239,6 +239,7 @@ public class System_GUI {
 		mntmLogin = new JMenuItem("Login");
 		mntmLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				mntmLogin.setEnabled(false);
 				new LoginDialog(sys);
 			}
 		});

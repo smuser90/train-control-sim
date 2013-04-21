@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Log.Log;
 import TrainModel.TrainModel;
 
 public class TrackModelModule {
@@ -76,10 +77,10 @@ public class TrackModelModule {
 	}
 	
 	public void addBlock(String lName, int prevBlock) {
-		
+		Log.Instance().append(3, "Adding Blocks not implemented yet!\n");
 	}
 	
 	public void removeBlock(String lName, int blockNum) {
-		
+		Log.Instance().append(3, "Removing Blocks not implemented yet!\n");
 	}
 }
