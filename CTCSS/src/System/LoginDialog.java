@@ -1,3 +1,11 @@
+/*
+ * LoginDialog.java
+ * Dialog box for logging in
+ * Author: Nikolas Parshook
+ * Date Created: 04/10/2013
+ * Date Last Updated: 04/21/2013
+ */
+
 package System;
 
 import java.awt.event.ActionEvent;
@@ -15,12 +23,19 @@ import javax.swing.text.JTextComponent.KeyBinding;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class LoginDialog extends JDialog {
+/**
+ * Dialog box for logging in
+ * @author Nikolas Parshook
+ *
+ */
+public class LoginDialog extends JDialog 
+{
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private boolean loggedInSuccess = false;
 	
-	public LoginDialog(final System_GUI sys) {
+	public LoginDialog(final System_GUI sys) 
+	{
 		setTitle("Login");
 		setBounds(100, 100, 200, 125);
 		getContentPane().setLayout(null);
@@ -32,10 +47,13 @@ public class LoginDialog extends JDialog {
 		getContentPane().add(lblUsername);
 		
 		textField = new JTextField();
-		textField.addKeyListener(new KeyAdapter() {
+		textField.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			public void keyPressed(KeyEvent e) 
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
 					tryLogin(sys);
 				}
 			}
@@ -50,10 +68,13 @@ public class LoginDialog extends JDialog {
 		getContentPane().add(lblPassword);
 		
 		passwordField = new JPasswordField();
-		passwordField.addKeyListener(new KeyAdapter() {
+		passwordField.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			public void keyPressed(KeyEvent e) 
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
 					tryLogin(sys);
 				}
 			}
@@ -62,8 +83,10 @@ public class LoginDialog extends JDialog {
 		getContentPane().add(passwordField);
 		
 		JButton btnNewButton = new JButton("Login");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnNewButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				tryLogin(sys);
 			}
 		});
@@ -72,8 +95,10 @@ public class LoginDialog extends JDialog {
 		textField.setColumns(10);
 		
 		JButton btnNewButton_1 = new JButton("Cancel");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnNewButton_1.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 				tryLogin(sys);
 			}
 		});
@@ -83,6 +108,7 @@ public class LoginDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 	}
 	
+	/* Login */
 	private void tryLogin(System_GUI sys) {
 		sys.setLoggedIn(Login.login(textField.getText(), new String(passwordField.getPassword())));
 		setVisible(false);

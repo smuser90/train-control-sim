@@ -1,3 +1,11 @@
+/*
+ * AboutDialog.java
+ * About Screen for the system
+ * Author: Nikolas Parshook
+ * Date Created: 04/19/2013
+ * Date Last Updated: 04/21/2013
+ */
+
 package System;
 
 import java.awt.BorderLayout;
@@ -15,17 +23,27 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Color;
 
-public class AboutDialog extends JDialog {
+/**
+ * About Screen for the system
+ * @author Nikolas Parshook
+ *
+ */
+public class AboutDialog extends JDialog 
+{
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
+	public static void main(String[] args) 
+	{
+		try 
+		{
 			AboutDialog dialog = new AboutDialog();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}
@@ -33,7 +51,8 @@ public class AboutDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AboutDialog() {
+	public AboutDialog() 
+	{
 		getContentPane().setBackground(Color.WHITE);
 		setTitle("About");
 		setBounds(100, 100, 465, 239);
@@ -41,8 +60,10 @@ public class AboutDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		
 		JButton btnNewButton = new JButton("Ok");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnNewButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				setVisible(false);
 			}
 		});

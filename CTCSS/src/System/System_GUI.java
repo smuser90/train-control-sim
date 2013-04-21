@@ -1,3 +1,11 @@
+/*
+ * System_GUI.java
+ * Main System
+ * Author: Nikolas Parshook
+ * Date Created: 04/08/2013
+ * Date Last Updated: 04/21/2013
+ */
+
 package System;
 
 import java.awt.AlphaComposite;
@@ -28,9 +36,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * Main System
+ * @author Nikolas Parshook
+ *
+ */
 public class System_GUI {
 
-	private JFrame frmCtcss;
+	// Fields
 	private static Log log;
 	private static CTCModule ctc;
 	private static Graphics2D g = null;
@@ -43,6 +56,8 @@ public class System_GUI {
 	private static boolean loggedIn = false;
 	private static boolean foundSplash = true;
 	
+	// GUI Elements
+	private JFrame frmCtcss;
 	private JPanel panel_1;
 	private JTabbedPane tabbedPane;
 	private JMenuItem mntmLogout;
@@ -53,50 +68,75 @@ public class System_GUI {
 	private JMenu mnSimulation;
 	
 	private System_GUI sys;
-	static void renderSplashFrame(int frame) {
+	
+	/* Render the splash screen */
+	private static void renderSplashFrame(int frame) 
+	{
         final String[] comps = {"Log", "CTC", "TrackModel", "TrackController", "TrainModel", "TrainController", "Simulator"};
         g.setComposite(AlphaComposite.Clear);
         g.fillRect(120,140,200,40);
         g.setPaintMode();
         g.setColor(Color.BLACK);
-        if(frame != comps.length)
+        if(frame != comps.length) 
+        {
         	g.drawString("Loading "+comps[frame]+"...", 120, 150);
-        else
+        }
+        else 
+        {
         	g.drawString("Preparing System...", 120, 150);
+        }
     }
 	
-	private static void setGUILAndF() {
-		try {
-            	// Set System L&F
-			if(UIManager.getSystemLookAndFeelClassName().toString().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"))
+	/* Set the look and feel to windows or nimbus */
+	private static void setGUILAndF() 
+	{
+		try 
+		{
+            // Set System L&F
+			if(UIManager.getSystemLookAndFeelClassName().toString().equals("com.sun.java.swing.plaf.windows.WindowsLookAndFeel")) 
+			{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			}
 			else
-				try {
-				    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				        if ("Nimbus".equals(info.getName())) {
+			{
+				try 
+				{
+				    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+				    {
+				        if ("Nimbus".equals(info.getName())) 
+				        {
 				            UIManager.setLookAndFeel(info.getClassName());
 				            break;
 				        }
 				    }
-				} catch (Exception e) {
+				} 
+				catch (Exception e) 
+				{
 				    // If Nimbus is not available the look and feel will be set to the default java look and feel.
 				}
+			}
 		} 
-	    catch (UnsupportedLookAndFeelException e) {
+	    catch (UnsupportedLookAndFeelException e) 
+	    {
 	    	// handle exception
 	    }
-	    catch (ClassNotFoundException e) {
+	    catch (ClassNotFoundException e) 
+	    {
 	    	// handle exception
 	    }
-	    catch (InstantiationException e) {
+	    catch (InstantiationException e) 
+	    {
 	    	// handle exception
 	    }
-	    catch (IllegalAccessException e) {
+	    catch (IllegalAccessException e)
+	    {
 	    	// handle exception
 	    }
 	}
 	
-	private static void updateSplash(int frame) {
+	/* Update whats ont the splash screen */
+	private static void updateSplash(int frame) 
+	{
 		if(foundSplash) {
 			renderSplashFrame(frame);
 			splash.update();
@@ -108,6 +148,7 @@ public class System_GUI {
 		}
 	}
 	
+	/* Setup the system */
 	private static void setup() {
 		updateSplash(0);
 		setGUILAndF();
@@ -253,7 +294,7 @@ public class System_GUI {
 		});
 		mnFile.add(mntmLogin);
 		
-		mntmLogout = new JMenuItem("Logout");
+		mntmLogout = new JMenuItem("Lock");
 		mntmLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				logout();
@@ -310,7 +351,7 @@ public class System_GUI {
 		mnSimulation.add(mntmMetrics);
 	}
 	
-	// Simply to show functionality for now will be fleshed out more later
+	/* Log the system in */
 	private void login() {
 		if(loggedIn) {
 			frmCtcss.getContentPane().add(panel_1);
@@ -326,12 +367,13 @@ public class System_GUI {
 		}
 	}
 	
+	/* Set the systems login state */
 	protected void setLoggedIn(boolean val) {
 		loggedIn = val;
 		login();
 	}
 	
-	// Simply to show functionality for now will be fleshed out more later
+	/* Log the system out */
 	private void logout() {
 		frmCtcss.remove(panel_1);
 		frmCtcss.remove(tabbedPane);
@@ -343,6 +385,7 @@ public class System_GUI {
 		Login.logout();
 	}
 	
+	/* pause the simulation */
 	private void pause() {
 		sim.togglePause();
 		mnSimulation.remove(0);
@@ -350,6 +393,7 @@ public class System_GUI {
 		frmCtcss.repaint();
 	}
 	
+	/* unpause the simulation */
 	private void unPause() {
 		sim.togglePause();
 		mnSimulation.remove(0);
@@ -357,10 +401,7 @@ public class System_GUI {
 		frmCtcss.repaint();
 	}
 	
-	public JFrame getFrame() {
-		return this.frmCtcss;
-	}
-	
+	/* exit the system */
 	private void exitProcedure() {
 		log.writeToDumpFile();
 		System.exit(0);

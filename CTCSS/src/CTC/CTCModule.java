@@ -152,7 +152,7 @@ public class CTCModule
 				{
 					if(b.getStationName().equals(station)) 
 					{
-						sim.routTrain(trains.get(trainID), b.getBlockNumber(), l);
+						sim.routeTrain(trains.get(trainID), b.getBlockNumber(), l);
 						log.append(2, "Routeing Train:" + trainID + " to Station:" + station +"\n");
 						break;
 					}
