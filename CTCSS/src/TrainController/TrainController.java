@@ -202,7 +202,7 @@ public class TrainController
 	public void getNextStation(){
 		for (int i=routeInfo.indexOf(currBlock); i<routeInfo.size()-1;i++){
 			if (!routeInfo.get(i+1).getStationName().equals(null)){
-				System.out.println("block station name: "+ routeInfo.get(i+1).getStationName());
+//				System.out.println("block station name: "+ routeInfo.get(i+1).getStationName());
 				nextStation = routeInfo.get(i+1);
 				nextStationName = routeInfo.get(i+1).getStationName();
 				
@@ -219,13 +219,13 @@ public class TrainController
 		
 		
 		getDistToNextStation();
-		System.out.println("Distance to next station = "+distToNextStation);
+//		System.out.println("Distance to next station = "+distToNextStation);
 		if (distToNextStation <= 375 && currSpeed >= 5){
 			stationApproach = true;
 //			train.setBrake(true);
 			train.setPower(0);
 			slowDownDist = currSpeed*currSpeed/2/1.23/distToNextStation;
-			System.out.println("slow down dist = "+ slowDownDist);
+//			System.out.println("slow down dist = "+ slowDownDist);
 		}
 		
 		if (distToNextStation <= slowDownDist){
