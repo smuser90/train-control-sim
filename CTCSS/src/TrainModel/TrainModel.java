@@ -246,8 +246,11 @@ public class TrainModel
 	
 	public double getPassengersPerHour()
 	{
-		return m_passengerTotal * m_time/3600000;
+		if(m_time > 0)
+			return m_passengerTotal / (m_time/3600000);
+		return 0;
 	}
+	
 	public void setRouteInfo(ArrayList<Block> routeInfo)
 	{
 		System.out.println("Setting Route Info");
