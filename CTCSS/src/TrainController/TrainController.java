@@ -130,7 +130,7 @@ public class TrainController
 		brake = train.getBrake();
 		eBrake = train.getEmergencyBrake();
 		routeInfo = train.getRouteInfo();
-		System.out.println("RouteInfo: ");
+//		System.out.println("RouteInfo: ");
 /*		for (int i=0; i<routeInfo.size();i++){
 			System.out.println("Station Name: " + routeInfo.get(i).getStationName());
 		}*/
