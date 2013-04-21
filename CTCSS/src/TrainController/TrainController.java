@@ -183,7 +183,7 @@ public class TrainController
 		}
 		else{
 			train.setPower(0);
-			System.out.println("Wait for routing");
+	//		System.out.println("Wait for routing");
 		}
 	}
 
@@ -299,5 +299,9 @@ public class TrainController
 			panel.SetBrake.setSelected(false);
 			panel.table.setValueAt("N/A", 7, 1);
 		}
+	}
+	
+	public void setTick(Boolean t){
+		tick = t;
 	}
 }
