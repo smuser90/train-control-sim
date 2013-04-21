@@ -1,3 +1,11 @@
+/*
+ * Simulator.java
+ * Simulates time and all the systems talking to each other
+ * Author: Nikolas Parshook
+ * Date Created: 04/09/2013
+ * Date Last Updated: 04/21/2013
+ */
+
 package Simulator;
 
 import java.text.DateFormat;
@@ -17,7 +25,13 @@ import TrackModel.TrackModelModule;
 import TrainModel.TrainModel;
 import TrainModel.TrainModelModule;
 
-public class Simulator implements Runnable{
+/**
+ * Simulates time and all the systems talking to each other
+ * @author Nikolas Parshook
+ *
+ */
+public class Simulator implements Runnable
+{
 	
 	// Fields
 	//private static final int trainsMax = 1;
@@ -39,9 +53,15 @@ public class Simulator implements Runnable{
 	
 	/* Simulator Ops **********************************************************************/
 	
-	public void run() {
-		try {
-			if(!paused) {
+	/**
+	 * Run the simulator
+	 */
+	public void run() 
+	{
+		try 
+		{
+			if(!paused) 
+			{
 				// Put simulator to sleep for current time step
 				Thread.sleep(realTime/timeStep);
 				
@@ -55,7 +75,8 @@ public class Simulator implements Runnable{
 				tcm.receiveTick();
 				
 				// Check for new tracks and load them
-				if(trm.hasTrack()) {
+				if(trm.hasTrack()) 
+				{
 					newLine = trm.gotTrack();
 					this.loadGTrack();
 				}
@@ -66,17 +87,29 @@ public class Simulator implements Runnable{
 					trains++;
 				}*/
 				
-			} else {
+			} 
+			else 
+			{
 				Thread.sleep(1000);
 			}
 				
-		} catch (InterruptedException e) {
+		} 
+		catch (InterruptedException e)
+		{
 			e.printStackTrace();
 		}
 		this.run();
 	}
 	
-	public Simulator(CTCModule c, TrackControllerModule TcM, TrainModelModule TM, TrackModelModule Tmm) {
+	/**
+	 * Create the simulator
+	 * @param c CTCModule for the system
+	 * @param TcM TrackControllerModule for the system
+	 * @param TM TrainModelModule for the system
+	 * @param Tmm TrackModelModule for the system
+	 */
+	public Simulator(CTCModule c, TrackControllerModule TcM, TrainModelModule TM, TrackModelModule Tmm) 
+	{
 		ctc = c;
 		tcm = TcM;
 		tm = TM;
@@ -89,44 +122,79 @@ public class Simulator implements Runnable{
 		loadLogTime();
 	}
 	
-	public void setSys(System_GUI s) {
+	/**
+	 * Set the system for the simulator
+	 * @param s the system
+	 */
+	public void setSys(System_GUI s) 
+	{
 		sys = s;
 	}
 	
-	public void loadLogTime() {
+	/* Sets the time in the log */
+	private void loadLogTime() 
+	{
 		log.setSysTime(df.format(sysTime));
 	}
 	
-	public void setSimSpeed(int speed) {
-		if(speed == -1) {
+	/**
+	 * Adjust the speed of the simulation time
+	 * @param speed speed of the simulation
+	 */
+	public void setSimSpeed(int speed) 
+	{
+		if(speed == -1) 
+		{
 			log.append(3, "Speed must be a number 'x' s.t. 1 <= x <= 10\n");
-		} else {
+		} 
+		else 
+		{
 			timeStep = speed;
 			log.append(1, "Speed set to " + Integer.toString(timeStep) + "*real time\n" );
 		}
 	}
 	
-	public void togglePause() {
+	/**
+	 * Pause and unpause the simulator
+	 */
+	public void togglePause() 
+	{
 		paused = !paused;
-		if(paused) {
+		if(paused) 
+		{
 			tm.toggleLock();
 			log.append(1, "Simulation Paused\n");
-		} else {
+		} 
+		else 
+		{
 			tm.toggleLock();
 			log.append(1, "Simulation Unpaused\n");
 		}
 	}
 	
-	public SpeedDialog getSpeedDialog() {
+	/**
+	 * Get the dialog for setting the speed
+	 * @return SpeedDialog
+	 */
+	public SpeedDialog getSpeedDialog() 
+	{
 		return new SpeedDialog(this, timeStep);
 	}
 	
+	/**
+	 * Return the value of the current system time
+	 * @return long
+	 */
 	public long getSimTime()
 	{
 		return sysTimeNum;
 	}
 	
-	public void loadGTrack() {
+	/**
+	 * Load a track into the simulator
+	 */
+	public void loadGTrack() 
+	{
 		tcm.getTrack(newLine, this);
 		ctc.addLine(newLine);
 		log.append(1, "Track Loaded\n");
@@ -134,60 +202,119 @@ public class Simulator implements Runnable{
 	
 	/* TrackActions ***********************************************************/
 	
-	public Line getLine(String lName) {
+	/**
+	 * Returns the line associated with the line name lName
+	 * @param lName name of the line
+	 * @return Linie
+	 */
+	public Line getLine(String lName) 
+	{
 		return trm.getTrack().getLine(lName);
 	}
 	
-	public ArrayList<Line> getLines() {
+	/**
+	 * Get all of the lines currently in the simulator
+	 * @return ArrayList<Line>
+	 */
+	public ArrayList<Line> getLines() 
+	{
 		return trm.getTrack().getLines();
 	}
 	
 	/* Train Actions ***********************************************************/
 	
-	public void scheduleTrain(String line) {
+	/**
+	 * Add a new train to the Line line
+	 * @param line line to add
+	 */
+	public void scheduleTrain(String line) 
+	{
 		TrainModel train = tm.addTrain(line);
 		Track tr = trm.getTrack();
 		Line ln = tr.getLine(line);
-		routTrain(train, 0, ln);
-		
+		routeTrain(train, 0, ln);
 		ctc.setTrains(tm.getTrainList());
 		tcm.receiveTrains(tm.getTrainList());
 	}
 	
-	public void routTrain(TrainModel train, int StationID, Line l) {
+	/**
+	 * Route a train to the block StationID
+	 * @param train the train to route
+	 * @param StationID id of the block to route to
+	 * @param l Line name that the station is on
+	 */
+	public void routeTrain(TrainModel train, int StationID, Line l) 
+	{
 		trm.route(train, train.getBlockIndex(), StationID, l);
 	}
 	
-	public void setAuthority(int trainID, int a) {
+	/**
+	 * Set the authority of the train trainID
+	 * @param trainID id of train to set authority of 
+	 * @param a authority to set to
+	 */
+	public void setAuthority(int trainID, int a) 
+	{
 		tm.getTrainList().get(trainID).setAuthority(a);
 	}
 	
 	/* Block Actions ***********************************************************/
 	
-	public void setSpeedLimit(int bNum, String lName, int lim) {
+	/**
+	 * Set the speed limit of the block bNum to lim on Line lName
+	 * @param bNum The block number of the block to change the speed limit
+	 * @param lName name of the line the block is on
+	 * @param lim speed limit to set to 
+	 */
+	public void setSpeedLimit(int bNum, String lName, int lim) 
+	{
 		trm.setSpeedLimit(bNum, lName, lim);
 		trm.printOpen();
 	}
 	
-	public void openBLock(int bNum, String lName) {
+	/**
+	 * Open up the block bnum on lname
+	 * @param bNum Block to open
+	 * @param lName Line that the block is on
+	 */
+	public void openBLock(int bNum, String lName) 
+	{
 		trm.openBlock(bNum, lName);
 	}
 	
-	public void closeBLock(int bNum, String lName) {
+	/**
+	 * Close the block bNum on line lName
+	 * @param bNum Number of the block to close
+	 * @param lName Name of the line the block is on
+	 */
+	public void closeBLock(int bNum, String lName) 
+	{
 		trm.closeBlock(bNum, lName);
 	}
 	
-	protected System_GUI getSys() {
+	/* Get the system the simulator is running on */
+	protected System_GUI getSys() 
+	{
 		return sys;
 	}
 	
-	
-	
-	public void addBlock(String lName, int prevBlock) {
+	/**
+	 * Add a block to the track
+	 * @param lName Name of the line to add a block to
+	 * @param prevBlock Number of the block to add a bock after
+	 */
+	public void addBlock(String lName, int prevBlock) 
+	{
 		trm.addBlock(lName, prevBlock);
 	}
 	
-	public void removeBlock(String lName, int blockNum) {
+	/**
+	 * Remove a block from the track
+	 * @param lName Name of the line to remove a block from
+	 * @param blockNum Number of the block to remove
+	 */
+	public void removeBlock(String lName, int blockNum) 
+	{
 		trm.removeBlock(lName, blockNum);
 	}
 	

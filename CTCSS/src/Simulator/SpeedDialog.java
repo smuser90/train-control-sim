@@ -1,3 +1,11 @@
+/*
+ * SpeedDialog.java
+ * Dialog box for setting the simulation speed
+ * Author: Nikolas Parshook
+ * Date Created: 04/10/2013
+ * Date Last Updated: 04/21/2013
+ */
+
 package Simulator;
 
 import javax.swing.JButton;
@@ -13,19 +21,30 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
-public class SpeedDialog extends JDialog {
+/**
+ * 
+ * @author Nikolas Parshook
+ *
+ */
+public class SpeedDialog extends JDialog 
+{
+	// GUI elements
 	JSlider slider;
 	JLabel lblEnterTheSimulation;
 	
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
+	public static void main(String[] args) 
+	{
+		try 
+		{
 			SpeedDialog dialog = new SpeedDialog(null, 1);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}
@@ -33,14 +52,17 @@ public class SpeedDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public SpeedDialog(final Simulator s, int speed) {
+	public SpeedDialog(final Simulator s, int speed) 
+	{
 		setTitle("Set Simulation Time");
 		setBounds(100, 100, 450, 150);
 		getContentPane().setLayout(null);
 		
 		JButton btnSetSpeed = new JButton("Set Time");
-		btnSetSpeed.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnSetSpeed.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				setSpeed(s);
 			}
 		});
@@ -48,16 +70,21 @@ public class SpeedDialog extends JDialog {
 		getContentPane().add(btnSetSpeed);
 		
 		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnCancel.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				hideSD();
 			}
 		});
 		btnCancel.setBounds(224, 78, 200, 23);
 		getContentPane().add(btnCancel);
-		if(speed == 1) {
+		if(speed == 1) 
+		{
 			lblEnterTheSimulation = new JLabel("Real Time");
-		} else {
+		} 
+		else 
+		{
 			lblEnterTheSimulation = new JLabel(speed + "x Real Time");
 		}
 		lblEnterTheSimulation.setHorizontalAlignment(SwingConstants.CENTER);
@@ -66,19 +93,27 @@ public class SpeedDialog extends JDialog {
 		getContentPane().add(lblEnterTheSimulation);
 		
 		slider = new JSlider();
-		slider.addKeyListener(new KeyAdapter() {
+		slider.addKeyListener(new KeyAdapter() 
+		{
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			public void keyPressed(KeyEvent e) 
+			{
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				{
 					setSpeed(s);
 				}
 			}
 		});
-		slider.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				if(slider.getValue() == 1) {
+		slider.addChangeListener(new ChangeListener() 
+		{
+			public void stateChanged(ChangeEvent arg0) 
+			{
+				if(slider.getValue() == 1) 
+				{
 					lblEnterTheSimulation.setText("Real Time");
-				} else {
+				} 
+				else 
+				{
 					lblEnterTheSimulation.setText(slider.getValue() + "x Real Time");
 				}
 			}
@@ -92,11 +127,15 @@ public class SpeedDialog extends JDialog {
 		getContentPane().add(slider);
 	}
 	
-	private void hideSD() {
+	// Close the dialog
+	private void hideSD() 
+	{
 		setVisible(false);
 	}
 	
-	private void setSpeed(Simulator s) {
+	// Set the speed of the simulator
+	private void setSpeed(Simulator s) 
+	{
 		s.setSimSpeed(slider.getValue());
 		hideSD();
 	}
