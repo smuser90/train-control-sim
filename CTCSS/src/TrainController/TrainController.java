@@ -130,6 +130,7 @@ public class TrainController
 		brake = train.getBrake();
 		eBrake = train.getEmergencyBrake();
 		routeInfo = train.getRouteInfo();
+		setPointSpeed = train.getSetpointSpeed();
 //		System.out.println("RouteInfo: ");
 /*		for (int i=0; i<routeInfo.size();i++){
 			System.out.println("Station Name: " + routeInfo.get(i).getStationName());
@@ -152,6 +153,7 @@ public class TrainController
 		if (!panel.comboBox.getSelectedItem().equals("Train List")){
 		panel.table.setValueAt(String.format("%3.3f", currSpeed) + " m/s", 0, 1);
 		panel.table.setValueAt(authority, 2, 1);
+		panel.table.setValueAt(String.format("%3.3f", setPointSpeed) + " m/s^2", 1, 1);
 		panel.table.setValueAt(String.format("%3.3f", train.getAcceleration()) + " m/s^2", 8, 1);
 		panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 		panel.table.setValueAt(train.getSpeedLimit() + " m/s", 10, 1);
