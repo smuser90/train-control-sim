@@ -58,6 +58,8 @@ public class TrainModel
 	private boolean				m_printFlag;
 	private boolean 			m_writeLog = true;
 	private boolean				m_atStation = true;
+	private int 				m_passengerTotal = 0;
+	private long 				m_time = 0;
 	
 	
 	public TrainModel(int ID, String line, TrainController tc, TrainModelModule tm)
@@ -101,15 +103,26 @@ public class TrainModel
 		m_trainController.setTrainModel(this);
 	}
 	
+	public void updatePassengers()
+	{
+		m_passengerTotal += m_passengers;
+		setPassengers((int)Math.random()*m_passengersMax);
+	}
+	
 	public void tick(double timeLapse)
 	{
 		double force = 0;
+		
+		m_time += 250;
 		
 		if(m_atStation)
 		{
 			if(m_printFlag)
 			{
 				m_log.append("At Station\n\n");
+				toggleDoors();
+				updatePassengers();
+				toggleDoors();
 				m_log.append("Awaiting Route Data\n\n");
 				m_writeLog = true;
 				m_printFlag = false;
@@ -151,7 +164,7 @@ public class TrainModel
     		if(m_velocity < 0.00001)
     		{
     			m_accel = 0.0;
-    			m_brake = false;
+    			m_velocity = 0.0;
     		}
     		else
     			m_accel = m_sBrakeDecel;
@@ -163,7 +176,7 @@ public class TrainModel
     		if(m_velocity < 0.00001)
     		{
     			m_accel = 0.0;
-    			m_emergencyBrake = false;
+    			m_velocity = 0.0;
     		}
     		else
     			m_accel = m_eBrakeDecel;
