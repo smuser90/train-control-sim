@@ -252,10 +252,11 @@ public class TrainModel
 	{
 		System.out.println("Setting Route Info");
 		m_routeInfo = routeInfo;
+		m_blockIndex = 0;
 		m_routeLength = m_routeInfo.size();
 		m_routeInfo.get(m_blockIndex).setOccupied(true);
 		m_setpointVelocity = m_routeInfo.get(m_blockIndex).getSpeedLimit();
-		m_blockIndex = 0;
+		
 		
 		//Routed somewhere besides yard
 		if(m_routeInfo.size() > 1 )
