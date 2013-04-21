@@ -30,7 +30,7 @@ public class TrainController
 
 	public static final double INTEGRAL_INITIAL = 0.0f;
 	public static final double ERROR_INITIAL = 0.0f;
-	public static final double PROPORTIONAL_GAIN = 6000f;
+	public static final double PROPORTIONAL_GAIN = 60000f;
 	public static final double INTEGRAL_GAIN = 2f;
 	private double integralLast = INTEGRAL_INITIAL;
 	private double errorLast = ERROR_INITIAL;
@@ -220,9 +220,9 @@ public class TrainController
 		
 		getDistToNextStation();
 		System.out.println("Distance to next station = "+distToNextStation);
-		if (distToNextStation <= 240){
+		if (distToNextStation <= 375 && currSpeed >= 5){
 			stationApproach = true;
-			train.setBrake(true);
+//			train.setBrake(true);
 			train.setPower(0);
 			slowDownDist = currSpeed*currSpeed/2/1.23/distToNextStation;
 			System.out.println("slow down dist = "+ slowDownDist);
