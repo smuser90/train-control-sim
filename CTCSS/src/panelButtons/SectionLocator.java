@@ -42,7 +42,7 @@ public class SectionLocator {
 				if(i%2 == 0) {
 					point.x = xStart + j*xOffset;
 				} else {
-					point.x = xSize - 20 - j*xOffset;
+					point.x = xSize - xOffset/2 - j*xOffset;
 				}
 				point.y = yOffset;
 				points.add(point);
