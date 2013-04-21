@@ -67,9 +67,18 @@ public class LoginDialog extends JDialog {
 				tryLogin(sys);
 			}
 		});
-		btnNewButton.setBounds(20, 61, 146, 23);
+		btnNewButton.setBounds(20, 61, 71, 23);
 		getContentPane().add(btnNewButton);
 		textField.setColumns(10);
+		
+		JButton btnNewButton_1 = new JButton("Cancel");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				tryLogin(sys);
+			}
+		});
+		btnNewButton_1.setBounds(95, 61, 71, 23);
+		getContentPane().add(btnNewButton_1);
 		setVisible(true);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 	}
