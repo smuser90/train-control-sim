@@ -60,8 +60,8 @@ public class TrackControllerModule {
 		lines.add(track);
 		hasTrack = true;
 		currentPanel.displayChange();
-		//PLC.setup(this,_sim);
-		PLC.setup(this);
+		PLC.setup(this,_sim);
+		//PLC.setup(this);
 		runPLC();
 
 	}
