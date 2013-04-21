@@ -106,7 +106,7 @@ public class TrainModel
 	public void updatePassengers()
 	{
 		m_passengerTotal += m_passengers;
-		setPassengers((int)Math.random()*m_passengersMax);
+		setPassengers((int)(Math.random()*m_passengersMax));
 	}
 	
 	public void tick(double timeLapse)
@@ -119,10 +119,17 @@ public class TrainModel
 		{
 			if(m_printFlag)
 			{
-				m_log.append("At Station\n\n");
-				toggleDoors();
-				updatePassengers();
-				toggleDoors();
+				
+				
+				if(m_routeInfo.get(m_blockIndex).getType() != -1) 
+				{
+					m_log.append("At Station\n\n");
+					toggleDoors();
+					updatePassengers();
+					toggleDoors();
+				}
+				else
+					m_log.append("At Yard\n\n");
 				m_log.append("Awaiting Route Data\n\n");
 				m_writeLog = true;
 				m_printFlag = false;
@@ -237,6 +244,10 @@ public class TrainModel
 		return m_writeLog;
 	}
 	
+	public double getPassengersPerHour()
+	{
+		return m_passengerTotal * m_time/3600000;
+	}
 	public void setRouteInfo(ArrayList<Block> routeInfo)
 	{
 		System.out.println("Setting Route Info");
