@@ -22,7 +22,11 @@ public class TrainController
 	private TNCPanel panel;
 	private ArrayList<Block> routeInfo = null;
 	private Block currBlock;
-	private String nextStation = "Wait for route info";
+	private String nextStationName = "N/A";
+	private Block nextStation = null;
+	private double distToNextStation;
+	private Boolean stationApproach=false;
+
 
 	public static final double INTEGRAL_INITIAL = 0.0f;
 	public static final double ERROR_INITIAL = 0.0f;
@@ -57,25 +61,28 @@ public class TrainController
 			lights = tm.getLights();
 			doors =tm.getDoors();
 			temp = tm.getTemperature();		
-			//		brake = tm.getBrake();
+			brake = tm.getBrake();
 			eBrake = tm.getEmergencyBrake();
-//			routeInfo = tm.getRouteInfo();
-			currBlock = tm.getBlock();
+			routeInfo = tm.getRouteInfo();
+			
+//			currBlock = tm.getBlock();
 			panel.comboBox.addItem(tm.getTrainID());
-/*			if (!routeInfo.isEmpty()){
-				nextStation(routeInfo);
-			}*/
+			
+			
 		}
 
 	}
 	
 	public void setSpeed(double s){
-		setPointSpeed = s;
-		train.setSetpointSpeed(s);
 		if (setPointSpeed>train.getSpeedLimit()){
 			setPointSpeed = train.getSpeedLimit();	 // check speed limit 
 	
 		}
+		else {
+			setPointSpeed = s;
+		}
+		train.setSetpointSpeed(s);
+		
 	}
 
 	public double getSetPointSpeed(){
@@ -119,10 +126,23 @@ public class TrainController
 		authority = train.getAuthority();
 		temp = train.getTemperature();
 		currBlock = train.getBlock();
-		//		brake = train.getBrake();
-		//		eBrake = train.getEmergencyBrake();
-		//		routeInfo;
-
+		brake = train.getBrake();
+		eBrake = train.getEmergencyBrake();
+		routeInfo = train.getRouteInfo();
+		
+		// check route info 
+		if (routeInfo==null || panel.comboBox.getSelectedItem().equals("Train List")){
+			nextStationName = "N/A";
+		}
+		
+		// check block
+		if (currBlock!=null&& !panel.comboBox.getSelectedItem().equals("Train List")){
+			getNextStation();
+			
+		}
+		// update nextstation field
+		panel.nextStation.setText(nextStationName);
+		
 		/* update table */
 		if (!panel.comboBox.getSelectedItem().equals("Train List")){
 		panel.table.setValueAt(String.format("%3.3f", currSpeed) + " m/s", 0, 1);
@@ -131,14 +151,22 @@ public class TrainController
 		panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 		panel.table.setValueAt(train.getSpeedLimit() + " m/s", 10, 1);
 		panel.table.setValueAt(train.getPowerLimit() + " W", 11, 1);
+		
 		}
 		
 		
-		if (currSpeed == 0 && setPointSpeed>0 ){
-			train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.01);
+		if (currBlock!=null && nextStation!=null){
+			stationApproachCheck();
+			panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 		}
-		else{		
+		
+		if (currSpeed == 0 && setPointSpeed>0 && stationApproach==false ){
+			train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.1);
+			panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
+		}
+		else if (stationApproach == false){		
 		train.setPower(nextPower(setPointSpeed, currSpeed, time));
+		panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 		}
 	}
 
@@ -170,17 +198,52 @@ public class TrainController
 		return powerCommand;
 
 	}
-
-	public void nextStation(ArrayList<Block> route){
-		if(currBlock.getStationName().equals(nextStation)){
-			for (int i=route.indexOf(currBlock); i<route.size();i++){
-				if (!route.get(i+1).getStationName().equals(null)){
-					nextStation = route.get(i+1).getStationName();
-					panel.nextStation.setText(nextStation);
-				}
+	
+	public void getNextStation(){
+		for (int i=routeInfo.indexOf(currBlock); i<routeInfo.size()-1;i++){
+			if (!routeInfo.get(i+1).getStationName().equals(null)){
+				System.out.println("block station name: "+ routeInfo.get(i+1).getStationName());
+				nextStation = routeInfo.get(i+1);
+				nextStationName = routeInfo.get(i+1).getStationName();
+				
 			}
 		}
 	}
+	
+	public void checkAuth(){
+		
+	}
+	
+	public void stationApproachCheck(){
+		double slowDownDist =0;
+		
+		
+		getDistToNextStation();
+		System.out.println("Distance to next station = "+distToNextStation);
+		if (distToNextStation <= 240){
+			stationApproach = true;
+			train.setBrake(true);
+			train.setPower(0);
+			slowDownDist = currSpeed*currSpeed/2/1.23/distToNextStation;
+			System.out.println("slow down dist = "+ slowDownDist);
+		}
+		
+		if (distToNextStation <= slowDownDist){
+			train.setBrake(true);
+			
+			panel.SetBrake.isSelected();
+		}
+	}
+	
+	public void getDistToNextStation(){
+		double distBetween=0;
+		for (int i=routeInfo.indexOf(currBlock); i<routeInfo.indexOf(nextStation)-1; i++){
+			distBetween+=routeInfo.get(i+1).getLength();
+		}
+		distToNextStation = (currBlock.getLength() - train.getPosition()) + distBetween + nextStation.getLength()/2;
+	}
+	
+	
 
 
 }

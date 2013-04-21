@@ -75,6 +75,7 @@ public class TNCPanel extends JPanel {
 		nextStation = new JTextArea();
 		nextStation.setBounds(125, 56, 486, 22);
 		add(nextStation);
+		nextStation.setText("Wait for route info");
 
 		JLabel lblNextStation = new JLabel("Next Station");
 		lblNextStation.setBounds(35, 56, 78, 22);
@@ -366,7 +367,6 @@ public class TNCPanel extends JPanel {
 				if(event.getStateChange()==ItemEvent.SELECTED){
 					if(comboBox.getSelectedItem().equals("Train List")){
 						//rest gui 
-						System.out.println("Train List selected");
 						for (int i=0; i<12; i++){
 							table.setValueAt("N/A", i, 1);
 						}
