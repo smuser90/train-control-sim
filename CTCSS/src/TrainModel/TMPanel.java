@@ -211,7 +211,7 @@ public class TMPanel extends JPanel
 			table.setValueAt(String.format("%3.1f", train.getPosition())+" / "+train.getBlockLength(), 1, 1);
 			table.setValueAt(new String(""+train.getSpeedLimit()), 2, 1);
 			table.setValueAt(new String(""+train.getSetpointSpeed()), 3, 1);
-			table.setValueAt(String.format(format,train.getVelocity()), 4, 1);
+			table.setValueAt(String.format(format,train.getVelocity()*3.6), 4, 1);
 			table.setValueAt(String.format(format,train.getAcceleration()), 5, 1);
 			table.setValueAt(new String(""+train.getAuthority()), 6, 1);
 			table.setValueAt(String.format(format,train.getGrade()), 7, 1);
