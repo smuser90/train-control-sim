@@ -263,6 +263,7 @@ public class TrainModel
 			System.out.println("Routed to legit");
 			m_log.append("Route Data Received. *Train Starting*\n\n");
 			m_atStation = false;
+			m_trainController.setTick(true);
 		}
 	}
 	
