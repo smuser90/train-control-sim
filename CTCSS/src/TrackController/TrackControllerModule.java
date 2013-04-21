@@ -44,8 +44,8 @@ public class TrackControllerModule {
 	}
 	/************************************************************************************************
 	 CALL THIS TO WAKE ME UP************************************************************************/
-	//public void getTrack(Line track, Simulator sim){
-	public void getTrack(Line track){
+	public void getTrack(Line track, Simulator sim){
+	//public void getTrack(Line track){
 		myBlocks = track.getBlocks();
 		trackControllerList.add(TCListMaker.makeTCList(track));
 		/*for(int i = 0; i < this.trackControllerList.size(); i++) {

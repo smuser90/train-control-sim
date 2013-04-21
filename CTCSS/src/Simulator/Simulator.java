@@ -127,7 +127,7 @@ public class Simulator implements Runnable{
 	}
 	
 	public void loadGTrack() {
-		tcm.getTrack(newLine);
+		tcm.getTrack(newLine, this);
 		ctc.addLine(newLine);
 		log.append(1, "Track Loaded\n");
 	}
@@ -169,6 +169,10 @@ public class Simulator implements Runnable{
 	
 	protected System_GUI getSys() {
 		return sys;
+	}
+	
+	public Line getLine(String lName) {
+		return trm.getTrack().getLine(lName);
 	}
 	
 }
