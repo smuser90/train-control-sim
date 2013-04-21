@@ -1,10 +1,24 @@
+/*
+ * Log.java
+ * Log class to provide logging facilities to the modules
+ * Author: Nikolas Parshook
+ * Date Created: 04/07/2013
+ * Date Last Updated: 04/21/2013
+ */
+
 package Log;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Log class provides system logging
+ * @author Nikolas Parshook
+ *
+ */
 public class Log {
 	
+	// Fields
 	private static Log _instance = null;
 	public LogPanel logPanel = null;
 	private static StringBuilder log1;
@@ -19,6 +33,7 @@ public class Log {
 	private String dumpFileName;
 	private String temp;
 	
+	/* Private constructor to prevent multiple copies of the log from being created */
 	private Log() {
 		logPanel = new LogPanel();
 		log1 = new StringBuilder();
@@ -28,6 +43,10 @@ public class Log {
 		size = 0;
 	}
 	
+	/**
+	 * Call to get the instance of the log
+	 * @return returns an instance of Log
+	 */
 	public static Log Instance() {
 		if(_instance == null) {
 			_instance = new Log();
@@ -35,6 +54,10 @@ public class Log {
 		return _instance;
 	}
 	
+	/**
+	 * Call to get the logs JPanel
+	 * @return returns the logs display panel
+	 */
 	public LogPanel getPanel() {
 		if(logPanel == null) {
 			Instance();
@@ -42,6 +65,12 @@ public class Log {
 		return logPanel;
 	}
 	
+	
+	/**
+	 * Append to the log
+	 * @param severity an int to describe how severe the event that is writing to log is
+	 * @param text message to the log
+	 */
 	public void append(int severity, String text) {
 		if(size >= limit) {
 			size = 0;
@@ -105,21 +134,36 @@ public class Log {
 		}
 	}
 	
+	/**
+	 * Writes to the specified file
+	 * @param name file to be written to.
+	 */
 	public void writeToFile(String name) {
 		Thread t = new Thread(new fileWrite(0, name));
 		t.start();
 	}
 	
+	/**
+	 * Sets the time for the log to use in messages
+	 * @param sysTime
+	 */
 	public void setSysTime(String sysTime) {
 		if(st == null)
 			dumpFileName = "Log" + sysTime.split(" ")[1].replaceAll(":", "") + ".txt";
 		st = sysTime;
 	}
 	
+	/**
+	 * Get the string representation of the log
+	 * @return String
+	 */
 	public static String getLog() {
 		return current.toString();
 	}
 	
+	/**
+	 * Causes the log to write to its dumpfile
+	 */
 	public void writeToDumpFile() {
 		Thread t = new Thread(new fileWrite(1, dumpFileName));
 		t.start();

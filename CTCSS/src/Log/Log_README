@@ -1,0 +1,6 @@
+The log module provides system logging functions.
+The panel displays messages in different colors to alert the users to problems
+Black - System output, user needn't worry.
+Green - Things are working
+Blue - User did something that could fail
+Red - shit failed.
