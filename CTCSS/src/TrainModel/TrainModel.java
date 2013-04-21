@@ -135,7 +135,7 @@ public class TrainModel
 
 		m_mass = m_passengers*PERSON_WEIGHT + m_massEmpty;
 		
-		m_accel = force / m_mass;
+		m_accel = force / m_mass; 
 		
 		if(m_accel > m_accelMax) m_accel = m_accelMax;
 		
