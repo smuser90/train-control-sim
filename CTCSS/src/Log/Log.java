@@ -115,23 +115,29 @@ public class Log
 		logPanel.append(severity, text);
 	}
 	
+	/* Thread for writing to file in the background */
 	private static class fileWrite implements Runnable 
 	{
 		private int _mode;
 		private String name;
 		
+		/* create an instance to write to file fName in mode 0 or 1
+		 * mode 0 for writing to a supplied file
+		 * mode 1 for internal writing */
 		public fileWrite(int mode, String fName) 
 		{
 			_mode = mode;
 			name = fName;
 		}
 		
+		/* write to the file */
 		public void run() 
 		{
 			try 
 			{
 				FileWriter fw = new FileWriter(name, true);
-				if(_mode == 0) {
+				if(_mode == 0) 
+				{
 					fw.write(getLog());
 				}
 				else 

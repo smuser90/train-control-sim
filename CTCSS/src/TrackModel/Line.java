@@ -5,8 +5,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import panelButtons.GraphPanel;
-import panelButtons.SectionLocator;
+import TrackDisplay.GraphPanel;
+import TrackDisplay.SectionLocator;
 
 import Log.Log;
 import TrainModel.TrainModel;

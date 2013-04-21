@@ -1,4 +1,12 @@
-package panelButtons;
+/*
+ * PanelButton.java
+ * Custom button for use in GraphPanel
+ * Author: Nikolas Parshook
+ * Date Created: 04/19/2013
+ * Date Last Updated: 04/21/2013
+ */
+
+package TrackDisplay;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -14,8 +22,14 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.UIManager;
 
-public class PanelButton extends JPanel {
-
+/**
+ * Custom button for use in GraphPanel
+ * @author Nikolas Parshook
+ *
+ */
+public class PanelButton extends JPanel 
+{
+	// Fields
 	private JLabel lblNewLabel;
 	private BevelBorder bb;
 	private int xSize;
@@ -25,14 +39,17 @@ public class PanelButton extends JPanel {
 	private ArrayList<Integer> goingTo;
 	private ArrayList<Integer> cameFrom;
 	private GraphPanel parent = null;
+	
 	/**
-	 * Create the panel.
+	 * Creates the button
+	 * @param label String to be displayed on the button
+	 * @param x x position
+	 * @param y y position
 	 */
-	public PanelButton(String label, int x, int y) {
+	public PanelButton(String label, int x, int y) 
+	{
 		lblNewLabel = new JLabel(label);
 		xSize = 10 + lblNewLabel.getFontMetrics(getFont()).stringWidth(lblNewLabel.getText());
-		//xSize = 20*label.length();
-		//ySize = 20*label.length();
 		bb = new BevelBorder(BevelBorder.RAISED, null, null, null, null);
 		setBorder(bb);
 		setBounds(x, y, xSize, ySize);
@@ -40,25 +57,30 @@ public class PanelButton extends JPanel {
 		goingTo = new ArrayList<Integer>();
 		cameFrom = new ArrayList<Integer>();
 		
-		addMouseListener(new MouseAdapter() {
+		addMouseListener(new MouseAdapter() 
+		{
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) 
+			{
 				
 			}
 			@Override
-			public void mouseEntered(MouseEvent arg0) {
+			public void mouseEntered(MouseEvent arg0) 
+			{
 				toggleOccupied();
 				isHighLighted = true;
 				parent.repaint();
 			}
 			@Override
-			public void mouseExited(MouseEvent e) {
+			public void mouseExited(MouseEvent e) 
+			{
 				toggleOccupied();
 				isHighLighted = false;
 				parent.repaint();
 			}
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mousePressed(MouseEvent e) 
+			{
 				buttonAction();
 				parent.repaint();
 			}
@@ -67,25 +89,30 @@ public class PanelButton extends JPanel {
 		
 		lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.addMouseListener(new MouseAdapter() {
+		lblNewLabel.addMouseListener(new MouseAdapter() 
+		{
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) 
+			{
 				//buttonAction();
 			}
 			@Override
-			public void mouseEntered(MouseEvent arg0) {
+			public void mouseEntered(MouseEvent arg0) 
+			{
 				toggleOccupied();
 				isHighLighted = true;
 				parent.repaint();
 			}
 			@Override
-			public void mouseExited(MouseEvent e) {
+			public void mouseExited(MouseEvent e) 
+			{
 				toggleOccupied();
 				isHighLighted = false;
 				parent.repaint();
 			}
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mousePressed(MouseEvent e)
+			{
 				buttonAction();
 				
 				parent.repaint();
@@ -96,23 +123,35 @@ public class PanelButton extends JPanel {
 		
 	}
 	
-	public void addGoingTo(int connection) {
+	/* Add a button index to the list of buttons this button goes to */
+	protected void addGoingTo(int connection) 
+	{
 		goingTo.add(connection);
 	}
 	
-	public void addCameFrom(int connection) {
+	/* Add a button index to the list of buttons that go to this button */
+	protected void addCameFrom(int connection) 
+	{
 		cameFrom.add(connection);
 	}
-	protected ArrayList<Integer> goingTo() {
+	
+	/* Return the list of button indices that this button goes to */
+	protected ArrayList<Integer> goingTo() 
+	{
 		return goingTo;
 	}
 	
-	protected ArrayList<Integer> cameFrom() {
+	/* Return the list of button indices that this button came from */
+	protected ArrayList<Integer> cameFrom() 
+	{
 		return cameFrom;
 	}
 	
-	public void buttonAction() {
-		if(bb.getBevelType() == BevelBorder.RAISED) {
+	/* Make the panel act like a button */
+	private void buttonAction() 
+	{
+		if(bb.getBevelType() == BevelBorder.RAISED) 
+		{
 			parent.turnOffAll();
 			bb = new BevelBorder(BevelBorder.LOWERED, null, null, null, null);
 			setBorder(bb);
@@ -124,25 +163,33 @@ public class PanelButton extends JPanel {
 		}
 	}
 	
-	protected void toggleOccupied() {
+	/* Toggles the occupied state of this button */
+	protected void toggleOccupied() 
+	{
 		//occupied = !occupied;
-		if(occupied) {
+		if(occupied) 
+		{
 			setBackground(Color.GREEN);
 		} else
 			setBackground(new Color(240, 240, 240));
 	}
-
-	public boolean isHighLighted() {
-		return this.isHighLighted;
-	}
 	
-	public void setParent(GraphPanel gp) {
+	/* Sets the parent GraphPanel of this button */
+	protected void setParent(GraphPanel gp) 
+	{
 		parent = gp;
 	}
 	
-	public void turnOff() {
+	/* Make the button unselected */
+	protected void turnOff() 
+	{
 		bb = new BevelBorder(BevelBorder.RAISED, null, null, null, null);
 		setBorder(bb);
 		isHighLighted = false;
+	}
+	
+	/* Return wether this button is highlighed or not */
+	protected boolean isHighLighted() {
+		return isHighLighted();
 	}
 }

@@ -2,7 +2,7 @@ package TrackModel;
 
 import java.util.ArrayList;
 
-import panelButtons.PanelButton;
+import TrackDisplay.PanelButton;
 
 public class Section {
 	private ArrayList<Block> bList;

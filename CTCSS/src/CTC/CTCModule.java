@@ -62,7 +62,8 @@ public class CTCModule
 	{
 		sim = s;
 	}
-
+	
+	/* Returns a list of line names currently in the simulator */
 	protected ArrayList<String> getLines() 
 	{
 		return lineNames;
@@ -79,6 +80,7 @@ public class CTCModule
 		gui.update();
 	}
 	
+	/* Returns a list of blocks in the line lName */
 	protected ArrayList<Block> getLine(String lName) 
 	{
 		for(Line l : lines) 
@@ -93,38 +95,44 @@ public class CTCModule
 	
 	/* Block Methods **************************************************************/
 	
+	/* Close the block bNum in line lName */
 	protected void closeBLock(String lName, int bNum) 
 	{
 		sim.closeBLock(bNum, lName);
 		log.append(2, "CLosing BLock: " + bNum + " on Line: " + lName + "\n");
 	}
 	
+	/* Open the block bNum in line lName */
 	protected void openBLock(String lName, int bNum) 
 	{
 		sim.openBLock(bNum, lName);
 		log.append(2, "Opening BLock: " + bNum + " on Line: " + lName + "\n");
 	}
 	
+	/* Set the speed limit of the block bNum in line lName */
 	protected void setSpeedLimit(String lName, int bNum, int lim) 
 	{
 		sim.setSpeedLimit(bNum, lName, lim);
 		log.append(2, "Setting Speed Limit to " + lim + "KPH at BLock: " + bNum + " on Line: " + lName + "\n");
 	}
 	
+	/* Add a block after prevBlock in line lName */
 	protected void addBLock(String lName, int prevBlock) 
 	{
 		sim.addBlock(lName, prevBlock);
 		
 	}
 	
-	protected void removeBLock(String lName, int blockNum) 
+	/* Remove the block bNum in line lName */
+	protected void removeBLock(String lName, int bNum) 
 	{
-		sim.removeBlock(lName, blockNum);
+		sim.removeBlock(lName, bNum);
 		
 	}
 	
 	/* Train Methods **************************************************************/
 	
+	/* Add a train to the line:line */
 	protected void scheduleTrain(String line) 
 	{
 		if(sim != null) {
@@ -133,6 +141,7 @@ public class CTCModule
 		}
 	}
 	
+	/* Tell train: tainID to go to station on line lName */
 	protected void routeTrain(int trainID, String station, String lName) 
 	{
 		for(Line l : lines) 
@@ -154,12 +163,14 @@ public class CTCModule
 		
 	}
 	
+	/* Set the authority of the train:tainID to a */
 	protected void setAuthority(int trainID, int a) 
 	{
 		sim.setAuthority(trainID, a);
 		log.append(2, "Authority for Train: " + trainID + " set to " + a + " blocks\n");
 	}
 	
+	/* Get a list of all the trains on line: line */
 	protected ArrayList<Integer> getLineTrains(String line) 
 	{
 		ArrayList<Integer> tids = new ArrayList<Integer>();

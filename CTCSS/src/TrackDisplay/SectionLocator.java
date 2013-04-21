@@ -1,9 +1,23 @@
-package panelButtons;
+/*
+ * SectionLocator.java
+ * Creates a list of points for use in a GraphPanel
+ * Author: Nikolas Parshook
+ * Date Created: 04/19/2013
+ * Date Last Updated: 04/21/2013
+ */
+
+package TrackDisplay;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public class SectionLocator {
+/**
+ * Class for figuring out where to put buttons in a GraphPanel
+ * @author Nikolas Parshook
+ *
+ */
+public class SectionLocator 
+{
 	private ArrayList<Point2D.Double> points;
 	private int numSections;
 	private int xSize;
@@ -13,20 +27,35 @@ public class SectionLocator {
 	private int numRows;
 	private int numCols;
 	
-	public SectionLocator(int ns, int x, int y) {
+	/**
+	 * Create the Locator
+	 * @param ns the number of points
+	 * @param x width of the panel
+	 * @param y height of the panel
+	 */
+	public SectionLocator(int ns, int x, int y) 
+	{
 		numSections = ns;
 		xSize = x;
 		ySize = y;
 		points = new ArrayList<Point2D.Double>();
-		if(ns <= maxRows) {
+		if(ns <= maxRows) 
+		{
 			numRows = ns;
-		} else {
+		} 
+		else 
+		{
 			numRows = maxRows;
 		}
 		numCols = ns/numRows + 1;
 	}
 	
-	public ArrayList<Point2D.Double> getPoints() {
+	/**
+	 * get an arraylist of points 
+	 * @return ArrayList<Point2D.Double> of points for the blocks
+	 */
+	public ArrayList<Point2D.Double> getPoints() 
+	{
 		Point2D.Double point = new Point2D.Double();
 		point.x = 10;
 		point.y = 75;
@@ -35,13 +64,18 @@ public class SectionLocator {
 		
 		int xStart = 100;
 		int xOffset = (xSize - xStart)/numCols;
-		for(int i = 0; i < numRows; i++) {
+		for(int i = 0; i < numRows; i++) 
+		{
 			xStart = 100;
-			for(int j = 0; j < numCols; j++) {
+			for(int j = 0; j < numCols; j++) 
+			{
 				point = new Point2D.Double();
-				if(i%2 == 0) {
+				if(i%2 == 0) 
+				{
 					point.x = xStart + j*xOffset;
-				} else {
+				} 
+				else 
+				{
 					point.x = xSize - xOffset/2 - j*xOffset;
 				}
 				point.y = yOffset;
@@ -49,7 +83,6 @@ public class SectionLocator {
 			}
 			yOffset += ySize / numRows;
 		}
-		
 		return points;
 	}
 }

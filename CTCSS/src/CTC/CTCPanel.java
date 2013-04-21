@@ -31,7 +31,8 @@ import java.awt.event.KeyEvent;
  * @author Nikolas Parshook
  *
  */
-public class CTCPanel extends JPanel {
+public class CTCPanel extends JPanel 
+{
 	
 	// GUI Elements
 	private JTabbedPane tabbedPane;
@@ -305,9 +306,7 @@ public class CTCPanel extends JPanel {
 		toggle(false);
 	}
 	
-	/**
-	 * Update the gui to reflect changes to the system
-	 */
+	/* Update the Panels info */
 	protected void update() 
 	{
 		int tempPos = lineBox.getSelectedIndex();
@@ -373,6 +372,7 @@ public class CTCPanel extends JPanel {
 		}
 	}
 	
+	/* Reset the panel to its default */
 	private void reset() 
 	{
 		blocksBox.setModel(new DefaultComboBoxModel(blockDef));
@@ -387,6 +387,7 @@ public class CTCPanel extends JPanel {
 		toggle(false);
 	}
 	
+	/* Performs the selected action when the train button is pushed */
 	private void trainActions() 
 	{
 		if(!trainActionsBox.getSelectedItem().equals("Train Actions")) 
@@ -445,6 +446,7 @@ public class CTCPanel extends JPanel {
 		}	
 	}
 	
+	/* Perform the selected block action when the blocks button is pressed */
 	private void blockActions() {
 		if(!blocksBox.getSelectedItem().equals("Blocks") && !blockActionsBox.getSelectedItem().equals("Block Actions")) 
 		{
@@ -508,6 +510,7 @@ public class CTCPanel extends JPanel {
 		}	
 	}
 	
+	/* toggle many of the gui elements to onoff */
 	private void toggle(boolean onoff) 
 	{
 		blockActionsBox.setEnabled(onoff);

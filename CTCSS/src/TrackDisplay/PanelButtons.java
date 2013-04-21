@@ -1,4 +1,4 @@
-package panelButtons;
+package TrackDisplay;
 
 import java.awt.EventQueue;
 
