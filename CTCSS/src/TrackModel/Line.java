@@ -155,7 +155,9 @@ public class Line {
 		}
 		for(int i = 0; i < sectionKeys.size(); i++) {
 			for(int j = 0; j < sectionGraph.get(sectionKeys.get(i)).size(); j++) {
-				this.panel.addConnection(i, sectionKeys.indexOf(   sectionGraph.get(sectionKeys.get(i)).get(j)));
+				this.panel.addConnection(i, sectionKeys.indexOf(sectionGraph.get(sectionKeys.get(i)).get(j)));
+				sectionList.get(sectionKeys.get(i)).addGoing(sectionList.get(sectionGraph.get(sectionKeys.get(i)).get(j)));
+				sectionList.get(sectionGraph.get(sectionKeys.get(i)).get(j)).addComing(sectionList.get(sectionKeys.get(i)));
 				//System.out.print(sectionGraph.get(sectionKeys.get(i)).get(j) + " " + sectionKeys.indexOf(sectionGraph.get(sectionKeys.get(i)).get(j)));
 			}
 			sectionList.get(sectionKeys.get(i)).makePanel();

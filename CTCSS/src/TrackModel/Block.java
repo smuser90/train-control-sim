@@ -24,6 +24,7 @@ public class Block{
 	// negative elevation does not imply that the train is underground
 	private double elevation;
 	private double cumulativeElevation;
+	private Section s;
 	// maybe, in the switch block to alternate, i will just switch the two blocks in the arrayList, so that the default is the first on in the list?
 	// add an attribute to tell which switch a switch block is pointed towards
 	/*
@@ -71,6 +72,10 @@ public class Block{
 		/*this.elevation = ele;*/
 	}
 	
+	public void addSection(Section sec) {
+		s = sec;
+	}
+	
 	public int getLength()
 	{
 		return this.length;
@@ -104,6 +109,8 @@ public class Block{
 	public void setOccupied(boolean g)
 	{
 		this.occupied = g;
+		pb.toggleOccupied(g);
+		s.check();
 	}
 	
 	public boolean getCrossing()

@@ -75,9 +75,9 @@ public class TrackModelPanel extends JPanel {
 	public void setPanel(GraphPanel gp, String name)
 	{
 		int temp = tabbedPane.getSelectedIndex();
-		String str = tabbedPane.getSelectedComponent().getName();
-		tabbedPane.remove(temp);
 		
-		tabbedPane.addTab(name, null, gp, null);
+		tabbedPane.remove(temp);
+		tabbedPane.insertTab(name, null, gp, null, temp);
+		tabbedPane.setSelectedIndex(temp);
 	}
 }

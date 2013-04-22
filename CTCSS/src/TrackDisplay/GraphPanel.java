@@ -270,4 +270,9 @@ public class GraphPanel extends JPanel
 			pbs.get(i).turnOff();
 		}
 	}
+	
+	public void setButtonPos(int bNum, int x, int y, int width, int height) 
+	{
+		pbs.get(bNum).setBounds(x, y, width, height);
+	}
 }
