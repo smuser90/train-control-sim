@@ -35,7 +35,7 @@ public class PanelButton extends JPanel
 	private int xSize;
 	private int ySize = 20;
 	private boolean occupied = false;
-	private boolean isHighLighted = false;
+	protected boolean isHighLighted = false;
 	private ArrayList<Integer> goingTo;
 	private ArrayList<Integer> cameFrom;
 	private GraphPanel parent = null;
@@ -57,67 +57,8 @@ public class PanelButton extends JPanel
 		goingTo = new ArrayList<Integer>();
 		cameFrom = new ArrayList<Integer>();
 		
-		addMouseListener(new MouseAdapter() 
-		{
-			@Override
-			public void mouseClicked(MouseEvent e) 
-			{
-				
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) 
-			{
-				toggleOccupied();
-				isHighLighted = true;
-				parent.repaint();
-			}
-			@Override
-			public void mouseExited(MouseEvent e) 
-			{
-				toggleOccupied();
-				isHighLighted = false;
-				parent.repaint();
-			}
-			@Override
-			public void mousePressed(MouseEvent e) 
-			{
-				buttonAction();
-				parent.repaint();
-			}
-		});
-		
-		
 		lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.addMouseListener(new MouseAdapter() 
-		{
-			@Override
-			public void mouseClicked(MouseEvent e) 
-			{
-				//buttonAction();
-			}
-			@Override
-			public void mouseEntered(MouseEvent arg0) 
-			{
-				toggleOccupied();
-				isHighLighted = true;
-				parent.repaint();
-			}
-			@Override
-			public void mouseExited(MouseEvent e) 
-			{
-				toggleOccupied();
-				isHighLighted = false;
-				parent.repaint();
-			}
-			@Override
-			public void mousePressed(MouseEvent e)
-			{
-				buttonAction();
-				
-				parent.repaint();
-			}
-		});
 		lblNewLabel.setBounds(0, 0, xSize, ySize);
 		add(lblNewLabel);
 		
@@ -148,18 +89,18 @@ public class PanelButton extends JPanel
 	}
 	
 	/* Make the panel act like a button */
-	private void buttonAction() 
+	protected void buttonAction() 
 	{
 		if(bb.getBevelType() == BevelBorder.RAISED) 
 		{
 			parent.turnOffAll();
 			bb = new BevelBorder(BevelBorder.LOWERED, null, null, null, null);
 			setBorder(bb);
-			isHighLighted = true;
+			//isHighLighted = true;
 		} else {
 			bb = new BevelBorder(BevelBorder.RAISED, null, null, null, null);
 			setBorder(bb);
-			isHighLighted = false;
+			//isHighLighted = false;
 		}
 	}
 	
@@ -191,5 +132,17 @@ public class PanelButton extends JPanel
 	/* Return wether this button is highlighed or not */
 	protected boolean isHighLighted() {
 		return isHighLighted;
+	}
+	
+	public void addListener(MouseAdapter ma)
+	{
+		addMouseListener(ma);
+		lblNewLabel.addMouseListener(ma);
+	}
+	
+	public void repaint()
+	{
+		if(parent != null)
+			parent.repaint();
 	}
 }

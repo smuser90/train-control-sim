@@ -3,6 +3,7 @@ package TrackModel;
 import java.util.ArrayList;
 
 import TrackDisplay.PanelButton;
+import TrackDisplay.SectionListener;
 
 public class Section {
 	private ArrayList<Block> bList;
@@ -23,6 +24,7 @@ public class Section {
 	
 	public void makeButton(int x, int y) {
 		pb = new PanelButton(secName, x, y);
+		pb.addListener(new SectionListener(pb));
 	}
 	
 	public PanelButton getButton() {
