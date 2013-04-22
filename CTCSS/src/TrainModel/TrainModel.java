@@ -259,6 +259,7 @@ public class TrainModel
 		m_routeLength = m_routeInfo.size();
 		m_routeInfo.get(m_blockIndex).setOccupied(true);
 		m_setpointVelocity = m_routeInfo.get(m_blockIndex).getSpeedLimit();
+		m_speedLimit =  m_routeInfo.get(m_blockIndex).getSpeedLimit();
 		
 		
 		//Routed somewhere besides yard

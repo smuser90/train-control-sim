@@ -125,7 +125,7 @@ public class Line {
 			} 
 			else
 			{
-				Section sec = new Section(curSecName);
+				Section sec = new Section(curSecName, this);
 				sec.addBlock(blockList.get(i));
 				sectionKeys.add(curSecName);
 				sectionList.put(curSecName, sec);
@@ -158,6 +158,10 @@ public class Line {
 			}
 			//System.out.println();
 		}
+	}
+	
+	public Section getSection(String name) {
+		return sectionList.get(name);
 	}
 	/*
 	protected void addSection(String secName)
