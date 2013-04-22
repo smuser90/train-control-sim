@@ -39,7 +39,7 @@ public class Track {
             	if (index == 0)
             	{
             		lineName = line; // get name of the line from the file
-            		// check the name of the line. If it exists GTFO 
+            		// check the name of the line. If it exists GTFO
             		if (checkLineName(lineName))
             		{
             			cLine = new Line(Integer.parseInt(br.readLine()), lineName, tmp);

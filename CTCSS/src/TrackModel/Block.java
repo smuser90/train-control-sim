@@ -77,10 +77,6 @@ public class Block{
 		s = sec;
 	}
 	
-	public void addSection(Section sec) {
-		s = sec;
-	}
-	
 	public int getLength()
 	{
 		return this.length;
