@@ -383,38 +383,35 @@ public class PLC {
 	}
 	
 	public static void handleAuthority(TrackController trackController)
-	{	
+	{
 		if(trainList != null)
 		{
 			for(int i = 0; i < trainList.size(); i++)
 			{
-				for(int j = 0; j < trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1; j++)
+				if(trainList.get(i + 1).getRouteLength() > 1 && trainList.get(i + 1).getBlockIndex() < trainList.get(i + 1).getRouteLength() - 1)
 				{
-					if(trainList.get(i + 1).getRouteLength() > 1)
+					if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied() || trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getFailure())
 					{
-						if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + (j + 1)).getFailure() || trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + (j + 1)).getOccupied())
+						if(trainList.get(i + 1).getAuthority() != 0)
 						{
-							if(trainList.get(i + 1).getAuthority() != ((j + 1) - 1))
-							{
-								if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + (j + 1) - 1).getType() != 1)
-								{
-									trainList.get(i + 1).setAuthority((j + 1) - 1);
-								}
-							}
+							trainList.get(i + 1).setAuthority(0);
 						}
-						else
+					}
+					//Next block is OK
+					else
+					{
+						for(int j = 0; j < trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1; j++)
 						{
-							if(trainList.get(i + 1).getAuthority() != trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1)
+							if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + j).getOccupied() && j > 0)
 							{
-								trainList.get(i + 1).setAuthority(trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1);
+								if(trainList.get(i + 1).getAuthority() != (j-1))
+								{
+									trainList.get(i + 1).setAuthority(j - 1);
+								}
 							}
 						}
 					}
 				}
-				if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex()).getType() == 3 && trainList.get(i + 1).getAuthority() != 0)
-				{
-					trainList.get(i + 1).setAuthority(0);
-				}				
 			}
 		}
 	}
