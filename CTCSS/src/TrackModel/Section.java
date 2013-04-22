@@ -18,6 +18,7 @@ public class Section {
 	private ArrayList<Block> bList;
 	private String secName;
 	private PanelButton pb;
+	private ArrayList<PanelButton> pbs;
 	private GraphPanel gp;
 	private Line blocks;
 	private ArrayList<Section> secsComing;
@@ -32,6 +33,7 @@ public class Section {
 		this.bList = new ArrayList<Block>();
 		secsComing = new ArrayList<Section>();
 		secsGoing = new ArrayList<Section>();
+		pbs = new ArrayList<PanelButton>();
 		blocks = ln;
 	}
 	
@@ -44,20 +46,26 @@ public class Section {
 	public void check() {
 		for(int i = 0; i < bList.size(); i++) {
 			if(bList.get(i).getOccupied()) {
-				pb.toggleOccupied(true);
+				for(int j = 0; j < pbs.size(); j++) {
+					pbs.get(j).toggleOccupied(true);
+				}
 				return;
 			}
 		}
-		pb.toggleOccupied(false);
+		for(int j = 0; j < pbs.size(); j++) {
+			pbs.get(j).toggleOccupied(false);
+		}
 	}
 	
 	public void makeButton(int x, int y) {
 		pb = new PanelButton(secName, x, y);
+		pbs.add(pb);
 		pb.addListener(new SectionListener(pb, tmp, this));
 	}
 	
 	public PanelButton getButton(int x, int y) {
 		PanelButton p = new PanelButton(secName, x, y);
+		pbs.add(p);
 		p.addListener(new SectionListener(p, tmp, this));
 		return p;
 	}

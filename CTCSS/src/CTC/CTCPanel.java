@@ -336,7 +336,7 @@ public class CTCPanel extends JPanel
 				{
 					if(t.get(i).getType() == 3) 
 					{
-						t3.add(t.get(i).getStationName());
+						t3.add(t.get(i).getStationName() + ":" + t.get(i).getBlockNumber());
 					} 
 					else 
 					{
@@ -405,7 +405,7 @@ public class CTCPanel extends JPanel
 				} 
 				else 
 				{
-					_ctc.routeTrain(Integer.parseInt((String)trainBox.getSelectedItem()), (String)stationBox.getSelectedItem(), (String)lineBox.getSelectedItem());
+					_ctc.routeTrain(Integer.parseInt((String)trainBox.getSelectedItem()), ((String)stationBox.getSelectedItem()).split(":")[1], (String)lineBox.getSelectedItem());
 					trainActionsBox.setSelectedIndex(0);
 					trainBox.setSelectedIndex(0);
 					stationBox.setSelectedIndex(0);

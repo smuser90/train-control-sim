@@ -388,6 +388,14 @@ public class PLC {
 		{
 			for(int i = 0; i < trainList.size(); i++)
 			{
+				if(trainList.get(i + 1).getAuthority() > (trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1)) 
+				{
+					if(trainList.get(i + 1).getAuthority() != trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1)
+					{
+						trainList.get(i + 1).setAuthority(trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1);
+						break;
+					}
+				}
 				if(trainList.get(i + 1).getRouteLength() > 1 && trainList.get(i + 1).getBlockIndex() < trainList.get(i + 1).getRouteLength() - 1)
 				{
 					if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied() || trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getFailure())

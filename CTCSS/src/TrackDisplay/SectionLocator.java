@@ -78,7 +78,10 @@ public class SectionLocator
 				{
 					point.x = xSize - xOffset/2 - j*xOffset;
 				}
-				point.y = yOffset;
+				if(j%2 == 0)
+					point.y = yOffset;
+				else
+					point.y = yOffset + 17;
 				points.add(point);
 			}
 			yOffset += ySize / numRows;

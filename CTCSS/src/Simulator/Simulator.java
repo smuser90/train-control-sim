@@ -60,6 +60,7 @@ public class Simulator implements Runnable
 	{
 		try 
 		{
+			while(true) {
 			if(!paused) 
 			{
 				// Put simulator to sleep for current time step
@@ -92,13 +93,13 @@ public class Simulator implements Runnable
 			{
 				Thread.sleep(1000);
 			}
-				
+			}
 		} 
 		catch (InterruptedException e)
 		{
 			e.printStackTrace();
 		}
-		this.run();
+		//this.run();
 	}
 	
 	/**

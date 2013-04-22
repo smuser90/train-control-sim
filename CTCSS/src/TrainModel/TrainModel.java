@@ -281,9 +281,9 @@ public class TrainModel
 			m_atStation = false;
 			m_trainController.setTick(true);
 		}
-		/*for(int i = 0; i < m_routeInfo.size(); i++) {
+		for(int i = 0; i < m_routeInfo.size(); i++) {
 			System.out.println(m_routeInfo.get(i).getBlockNumber());
-		}*/
+		}
 	}
 	
 	public ArrayList<Block> getRouteInfo()
