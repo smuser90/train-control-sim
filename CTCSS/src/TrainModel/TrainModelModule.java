@@ -17,6 +17,7 @@ public class TrainModelModule
 	private TrainControllerModule m_tcModule = null;
 	private int m_trainID;
 	private Log log;
+	private int m_tickCount;
 	
 	
 	public TrainModelModule()
@@ -25,6 +26,7 @@ public class TrainModelModule
 		log = Log.Instance();
 		m_trainID = 1;
 		m_trainList = new HashMap<Integer, TrainModel>();
+		m_tickCount = 0;
 	}
 	
 	public void linkSimulator(Simulator sim)
@@ -102,7 +104,10 @@ public class TrainModelModule
 				tm.tick(timeLapse);
 		}
 		
-		m_gui.update();
+		m_tickCount++;
+		m_tickCount = m_tickCount % 10;
+		if(m_tickCount == 0)
+			m_gui.update();
 	}
 	
 	public void writeLog(int severity, String str)
