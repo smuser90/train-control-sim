@@ -3,9 +3,11 @@ package TrackController;
 import Simulator.Simulator;
 import TrackModel.Block;
 import TrainModel.TrainModel;
+import Log.Log;
 
 import java.util.ArrayList;
 import java.util.Map;
+
 
 public class PLC {
 
@@ -335,7 +337,7 @@ public class PLC {
 	}
 
 	public static void reportBrokenRail(int blockNumber){
-		TrackController.reportBrokenRail(blockNumber);
+		Log.Instance().append(3, "Broken Rail At Block " + blockNumber + "\n");
 	}
 	
 	public static void preventAccidents(TrackController trackController)
