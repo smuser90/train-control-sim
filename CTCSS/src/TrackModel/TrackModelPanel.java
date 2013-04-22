@@ -16,13 +16,14 @@ public class TrackModelPanel extends JPanel {
 	private File file;
 	private TrackModelModule tm;
 	private JTabbedPane tabbedPane;
+	JTextPane txtpnTheTextPane = new JTextPane();
 	/**
 	 * Create the panel.
 	 */
 	public TrackModelPanel(final TrackModelModule Tm) {
 		setLayout(null);
 		tm = Tm;
-		JTextPane txtpnTheTextPane = new JTextPane();
+		
 		//txtpnTheTextPane.setEnabled(false);
 		txtpnTheTextPane.setEditable(false); // use this to change the pane. set it editable to edit, then uneditable for the display 
 		txtpnTheTextPane.setText("Selected Block Information");
@@ -47,6 +48,15 @@ public class TrackModelPanel extends JPanel {
 		
 		tabbedPane = null;
 
+	}
+	
+	public void displayBlockInfo(Block b)
+	{
+		txtpnTheTextPane.setEditable(true);
+		// format: ID | Type | Length | Grade | Speed Limit | Section | aboveGround | Station Name 
+		// bID nextB bType bLength bGrade bSpLim bSection belowGround stationName
+		//txtpnTheTextPane.setText(/*set the text of the panel*/);
+		txtpnTheTextPane.setEditable(false);
 	}
 	
 	protected void addLine(Line l) {
