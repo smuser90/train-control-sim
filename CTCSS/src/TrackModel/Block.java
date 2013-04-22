@@ -1,5 +1,8 @@
 package TrackModel;
 
+import TrackDisplay.BlockListener;
+import TrackDisplay.PanelButton;
+
 public class Block{
 	private int length; // length of this block
 	private int number; // the ID of the block
@@ -15,7 +18,7 @@ public class Block{
 	private boolean crossingUp = true; // if true, the crossing is up, if false then they're down
 	private int isBelowGround = 0; // 0 for above ground, 1 for below ground
 	private int switchedTo;
-	
+	private PanelButton pb;
 	// need these to be added to the file
 	// also need to make the file work with added elevation plus cumulative elevation
 	// negative elevation does not imply that the train is underground
@@ -197,6 +200,17 @@ public class Block{
 	public String getSection()
 	{
 		return this.section;
+	}
+	
+	public void makeButton(int x, int y)
+	{
+		pb = new PanelButton(""+this.number, x, y);
+		pb.addMouseListener(new BlockListener(pb));
+	}
+	
+	public PanelButton getButton()
+	{
+		return pb;
 	}
 	
 }
