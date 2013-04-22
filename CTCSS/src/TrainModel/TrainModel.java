@@ -209,7 +209,9 @@ public class TrainModel
 			m_routeInfo.get(m_blockIndex).setOccupied(false);
 			m_blockIndex++;
 			
-			m_log.append("Entering Block" + m_routeInfo.get(m_blockIndex).getBlockNumber()+"\n");
+			if(m_authority > 0) m_authority--;
+			
+			m_log.append("Entering Block" + m_routeInfo.get(m_blockIndex).getBlockNumber()+"\n\n");
 			m_routeInfo.get(m_blockIndex).setOccupied(true);
 			m_routeInfo.get(m_blockIndex).trainOnBlock(m_trainID);
 			m_speedLimit = m_routeInfo.get(m_blockIndex).getSpeedLimit();
