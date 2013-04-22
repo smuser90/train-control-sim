@@ -266,6 +266,7 @@ public class TrainModel
 		m_routeInfo = routeInfo;
 		m_blockIndex = 0;
 		m_routeLength = m_routeInfo.size();
+		m_authority = m_routeLength - 1;
 		m_routeInfo.get(m_blockIndex).setOccupied(true);
 		m_setpointVelocity = m_routeInfo.get(m_blockIndex).getSpeedLimit();
 		m_speedLimit =  m_routeInfo.get(m_blockIndex).getSpeedLimit();
