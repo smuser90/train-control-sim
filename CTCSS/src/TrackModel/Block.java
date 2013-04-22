@@ -13,16 +13,20 @@ public class Block{
 	private String section;
 	private String stationName;
 	private boolean crossingUp = true; // if true, the crossing is up, if false then they're down
-	private int isBelowGround; // 0 for above ground, 1 for below ground
+	private int isBelowGround = 0; // 0 for above ground, 1 for below ground
 	private int switchedTo;
+	
+	// need these to be added to the file
+	// also need to make the file work with added elevation plus cumulative elevation
+	// negative elevation does not imply that the train is underground
+	private double elevation;
+	private double cumulativeElevation;
 	// maybe, in the switch block to alternate, i will just switch the two blocks in the arrayList, so that the default is the first on in the list?
 	// add an attribute to tell which switch a switch block is pointed towards
 	/*
 	 * in text file:
 	 * bID nextB bType bLength bGrade bSpLim bSection belowGround stationName
 	 */
-	
-	// how are we gonna implement switching???
 	
 	
 	/*
