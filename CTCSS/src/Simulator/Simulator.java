@@ -182,6 +182,20 @@ public class Simulator implements Runnable
 	}
 	
 	/**
+	 * Get the dialog for the metrics
+	 * @return
+	 */
+	public Metrics getMetrics() 
+	{
+		double temp = 0.0;
+		for(int i = 0; i < tm.getTrainList().size(); i++) 
+		{
+			temp += tm.getTrainList().get(i+1).getPassengersPerHour();
+		}
+		return new Metrics(temp);
+	}
+	
+	/**
 	 * Return the value of the current system time
 	 * @return long
 	 */

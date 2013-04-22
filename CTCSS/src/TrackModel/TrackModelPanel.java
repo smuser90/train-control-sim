@@ -23,6 +23,8 @@ public class TrackModelPanel extends JPanel {
 		setLayout(null);
 		tm = Tm;
 		JTextPane txtpnTheTextPane = new JTextPane();
+		//txtpnTheTextPane.setEnabled(false);
+		txtpnTheTextPane.setEditable(false); // use this to change the pane. set it editable to edit, then uneditable for the display 
 		txtpnTheTextPane.setText("Selected Block Information");
 		txtpnTheTextPane.setBounds(10, 259, 630, 46);
 		add(txtpnTheTextPane);

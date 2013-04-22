@@ -149,7 +149,8 @@ public class System_GUI {
 	}
 	
 	/* Setup the system */
-	private static void setup() {
+	private static void setup() 
+	{
 		updateSplash(0);
 		setGUILAndF();
 		log = Log.Instance();
@@ -184,15 +185,19 @@ public class System_GUI {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		
 		splash = SplashScreen.getSplashScreen();
-        if (splash == null) {
+        if (splash == null) 
+        {
             foundSplash = false;
         }
-        if(foundSplash) {
+        if(foundSplash) 
+        {
         	g = splash.createGraphics();
-        	if (g == null) {
+        	if (g == null) 
+        	{
         		foundSplash = false;
         	}
         }
@@ -200,9 +205,12 @@ public class System_GUI {
         if(foundSplash)
         	splash.close();
 		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					System_GUI window = new System_GUI();
 					sim.setSys(window);
 					window.frmCtcss.setResizable(false);
@@ -210,7 +218,9 @@ public class System_GUI {
 					window.frmCtcss.toFront();
 					Thread t = new Thread(sim);
 					t.start();
-				} catch (Exception e1) {
+				} 
+				catch (Exception e1) 
+				{
 					e1.printStackTrace();
 				}
 			}
@@ -220,7 +230,8 @@ public class System_GUI {
 	/**
 	 * Create the application.
 	 */
-	public System_GUI() {
+	public System_GUI() 
+	{
 		initialize();
 		sys = this;
 	}
@@ -228,11 +239,14 @@ public class System_GUI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize() 
+	{
 		frmCtcss = new JFrame();
-		frmCtcss.addWindowListener(new WindowAdapter() {
+		frmCtcss.addWindowListener(new WindowAdapter() 
+		{
 			@Override
-			public void windowClosing(WindowEvent arg0) {
+			public void windowClosing(WindowEvent arg0) 
+			{
 				exitProcedure();
 			}
 		});
@@ -252,7 +266,9 @@ public class System_GUI {
 		tabbedPane.setBackground(Color.GRAY);
 		tabbedPane.setBounds(320, 11, 654, 378);
 		if(loggedIn)
+		{
 			frmCtcss.getContentPane().add(tabbedPane);
+		}
 		
 		// Track Model
 		JPanel panel_2 = trm.getPanel();
@@ -275,8 +291,9 @@ public class System_GUI {
 		panel_1 = ctc.getPanel();
 		panel_1.setBounds(10, 11, 300, 378);
 		if(loggedIn)
+		{
 			frmCtcss.getContentPane().add(panel_1);
-		
+		}
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmCtcss.setJMenuBar(menuBar);
@@ -286,8 +303,10 @@ public class System_GUI {
 		menuBar.add(mnFile);
 		
 		mntmLogin = new JMenuItem("Login");
-		mntmLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		mntmLogin.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 				mntmLogin.setEnabled(false);
 				new LoginDialog(sys);
 			}
@@ -295,23 +314,29 @@ public class System_GUI {
 		mnFile.add(mntmLogin);
 		
 		mntmLogout = new JMenuItem("Lock");
-		mntmLogout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		mntmLogout.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				logout();
 			}
 		});
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
-		mntmAbout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		mntmAbout.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				new AboutDialog();
 			}
 		});
 		mnFile.add(mntmAbout);
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
-		mntmExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		mntmExit.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
 				exitProcedure();
 			}
 		});
@@ -323,24 +348,31 @@ public class System_GUI {
 		mnSimulation.setEnabled(false);
 		
 		mntmRun = new JMenuItem("Run");
-		mntmRun.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		mntmRun.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				unPause();
 			}
 		});
 		
 		mntmPause = new JMenuItem("Pause");
-		mntmPause.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		mntmPause.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				pause();
 			}
 		});
 		mnSimulation.add(mntmPause);
 		
 		JMenuItem mntmSetSpeed = new JMenuItem("Set Speed");
-		mntmSetSpeed.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(loggedIn) {
+		mntmSetSpeed.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				if(loggedIn) 
+				{
 					sim.getSpeedDialog().setVisible(true);
 				}
 			}
@@ -348,12 +380,21 @@ public class System_GUI {
 		mnSimulation.add(mntmSetSpeed);
 		
 		JMenuItem mntmMetrics = new JMenuItem("Metrics");
+		mntmMetrics.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				sim.getMetrics().setVisible(true);
+			}
+		});
 		mnSimulation.add(mntmMetrics);
 	}
 	
 	/* Log the system in */
-	private void login() {
-		if(loggedIn) {
+	private void login() 
+	{
+		if(loggedIn) 
+		{
 			frmCtcss.getContentPane().add(panel_1);
 			frmCtcss.getContentPane().add(tabbedPane);
 			mnFile.remove(0);
@@ -361,20 +402,23 @@ public class System_GUI {
 			frmCtcss.repaint();
 			mnSimulation.setEnabled(true);
 		}
-		else {
+		else 
+		{
 			log.append(3, "Login failed\n");
 			mntmLogin.setEnabled(true);
 		}
 	}
 	
 	/* Set the systems login state */
-	protected void setLoggedIn(boolean val) {
+	protected void setLoggedIn(boolean val) 
+	{
 		loggedIn = val;
 		login();
 	}
 	
 	/* Log the system out */
-	private void logout() {
+	private void logout()
+	{
 		frmCtcss.remove(panel_1);
 		frmCtcss.remove(tabbedPane);
 		mnFile.remove(0);
@@ -386,7 +430,8 @@ public class System_GUI {
 	}
 	
 	/* pause the simulation */
-	private void pause() {
+	private void pause() 
+	{
 		sim.togglePause();
 		mnSimulation.remove(0);
 		mnSimulation.insert(mntmRun, 0);
@@ -394,7 +439,8 @@ public class System_GUI {
 	}
 	
 	/* unpause the simulation */
-	private void unPause() {
+	private void unPause() 
+	{
 		sim.togglePause();
 		mnSimulation.remove(0);
 		mnSimulation.insert(mntmPause, 0);
@@ -402,7 +448,8 @@ public class System_GUI {
 	}
 	
 	/* exit the system */
-	private void exitProcedure() {
+	private void exitProcedure() 
+	{
 		log.writeToDumpFile();
 		System.exit(0);
 	}
