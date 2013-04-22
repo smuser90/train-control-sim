@@ -57,7 +57,7 @@ public class Block{
 	// final: all this shit
 	
 	
-	public Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int swiTo)
+	public Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int swiTo/*, double ele*/)
 	{
 		this.number = bID;
 		this.type = ty;
@@ -68,11 +68,8 @@ public class Block{
 		this.isBelowGround = belGnd;
 		this.stationName = statName;
 		this.switchedTo = swiTo;
+		/*this.elevation = ele;*/
 	}
-	
-	
-	// add getType, getBlockNumber, getFailure, setType, getOccupied, setCrossingActive, getCrossingActive
-	// prototype methods
 	
 	public int getLength()
 	{
@@ -122,7 +119,7 @@ public class Block{
 	
 	
 	
-	// **************************************************END OF PROTOTYPE METHODS**************************************************
+
 	public void setSpeedLimit(int s)
 	{
 		this.speedLimit = s;
