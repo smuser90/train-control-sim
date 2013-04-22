@@ -2,10 +2,10 @@
 <project name="CTCSS" default="main" basedir=".">
 	<!-- Sets variables which can later be used. -->
 	<!-- The value of a property is accessed via ${} -->
-	<property name="src.dir" location="CTCSS/src" />
+	<property name="src.dir" location="src" />
 	<property name="build.dir" location="build/bin" />
 	<property name="dist.dir" location="build/dist" />
-	<property name="images.dir" location="CTCSS/src/System/images" />
+	<property name="images.dir" location="src/System/images" />
 	<property name="docs.dir" location="build/docs" />
 	
 	<!-- Deletes the existing build, docs and dist directory-->
@@ -45,7 +45,7 @@
 	
 	<!--Creates the deployable jar file  -->
 	<target name="jar" depends="compile, move">
-		<jar destfile="${dist.dir}/CTCSSv0.3.jar" basedir="${build.dir}" filesetmanifest="mergewithoutmain">
+		<jar destfile="${dist.dir}/CTCSSv0.5.jar" basedir="${build.dir}" filesetmanifest="mergewithoutmain">
 			<manifest>
                 <attribute name="Main-Class" value="System.System_GUI"/>
                 <attribute name="Class-Path" value="."/>
