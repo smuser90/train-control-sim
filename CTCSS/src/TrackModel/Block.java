@@ -57,7 +57,7 @@ public class Block{
 	// final: all this shit
 	
 	
-	public Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int swiTo/*, double ele*/)
+	public Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int swiTo, double ele, double cele)
 	{
 		this.number = bID;
 		this.type = ty;
@@ -68,7 +68,8 @@ public class Block{
 		this.isBelowGround = belGnd;
 		this.stationName = statName;
 		this.switchedTo = swiTo;
-		/*this.elevation = ele;*/
+		this.elevation = ele;
+		this.cumulativeElevation = cele;
 	}
 	
 	public int getLength()
