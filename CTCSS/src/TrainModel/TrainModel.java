@@ -123,14 +123,20 @@ public class TrainModel
 				
 				if(m_routeInfo.get(m_blockIndex).getType() != -1) 
 				{
-					m_log.append("At Station\n\n");
+					m_log.append("At "+m_routeInfo.get(m_blockIndex).getStationName()+"\n\n");
 					toggleDoors();
 					updatePassengers();
 					toggleDoors();
 				}
 				else
+				{
 					m_log.append("At Yard\n\n");
+					if(m_routeInfo.size() > 1)
+						m_parent.removeTrain(m_trainID);
+				}
+				
 				m_log.append("Awaiting Route Data\n\n");
+				m_parent.writeLog(3, "Train:"+m_trainID+" awaiting new route data\n");
 				m_writeLog = true;
 				m_printFlag = false;
 			}
@@ -205,7 +211,9 @@ public class TrainModel
 			m_routeInfo.get(m_blockIndex).setOccupied(false);
 			m_blockIndex++;
 			
+			m_log.append("Entering Block" + m_routeInfo.get(m_blockIndex).getBlockNumber()+"\n");
 			m_routeInfo.get(m_blockIndex).setOccupied(true);
+			m_routeInfo.get(m_blockIndex).trainOnBlock(m_trainID);
 			m_speedLimit = m_routeInfo.get(m_blockIndex).getSpeedLimit();
 		}
 		
@@ -219,7 +227,7 @@ public class TrainModel
 				m_printFlag = true;
 				m_writeLog = true;
 			}
-			//We oopsed
+			//We oopsed - never want to hit this. 
 			if(m_position >= m_routeInfo.get(m_blockIndex).getLength())
 			{
 				m_position = m_routeInfo.get(m_blockIndex).getLength();
@@ -268,6 +276,7 @@ public class TrainModel
 		{
 			System.out.println("Routed to legit");
 			m_log.append("Route Data Received. *Train Starting*\n\n");
+			m_writeLog = true;
 			m_atStation = false;
 			m_trainController.setTick(true);
 		}
@@ -542,6 +551,11 @@ public class TrainModel
 	public int getPowerLimit()
 	{
 		return m_powerLimit;
+	}
+	
+	public int getCurrentBlock()
+	{
+		return m_routeInfo.get(m_blockIndex).getBlockNumber();
 	}
 }
 

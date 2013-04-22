@@ -85,6 +85,7 @@ public class TrainModelModule
 	{
 		m_trainList.remove(new Integer(ID));
 		m_gui.populateBox();
+		writeLog(2, "Train:"+ID+" retired to the yard\n");
 	}
 	
 	public long getSimTime()
@@ -102,5 +103,10 @@ public class TrainModelModule
 		}
 		
 		m_gui.update();
+	}
+	
+	public void writeLog(int severity, String str)
+	{
+		log.append(severity, str);
 	}
 }

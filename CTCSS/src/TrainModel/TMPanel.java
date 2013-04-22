@@ -36,13 +36,14 @@ public class TMPanel extends JPanel
 	private TrainModelModule 	m_tm;
 	private JTable				table;
 	private JComboBox 			comboBox;
-	private JScrollPane scrollPane;
-	private JTextPane logPane;
-	private JButton btnEngineFailure;
-	private JButton btnSignalFailure;
-	private JButton btnBrakeFailure;
-	private JButton btnEmergencyBrake;
-	private int trainSelected = 0;
+	private JScrollPane 		scrollPane;
+	private JTextPane 			logPane;
+	private JButton 			btnEngineFailure;
+	private JButton 			btnSignalFailure;
+	private JButton 			btnBrakeFailure;
+	private JButton 			btnEmergencyBrake;
+	private int 				trainSelected = 0;
+	private boolean 			writeLog = false;
 	
 	public TMPanel(TrainModelModule tm)
 	{
@@ -105,6 +106,7 @@ public class TMPanel extends JPanel
 			public void actionPerformed(ActionEvent arg0)
 			{
 				update();
+				writeLog = true;
 			}
 		});
 		add(comboBox);
@@ -203,7 +205,7 @@ public class TMPanel extends JPanel
 			int parseIndex = title.indexOf(" ");
 			int trainID = Integer.parseInt(title.substring(0,parseIndex));
 			trainSelected = trainID;
-			TrainModel train = trainList.get(new Integer(trainID));
+			TrainModel train = trainList.get(new Integer(trainSelected));
 			
 			//Populate Table
 			String format = "%3.3f";
@@ -246,7 +248,7 @@ public class TMPanel extends JPanel
 			
 			//Write Out Log
 			String log = train.getLog().toString();
-			if(train.getWriteLog()) writeLog(log);
+			if(train.getWriteLog() || writeLog) writeLog(log);
 			train.setWriteLog(false);
 		}
 	}
@@ -300,6 +302,6 @@ public class TMPanel extends JPanel
 			logText.insertString(0, log, set);
 		} catch (BadLocationException e) {
 		}
-		
+		writeLog = false;
 	}
 }
