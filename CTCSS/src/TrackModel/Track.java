@@ -14,8 +14,11 @@ public class Track {
 	
 	private ArrayList<Line> lines;
 	private Line newLine;
-	public Track()
+	private TrackModelPanel tmp;
+	
+	public Track(TrackModelPanel tmp)
 	{
+		this.tmp = tmp;
 		lines = new ArrayList<Line>();
 	}
 	
@@ -39,7 +42,7 @@ public class Track {
             		// check the name of the line. If it exists GTFO 
             		if (checkLineName(lineName))
             		{
-            			cLine = new Line(Integer.parseInt(br.readLine()), lineName);
+            			cLine = new Line(Integer.parseInt(br.readLine()), lineName, tmp);
                 		index++;
             		} else {
             			goodLine = false;

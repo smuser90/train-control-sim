@@ -226,6 +226,7 @@ public class TrainModel
 				m_atStation = true;
 				m_printFlag = true;
 				m_writeLog = true;
+				m_trainController.setTick(false);
 				m_log.append("You missed the station asshole \n\n");
 			}
 			

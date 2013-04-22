@@ -21,10 +21,12 @@ public class Line {
 	private HashMap<String, ArrayList<String>> sectionGraph; // graph of all the sections, stored like the trackAdjList 
 	private GraphPanel panel;
 	private ArrayList<String> sectionKeys;
+	private TrackModelPanel tmp;
 	public Line() {}
 	
-	public Line(int numBlocks, String lName)
+	public Line(int numBlocks, String lName, TrackModelPanel tmp)
 	{
+		this.tmp = tmp;
 		this.lineName = lName;
 		this.V = numBlocks;
 		this.E = 0;
@@ -125,7 +127,7 @@ public class Line {
 			} 
 			else
 			{
-				Section sec = new Section(curSecName, this);
+				Section sec = new Section(curSecName, tmp, this);
 				sec.addBlock(blockList.get(i));
 				sectionKeys.add(curSecName);
 				sectionList.put(curSecName, sec);
@@ -156,6 +158,7 @@ public class Line {
 				this.panel.addConnection(i, sectionKeys.indexOf(   sectionGraph.get(sectionKeys.get(i)).get(j)));
 				//System.out.print(sectionGraph.get(sectionKeys.get(i)).get(j) + " " + sectionKeys.indexOf(sectionGraph.get(sectionKeys.get(i)).get(j)));
 			}
+			sectionList.get(sectionKeys.get(i)).makePanel();
 			//System.out.println();
 		}
 	}

@@ -5,6 +5,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
+
+import TrackDisplay.GraphPanel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
@@ -67,5 +70,14 @@ public class TrackModelPanel extends JPanel {
 		}
 		tabbedPane.addTab(l.getName(), null, l.getPanel(), null);
 		
+	}
+	
+	public void setPanel(GraphPanel gp, String name)
+	{
+		int temp = tabbedPane.getSelectedIndex();
+		String str = tabbedPane.getSelectedComponent().getName();
+		tabbedPane.remove(temp);
+		
+		tabbedPane.addTab(name, null, gp, null);
 	}
 }

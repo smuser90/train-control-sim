@@ -17,7 +17,7 @@ public class TrackModelModule {
 	public TrackModelModule() 
 	{
 		gui = new TrackModelPanel(this);
-		tr = new Track();
+		tr = new Track(gui);
 	}
 		
 	public TrackModelPanel getPanel() {
