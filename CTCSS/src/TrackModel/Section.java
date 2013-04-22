@@ -1,5 +1,6 @@
 package TrackModel;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
@@ -19,7 +20,8 @@ public class Section {
 	private PanelButton pb;
 	private GraphPanel gp;
 	private Line blocks;
-	private ArrayList<Section> secs;
+	private ArrayList<Section> secsComing;
+	private ArrayList<Section> secsGoing;
 	private TrackModelPanel tmp;
 	
 	public Section(String n, TrackModelPanel tmp, Line ln)
@@ -28,27 +30,36 @@ public class Section {
 		this.tmp = tmp;
 		bList = new ArrayList<Block>();
 		this.bList = new ArrayList<Block>();
-		secs = new ArrayList<Section>();
+		secsComing = new ArrayList<Section>();
+		secsGoing = new ArrayList<Section>();
 		blocks = ln;
-		for(int x = 0; x < bList.size(); x++)
-		{
-			for(int y = 0; y < blocks.adj(bList.get(x).getBlockNumber()).size(); y++)
-			{
-				if(blocks.getBlocks().get(blocks.adj(bList.get(x).getBlockNumber()).get(y)).getSection().equals(secName)) {
-					secs.add(blocks.getSection(blocks.getBlocks().get(blocks.adj(bList.get(x).getBlockNumber()).get(y)).getSection()));
-				}
-			}
-		}
 	}
 	
 	public void addBlock(Block b)
 	{
 		this.bList.add(b);
+		b.addSection(this);
+	}
+	
+	public void check() {
+		for(int i = 0; i < bList.size(); i++) {
+			if(bList.get(i).getOccupied()) {
+				pb.toggleOccupied(true);
+				return;
+			}
+		}
+		pb.toggleOccupied(false);
 	}
 	
 	public void makeButton(int x, int y) {
 		pb = new PanelButton(secName, x, y);
 		pb.addListener(new SectionListener(pb, tmp, this));
+	}
+	
+	public PanelButton getButton(int x, int y) {
+		PanelButton p = new PanelButton(secName, x, y);
+		p.addListener(new SectionListener(p, tmp, this));
+		return p;
 	}
 	
 	public PanelButton getButton() {
@@ -62,15 +73,36 @@ public class Section {
 	public void makePanel()
 	{
 		gp = new GraphPanel();
-		SectionLocator sl = new SectionLocator(bList.size(), 600, 190);
+		SectionLocator sl = new SectionLocator(bList.size() + secsGoing.size(), 600, 190);
 		ArrayList<Point2D.Double> points = sl.getPoints();
+		int butNum = 0;
 		for(int i = 0; i < bList.size(); i++)
 		{
-			System.out.println(bList.get(i).getBlockNumber());
 			bList.get(i).makeButton(new Double(points.get(i).getX()).intValue() , new Double(points.get(i).getY()).intValue());
 			gp.addButton(bList.get(i).getButton());
+			butNum = i;
 		}
 
+		System.out.println(this.secName + "*************************************************");
+		
+		for(int i = 0; i < secsGoing.size(); i++) 
+		{
+			butNum++;
+			System.out.println(secsGoing.get(i).getName());
+			gp.addButton(secsGoing.get(i).getButton(new Double(points.get(butNum).getX()).intValue() , new Double(points.get(butNum).getY()).intValue()));
+			
+		
+		}
+		
+		for(int i = 0; i < secsComing.size(); i++) 
+		{
+			butNum++;
+			System.out.println(secsComing.get(i).getName());
+			gp.addButton(secsComing.get(i).getButton(new Double(points.get(butNum).getX()).intValue() , new Double(points.get(butNum).getY()).intValue()));
+			
+		
+		}
+		
 		for(int i = 0; i < bList.size()-1; i++)
 		{
 			gp.addConnection(i, i+1);
@@ -94,5 +126,19 @@ public class Section {
 	public String getName() 
 	{
 		return this.secName;
+	}
+	
+	public void addComing(Section s) {
+		if(!s.getName().equals(secName))
+			secsComing.add(s);
+	}
+	
+	public void addGoing(Section s) {
+		if(!s.getName().equals(secName))
+			secsGoing.add(s);
+	}
+	
+	public Line getLine() {
+		return this.blocks;
 	}
 }

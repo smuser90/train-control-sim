@@ -29,6 +29,9 @@ public class TrainController
 	private double authLen=0;
 	private double eBrakeDist;
 	private Boolean tick=true;
+	private int brakeType = 0;	// 0-free 1-near station 2-auth check 3-speed check 4-manual
+	private int eBrakeType = 0;;	// 0-free 1-auth 2-manual
+	private int tickCounter=0;
 
 
 	public static final double INTEGRAL_INITIAL = 0.0f;
@@ -124,6 +127,7 @@ public class TrainController
 	}
 
 	public void tick(double time){
+		
 		if (tick==true){
 			/* update train attributes */
 			currSpeed = train.getVelocity();
@@ -136,7 +140,7 @@ public class TrainController
 			routeInfo = train.getRouteInfo();
 			if (train.getSetpointSpeed()<=speedLimit){
 				setPointSpeed = train.getSetpointSpeed()/3.6;
-				
+
 			}
 			else {
 				setPointSpeed = train.getSpeedLimit()/3.6;
@@ -154,40 +158,30 @@ public class TrainController
 
 			}
 			// update nextstation field
-			panel.nextStation.setText(nextStationName);
-
-			/* update table */
-			if (!panel.comboBox.getSelectedItem().equals("Train List")){
-				panel.table.setValueAt(String.format("%3.3f", currSpeed*3.6) + " KPH", 0, 1);
-				panel.table.setValueAt(authority, 2, 1);
-				panel.table.setValueAt(String.format("%3.3f", setPointSpeed*3.6) + " KPH", 1, 1);
-				panel.table.setValueAt(String.format("%3.3f", train.getAcceleration()) + " m/s^2", 8, 1);
-				panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
-				panel.table.setValueAt(train.getSpeedLimit() + " KPH", 10, 1);
-				panel.table.setValueAt(train.getPowerLimit() + " W", 11, 1);
-
-			}
+			
 
 			//			System.out.println("currBlock: " + currBlock.getStationName());
 			//			System.out.println("nextStation: " + nextStation.getStationName());
-			if (currBlock!=null && nextStation!=null){
-				stationApproachCheck();
-				panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
-			}
-
-			/* set power command */
-			//			System.out.println("currSpeed: "+currSpeed);
-			//			System.out.println("setPointSpeed: "+setPointSpeed);
-			//			System.out.println("brake: "+brake);
-			if (speedIsSafe()){
-				if (currSpeed < 3 && setPointSpeed > 0 && !brake ){
-					train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.1);
+			if (checkAuth()){
+				if (currBlock!=null && nextStation!=null){
+					stationApproachCheck();
 					panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 				}
-				else if (!brake){		
-					//				System.out.println("Set power ");
-					train.setPower(nextPower(setPointSpeed, currSpeed, time));
-					panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
+
+				/* set power command */
+				//			System.out.println("currSpeed: "+currSpeed);
+				//			System.out.println("setPointSpeed: "+setPointSpeed);
+				//			System.out.println("brake: "+brake);
+				if (speedIsSafe()){
+					if (currSpeed < 3 && setPointSpeed > 0 && !brake ){
+						train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.1);
+			//			panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
+					}
+					else if (!brake){		
+						//				System.out.println("Set power ");
+						train.setPower(nextPower(setPointSpeed, currSpeed, time));
+			//			panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
+					}
 				}
 			}
 		}
@@ -196,6 +190,13 @@ public class TrainController
 			train.setPower(0);
 			setBrake(false);
 		}
+		if(tickCounter==0){
+			updateGui();
+			
+		}
+		tickCounter++;
+		tickCounter = tickCounter % 5;
+//		System.out.println("tick counter " + tickCounter);
 	}
 
 	public double nextPower(double setpoint, double currentSpeed, double millis) {
@@ -242,28 +243,30 @@ public class TrainController
 	public void stationApproachCheck(){
 		double slowDownDist =0;		
 		getDistToNextStation();
-	//			System.out.println("Distance to next station = "+distToNextStation);
+		//			System.out.println("Distance to next station = "+distToNextStation);
 		slowDownDist = currSpeed*currSpeed/2/1.2;
-	//			System.out.println("slow down dist = "+ slowDownDist);
+		//			System.out.println("slow down dist = "+ slowDownDist);
 
 
 		if (distToNextStation <= slowDownDist){
 			train.setPower(0);
 			train.setBrake(true);
-			stationApproach=true;
+			//			stationApproach=true;
+			brakeType=1;
 
 
 			panel.SetBrake.setSelected(true);
 			panel.table.setValueAt("Applied", 7, 1);
 
 			if (currSpeed==0){
-				stationApproach=false;
-		//		System.out.println("Shit happen");
-		//		brake=false;
-		//		train.setBrake(brake);
-		//		panel.SetBrake.setSelected(false);
-		//		panel.table.setValueAt("Unapplied", 7, 1);
-	//			tick=false;
+				brakeType=0;
+				//				stationApproach=false;
+				//		System.out.println("Shit happen");
+				brake=false;
+				train.setBrake(brake);
+				panel.SetBrake.setSelected(false);
+				panel.table.setValueAt("Unapplied", 7, 1);
+				//			tick=false;
 			}
 		}
 
@@ -301,27 +304,38 @@ public class TrainController
 		return dist;
 	}
 
-	public void checkAuth(){
-		if (authority == 0){
+	public Boolean checkAuth(){
+		if (authority == 0 && !currBlock.getStationName().equals(nextStation.getStationName())){
+			eBrakeType=1;
 			train.setPower(0);
 			train.toggleEmergencyBrake();
+			panel.tglbtnSetEmergencyBrake.setSelected(true);
+			return false;
 		}
 		else if (authLen < eBrakeDist) {
+			System.out.println("Authority brake");
+			brakeType=2;
+			train.setPower(0);
 			train.setBrake(true);
 			panel.SetBrake.setSelected(true);
 			panel.table.setValueAt("Applied", 7, 1);
-
+			return false;
 		}
 
-		else {
+		else if (brakeType==2){
+			brakeType=0;
 			panel.SetBrake.setSelected(false);
-			panel.table.setValueAt("N/A", 7, 1);
+			panel.table.setValueAt("unapplied", 7, 1);
+			panel.table.setValueAt("unapplied", 6, 1);
+			panel.tglbtnSetEmergencyBrake.setSelected(false);
 		}
+		return true;
 	}
 
 	public void setTick(Boolean t){
 		tick = t;
 		if (tick){
+			brakeType=0;
 			train.setPower(0);
 			brake=false;
 			train.setBrake(brake);
@@ -329,17 +343,19 @@ public class TrainController
 			panel.table.setValueAt("Unapplied", 7, 1);
 		}
 		else{
+			brakeType=0;
 			train.setPower(0);
 			stationApproach=false;
 			train.setBrake(brake);
 			panel.SetBrake.setSelected(false);
 			panel.table.setValueAt("Unapplied", 7, 1);
 		}
-		
+
 	}
 
 	public Boolean speedIsSafe(){
 		if (currSpeed>(speedLimit/3.6)){
+			brakeType=3;
 			train.setPower(0);
 			brake=true;
 			train.setBrake(brake);
@@ -347,7 +363,7 @@ public class TrainController
 			panel.table.setValueAt("Applied", 7, 1);
 			return false;
 		}
-		else if (!stationApproach && currSpeed>5){
+		else if (brakeType==3){
 			brake=false;
 			train.setBrake(brake);
 			panel.SetBrake.setSelected(false);
@@ -355,5 +371,21 @@ public class TrainController
 			return true;
 		}
 		return true;
+	}
+	
+	public void updateGui(){
+//		System.out.println("update gui");
+		/* update table */
+		if (!panel.comboBox.getSelectedItem().equals("Train List")){
+			panel.table.setValueAt(String.format("%3.3f", currSpeed*3.6) + " KPH", 0, 1);
+			panel.table.setValueAt(authority, 2, 1);
+			panel.table.setValueAt(String.format("%3.3f", setPointSpeed*3.6) + " KPH", 1, 1);
+			panel.table.setValueAt(String.format("%3.3f", train.getAcceleration()) + " m/s^2", 8, 1);
+			panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
+			panel.table.setValueAt(train.getSpeedLimit() + " KPH", 10, 1);
+			panel.table.setValueAt(train.getPowerLimit() + " W", 11, 1);
+			panel.nextStation.setText(nextStationName);
+
+		}
 	}
 }

@@ -259,7 +259,7 @@ public class Simulator implements Runnable
 	 */
 	public void routeTrain(TrainModel train, int StationID, Line l) 
 	{
-		trm.route(train, train.getBlockIndex(), StationID, l);
+		trm.route(train, train.getCurrentBlock(), StationID, l);
 	}
 	
 	/**

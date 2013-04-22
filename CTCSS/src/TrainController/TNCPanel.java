@@ -426,5 +426,7 @@ public class TNCPanel extends JPanel {
 				}					
 			}
 		});
+		
+		
 	}
 }

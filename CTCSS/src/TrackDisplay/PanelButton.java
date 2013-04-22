@@ -105,9 +105,9 @@ public class PanelButton extends JPanel
 	}
 	
 	/* Toggles the occupied state of this button */
-	protected void toggleOccupied() 
+	public void toggleOccupied(boolean trainPresent) 
 	{
-		//occupied = !occupied;
+		occupied = trainPresent;
 		if(occupied) 
 		{
 			setBackground(Color.GREEN);
@@ -131,6 +131,9 @@ public class PanelButton extends JPanel
 	
 	/* Return wether this button is highlighed or not */
 	protected boolean isHighLighted() {
+		if(bb.getBevelType() == BevelBorder.LOWERED) {
+			return true;
+		}
 		return isHighLighted;
 	}
 	

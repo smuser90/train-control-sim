@@ -36,7 +36,7 @@ public class SectionListener extends MouseAdapter
 	public void mousePressed(MouseEvent e)
 	{
 		m_bt.isHighLighted = false;
-		m_tmp.setPanel(m_sec.getPanel(), m_sec.getName());
+		m_tmp.setPanel(m_sec.getPanel(), m_sec.getLine().getName() + "-" + m_sec.getName());
 		//m_bt.buttonAction();
 	}
 }
