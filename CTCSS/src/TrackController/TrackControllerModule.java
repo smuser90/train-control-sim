@@ -46,6 +46,7 @@ public class TrackControllerModule {
 	 CALL THIS TO WAKE ME UP************************************************************************/
 	public void getTrack(Line track, Simulator sim){
 	//public void getTrack(Line track){
+		_sim = sim;
 		myBlocks = track.getBlocks();
 		trackControllerList.add(TCListMaker.makeTCList(track));
 		/*for(int i = 0; i < this.trackControllerList.size(); i++) {
@@ -60,7 +61,7 @@ public class TrackControllerModule {
 		lines.add(track);
 		hasTrack = true;
 		currentPanel.displayChange();
-		PLC.setup(this,_sim);
+		PLC.setup(this,_sim, currentPanel);
 		//PLC.setup(this);
 		runPLC();
 

@@ -16,6 +16,7 @@ public class TrackController {
 	protected ArrayList<Block> crossingsControlled = new ArrayList<Block>();
 	protected ArrayList<Block> switchesControlled = new ArrayList<Block>();
 	protected String line;
+	protected ArrayList<Block> trainsControlled = new ArrayList<Block>();
 
 	static int index;
 	static int index_2;
@@ -101,5 +102,15 @@ public class TrackController {
 	
 	public String getLine(){
 		return line;
+	}
+	
+	public void setTrainsControlled(ArrayList<Block> _trainsControlled)
+	{
+		trainsControlled = _trainsControlled;
+	}
+	
+	public ArrayList<Block> getTrainsControlled()
+	{
+		return trainsControlled;
 	}
 }
