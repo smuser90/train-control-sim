@@ -105,8 +105,8 @@ public class TrainModel
 	
 	public void updatePassengers()
 	{
-		m_passengerTotal += m_passengers;
 		setPassengers((int)(Math.random()*m_passengersMax));
+		m_passengerTotal += m_passengers;
 	}
 	
 	public void tick(double timeLapse)
@@ -247,7 +247,7 @@ public class TrainModel
 	public double getPassengersPerHour()
 	{
 		if(m_time > 0)
-			return m_passengerTotal / (m_time/3600000);
+			return ((double) m_passengerTotal) / (((double) m_time)/3600000.0);
 		return 0;
 	}
 	
