@@ -30,7 +30,7 @@ public class Router {
 		ArrayList<Block> r = new ArrayList<Block>();
 		marked = new boolean[blocks.size()];
 		done = false;
-		System.out.println(start);
+		//System.out.println(start);
 		route(r, start, end);
 		if(done)
 			train.setRouteInfo(r);

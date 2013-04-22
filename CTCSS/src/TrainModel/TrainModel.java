@@ -131,8 +131,6 @@ public class TrainModel
 				else
 				{
 					m_log.append("At Yard\n\n");
-					if(m_routeInfo.size() > 1)
-						m_parent.removeTrain(m_trainID);
 				}
 				
 				m_log.append("Awaiting Route Data\n\n");
@@ -280,9 +278,9 @@ public class TrainModel
 			m_atStation = false;
 			m_trainController.setTick(true);
 		}
-		for(int i = 0; i < m_routeInfo.size(); i++) {
+		/*for(int i = 0; i < m_routeInfo.size(); i++) {
 			System.out.println(m_routeInfo.get(i).getBlockNumber());
-		}
+		}*/
 	}
 	
 	public ArrayList<Block> getRouteInfo()
@@ -555,6 +553,8 @@ public class TrainModel
 	
 	public int getCurrentBlock()
 	{
+		if(m_routeInfo == null)
+			return 0;
 		return m_routeInfo.get(m_blockIndex).getBlockNumber();
 	}
 }
