@@ -21,6 +21,7 @@ public class Router {
 	private static Line line;
 	private static ArrayList<Block> blocks;
 	private static boolean[] marked;
+	private static boolean[] marked2;
 	private static boolean done = false;
 	
 	/* Route a train */
@@ -29,6 +30,7 @@ public class Router {
 		blocks = line.getBlocks();
 		ArrayList<Block> r = new ArrayList<Block>();
 		marked = new boolean[blocks.size()];
+		marked2 = new boolean[blocks.size()];
 		done = false;
 		//System.out.println(start);
 		route(r, start, end);
@@ -42,8 +44,16 @@ public class Router {
 	/* recursive DFS for routing */
 	private static void route(ArrayList<Block> r, int start, int end) {
 		//System.out.println("Start:" + start);
-		if(!marked[start] && !blocks.get(start).getFailure()) {
-			marked[start] = true;
+		if((!marked[start] || (blocks.get(start).getDirection() == 1 && !marked2[start])) && !blocks.get(start).getFailure()) 
+		{
+			if(marked[start]) 
+			{
+				marked2[start] = true;
+			}
+			else 
+			{
+				marked[start] = true;
+			}
 			if(start == end) 
 				done = true;
 			r.add(blocks.get(start));

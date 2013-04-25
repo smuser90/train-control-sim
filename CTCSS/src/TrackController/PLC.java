@@ -111,7 +111,7 @@ public class PLC {
 					{
 						if(trainList.get(i + 1).getRouteInfo().size() > trainList.get(i + 1).getBlockIndex() + 1)
 						{
-							if(trackController.crossingsControlled.contains(trainList.get(i + 1).getBlock()) || trackController.crossingsControlled.contains(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1)))//trainList.get(i).getBlockIndex()))
+							if(trackController.crossingsControlled.contains(trainList.get(i + 1).getBlock()) || trackController.crossingsControlled.contains(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1)))
 							{
 								if(trackController.crossingsControlled.get(j).getCrossing() == true)
 								{
@@ -234,42 +234,12 @@ public class PLC {
 	 */
 	private static void handleFixedRail(TrackController trackController)
 	{
-		//System.out.println("Here in handle fixed rail");
-		//for(int index = 0; index < trackController.brokenRails.size(); index++){
 			if(trainList != null)
 			{
 				for(int i = 0; i < trainList.size(); i++)
 				{
-					//System.out.println("Here we are in route train on fixed block");
 					_sim.routeTrain(trainList.get(i + 1), trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteLength() - 1).getBlockNumber(), _sim.getLine(trainList.get(i + 1).getLine()));
-//					if(trainList.get(i + 1).getRouteInfo() != null)
-//					{
-//						for(int j = 0; j < trainList.get(i + 1).getRouteInfo().size(); j++)
-//						{
-//							if(trackController.brokenRails.contains(trainList.get(i + 1).getRouteInfo().get(j).getBlockNumber()))
-//							{
-//								if(trainList.get(i + 1).getBlockIndex() + 1 < trainList.get(i + 1).getRouteInfo().size())
-//								{
-//									//if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber() == trackController.brokenRails.get(index)) && !trainList.get(i + 1).getEmergencyBrake())
-//									if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber() == trackController.brokenRails.get(index))
-//									{
-//										//trainList.get(i + 1).toggleEmergencyBrake();
-//										if(trainList.get(i + 1).getAuthority() != 0)
-//										{
-//											trainList.get(i + 1).setAuthority(0);
-//										}
-//										
-//									}
-//									else
-//									{
-//										_sim.routeTrain(trainList.get(i + 1), trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteInfo().size() - 1).getBlockNumber(), _sim.getLine(trainList.get(i + 1).getLine()));
-//										//handleAuthority(trackController);
-//									}
-//								}
-//							}
-//						}
-//					}	
-//				}
+
 			}
 		}		
 	}
@@ -295,6 +265,7 @@ public class PLC {
 									//if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber() == trackController.brokenRails.get(index)) && !trainList.get(i + 1).getEmergencyBrake())
 									if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber() == trackController.brokenRails.get(index))
 									{
+										System.out.println("here in broken rail");
 										//trainList.get(i + 1).toggleEmergencyBrake();
 										if(trainList.get(i + 1).getAuthority() != 0)
 										{
@@ -304,6 +275,7 @@ public class PLC {
 									}
 									else
 									{
+										//System.out.println("here we are in handle broken rail");
 										_sim.routeTrain(trainList.get(i + 1), trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteInfo().size() - 1).getBlockNumber(), _sim.getLine(trainList.get(i + 1).getLine()));
 										//handleAuthority(trackController);
 									}
@@ -345,7 +317,10 @@ public class PLC {
 					for(int j = trainList.get(i + 1).getBlockIndex() + 1; j < trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1; j++)
 					{
 						//if a block is occupied
+
 						if(trainList.get(i + 1).getRouteInfo().get(j).getOccupied() && trainList.get(i + 1).getRouteInfo().get(j).getDirection() == 1 && trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex()).getDirection() == 1)
+
+						if(trainList.get(i + 1).getRouteInfo().get(j).getOccupied() && trainList.get(i + 1).getTrainID() != trainList.get(i + 1).getRouteInfo().get(j).blockTrainID())
 						{
 							//if we are not at the last block in the train's route
 							if((j + 1) < trainList.get(i + 1).getRouteInfo().size())
@@ -368,12 +343,15 @@ public class PLC {
 						//If two trains are about to collide, we need to hit the E-Brake
 						if(trainList.get(i + 1).getBlock() != trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteLength() - 1))
 						{
-							if((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied()))
+							if((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied()) && trainList.get(i + 1).getTrainID() != trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).blockTrainID() )
 							{
+								System.out.println("here we are trying to prevent a hit");
 								//trainList.get(i + 1).toggleEmergencyBrake();
 								if(trainList.get(i + 1).getAuthority() != 0)
 								{
 									trainList.get(i + 1).setAuthority(0);
+									//trainList.get(i + 1).setBrake(true);
+									//trainList.get(i + 1).toggleEmergencyBrake();
 								}
 							}
 						}
@@ -399,14 +377,16 @@ public class PLC {
 				{
 					if(trainList.get(i + 1).getAuthority() != trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1)
 					{
+						//System.out.println("here in the top part of handle authority");
 						trainList.get(i + 1).setAuthority(trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1);
 						break;
 					}
 				}
 				if(trainList.get(i + 1).getRouteLength() > 1 && trainList.get(i + 1).getBlockIndex() < trainList.get(i + 1).getRouteLength() - 1)
 				{
-					if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied() || trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getFailure())
+					if((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied() && trainList.get(i + 1).getTrainID() != (trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1)).blockTrainID()) || trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getFailure())
 					{
+						//System.out.println("here in middle part of handle authority");
 						if(trainList.get(i + 1).getAuthority() != 0)
 						{
 							trainList.get(i + 1).setAuthority(0);
@@ -417,8 +397,9 @@ public class PLC {
 					{
 						for(int j = 0; j < trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1; j++)
 						{
-							if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + j).getOccupied() && j > 0)
+							if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + j).getOccupied() && trainList.get(i + 1).getTrainID() != trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + j).blockTrainID() && j > 0)
 							{
+								//System.out.println("here in the last part of handle authority");
 								if(trainList.get(i + 1).getAuthority() != (j-1))
 								{
 									trainList.get(i + 1).setAuthority(j - 1);
