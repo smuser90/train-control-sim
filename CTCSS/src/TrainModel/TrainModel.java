@@ -1,16 +1,22 @@
+/*
+ * 	TrainModel.java
+ * 	Train Model Class - Models Physics and Actions of Train
+ * 	Author: Charles Musso
+ * 	Date Created: 04/07/13
+ * 	Date Last Updated: 4/25/13
+ * 
+ */
+
 package TrainModel;
 
 import java.util.ArrayList;
-
-import javax.swing.text.Document;
-
 import TrackModel.Block;
 import TrainController.TrainController;
 
 public class TrainModel 
 {
 	//CONSTANTS
-	private static final double PERSON_WEIGHT = 79.3786647;
+	private static final double PERSON_WEIGHT = 69;
 	private static final double GRAVITY = 9.81;
 	private static final double FRICTION_COEFF = 0.05;
 	
@@ -61,7 +67,13 @@ public class TrainModel
 	private int 				m_passengerTotal = 0;
 	private long 				m_time = 0;
 	
-	
+	/**
+	 * Create the Train Model
+	 * @param ID the TrainID
+	 * @param line the Line to place train on
+	 * @param tc the TrainController associated
+	 * @param tm the parent TrainModelModule
+	 */
 	public TrainModel(int ID, String line, TrainController tc, TrainModelModule tm)
 	{
 		m_parent = tm;
@@ -97,17 +109,18 @@ public class TrainModel
 		m_printFlag = true;
 	}
 	
+	/**
+	 * set the trainController reference to this
+	 */
 	public void setTrainController()
 	{
 		m_trainController.setTrainModel(this);
 	}
 	
-	public void updatePassengers()
-	{
-		setPassengers((int)(Math.random()*m_passengersMax));
-		m_passengerTotal += m_passengers;
-	}
-	
+	/**
+	 * main update method. drives simulation data forward
+	 * @param timeLapse the amount of time that has passed in the simulation
+	 */
 	public void tick(double timeLapse)
 	{
 		double force = 0;
@@ -124,6 +137,7 @@ public class TrainModel
 				{
 					m_log.append("At "+m_routeInfo.get(m_blockIndex).getStationName()+"\n\n");
 					toggleDoors();
+					setCrew((int)(Math.random()*3+1));
 					updatePassengers();
 					toggleDoors();
 				}
@@ -195,7 +209,8 @@ public class TrainModel
     	// Update Velocity
 		m_velocity = m_velocity + m_accel * timeLapse;
 		
-		if(m_velocity > m_velocityMax) //Limit Upper Bound
+		// Limit Upper Bound
+		if(m_velocity > m_velocityMax)
 			m_velocity = m_velocityMax;
 		
 		m_position = m_position + m_velocity * timeLapse;
@@ -228,7 +243,7 @@ public class TrainModel
 				m_writeLog = true;
 				m_trainController.setTick(false);
 			}
-			//We oopsed - never want to hit this. 
+			//Ideally shouldn't hit this, Failing gracefully
 			if(m_position >= m_routeInfo.get(m_blockIndex).getLength())
 			{
 				m_position = m_routeInfo.get(m_blockIndex).getLength();
@@ -244,16 +259,28 @@ public class TrainModel
 		m_trainController.tick(timeLapse);
 	}
 	
+	/**
+	 * Controls log writes to keep from continuously writing redundant data
+	 * @param log the log associated with the module
+	 */
 	public void setWriteLog(boolean log)
 	{
 		m_writeLog = log;
 	}
 	
+	/**
+	 * get the status of writing to the log
+	 * @return status of log writing
+	 */
 	public boolean getWriteLog()
 	{
 		return m_writeLog;
 	}
 	
+	/**
+	 * get passengers per hour on the train for metrics
+	 * @return passengers per hour
+	 */
 	public double getPassengersPerHour()
 	{
 		if(m_time > 0)
@@ -261,6 +288,10 @@ public class TrainModel
 		return 0;
 	}
 	
+	/**
+	 * set the route information
+	 * @param routeInfo list of blocks for train to traverse
+	 */
 	public void setRouteInfo(ArrayList<Block> routeInfo)
 	{
 		System.out.println("Setting Route Info");
@@ -290,86 +321,21 @@ public class TrainModel
 		}
 	}
 	
-	public ArrayList<Block> getRouteInfo()
+	/**
+	 * get the block the train is currently occupying
+	 * @return block number
+	 */
+	public int getCurrentBlock()
 	{
-		return m_routeInfo;
+		if(m_routeInfo == null)
+			return 0;
+		return m_routeInfo.get(m_blockIndex).getBlockNumber();
 	}
 	
-	public int getRouteLength()
-	{	
-		return m_routeLength;
-	}
-	
-	public int getBlockLength()
-	{
-		
-		return m_routeInfo.get(m_blockIndex).getLength();
-	}
-	public String getLine()
-	{
-		return m_line;
-	}
-	public int getBlockIndex()
-	{
-		return m_blockIndex;
-	}
-	
-	public Block getBlock()
-	{
-		return m_routeInfo.get(m_blockIndex);
-	}
-	
-	public double getVelocity()
-	{
-		return m_velocity;
-	}
-	
-	public void setSpeedLimit(int speedLimit)
-	{
-		m_speedLimit = speedLimit;
-	}
-	
-	public int getSpeedLimit()
-	{
-		return m_speedLimit;
-	}
-	
-	public int getTrainID()
-	{
-		return m_trainID;
-	}
-	
-	public void setTrainID(int trainID)
-	{
-		m_trainID = trainID;
-	}
-	
-	
-	public double getMass()
-	{
-		return m_mass;
-	}
-	
-	public void setMass(double mass)
-	{
-		m_mass = mass;
-	}
-	
-	public int getCars()
-	{
-		return m_cars;
-	}
-	
-	public void setCars(int cars)
-	{
-		m_cars = cars;
-	}
-	
-	public int getCrew()
-	{
-		return m_crew;
-	}
-	
+	/**
+	 * set the crew count of the train
+	 * @param crew the count of crew members
+	 */
 	public void setCrew(int crew)
 	{
 		m_crew = crew;
@@ -377,11 +343,10 @@ public class TrainModel
 		m_writeLog = true;
 	}
 	
-	public int getPassengers()
-	{
-		return m_passengers;
-	}
-	
+	/**
+	 * set the passenger count of the train
+	 * @param passengers the count of passengers aboard
+	 */
 	public void setPassengers(int passengers)
 	{
 		m_passengers = passengers;
@@ -389,43 +354,9 @@ public class TrainModel
 		m_writeLog = true;
 	}
 	
-	public int getAuthority()
-	{
-		return m_authority;
-	}
-	
-	public void setAuthority(int authority)
-	{
-		m_authority = authority;
-		m_log.append("Authority Updated To "+authority+"\n\n");
-		m_writeLog = true;
-	}
-	
-	public int getTemperature()
-	{
-		return m_temperature;
-	}
-	
-	public void setTemperature(int temperature)
-	{
-		m_temperature = temperature;
-	}
-	
-	public boolean getBrake()
-	{
-		return m_brake;
-	}
-	
-	public void setBrake(boolean brake)
-	{
-		m_brake = brake;
-	}
-	
-	public boolean getEmergencyBrake()
-	{
-		return m_emergencyBrake;
-	}
-	
+	/**
+	 * toggles the emergency brake
+	 */
 	public void toggleEmergencyBrake()
 	{
 		m_emergencyBrake = !m_emergencyBrake;
@@ -440,6 +371,9 @@ public class TrainModel
 		m_writeLog = true;
 	}
 	
+	/**
+	 * toggle the engine failure status
+	 */
 	public void toggleEngineFailure()
 	{
 		m_engineFailure = !m_engineFailure;
@@ -450,6 +384,9 @@ public class TrainModel
 		m_writeLog = true;
 	}
 	
+	/**
+	 * toggles the signal failure status
+	 */
 	public void toggleSignalFailure()
 	{
 		m_signalFailure = !m_signalFailure;
@@ -460,6 +397,9 @@ public class TrainModel
 		m_writeLog = true;
 	}
 	
+	/**
+	 * toggles the brake failure status
+	 */
 	public void toggleBrakeFailure()
 	{
 		m_brakeFailure = !m_brakeFailure;
@@ -470,11 +410,9 @@ public class TrainModel
 		m_writeLog = true;
 	}
 	
-	public boolean getLights()
-	{
-		return m_lights;
-	}
-	
+	/**
+	 * toggles the light status (on/off)
+	 */
 	public void toggleLights()
 	{
 		m_lights = !m_lights;
@@ -485,11 +423,9 @@ public class TrainModel
 		m_writeLog = true;
 	}
 	
-	public boolean getDoors()
-	{
-		return m_doors;
-	}
-	
+	/**
+	 * toggles the door status (open/closed)
+	 */
 	public void toggleDoors()
 	{
 		m_doors = !m_doors;
@@ -500,70 +436,347 @@ public class TrainModel
 		m_writeLog = true;
 	}
 	
+	/**
+	 * get the route info of the train
+	 * @return List of Blocks in the train's route information
+	 */
+	public ArrayList<Block> getRouteInfo()
+	{
+		return m_routeInfo;
+	}
+	
+	/**
+	 * returns the length of the route
+	 * @return route length
+	 */
+	public int getRouteLength()
+	{	
+		return m_routeLength;
+	}
+	
+	/**
+	 * returns the current block length
+	 * @return current block length
+	 */
+	public int getBlockLength()
+	{
+		
+		return m_routeInfo.get(m_blockIndex).getLength();
+	}
+	
+	/**
+	 * returns the name of the line the train occupies 
+	 * @return name of the occupied line
+	 */
+	public String getLine()
+	{
+		return m_line;
+	}
+	
+	/**
+	 * returns the current block index in the routeInfo
+	 * @return current block index
+	 */
+	public int getBlockIndex()
+	{
+		return m_blockIndex;
+	}
+	
+	/**
+	 * returns the current block occupied
+	 * @return current block occupied
+	 */
+	public Block getBlock()
+	{
+		return m_routeInfo.get(m_blockIndex);
+	}
+	
+	/**
+	 * returns the current velocity of the train
+	 * @return velocity of train
+	 */
+	public double getVelocity()
+	{
+		return m_velocity;
+	}
+	
+	/**
+	 * set the speed limit of the train
+	 * @param speedLimit 
+	 */
+	public void setSpeedLimit(int speedLimit)
+	{
+		m_speedLimit = speedLimit;
+	}
+	
+	/**
+	 * get the current speed limit of the train
+	 * @return current Speed Limit
+	 */
+	public int getSpeedLimit()
+	{
+		return m_speedLimit;
+	}
+	
+	/**
+	 * get the trainID of this
+	 * @return trainID
+	 */
+	public int getTrainID()
+	{
+		return m_trainID;
+	}
+	
+	/**
+	 * set the trainID of this
+	 * @param trainID
+	 */
+	public void setTrainID(int trainID)
+	{
+		m_trainID = trainID;
+	}
+	
+	/**
+	 * returns the mass of the train
+	 * @return mass of train - including cargo
+	 */
+	public double getMass()
+	{
+		return m_mass;
+	}
+	
+	/**
+	 * returns the count of cars the train consists of
+	 * @return car count
+	 */
+	public int getCars()
+	{
+		return m_cars;
+	}
+	
+	/**
+	 * sets the car count of the train
+	 * @param cars
+	 */
+	public void setCars(int cars)
+	{
+		m_cars = cars;
+	}
+	
+	/**
+	 * returns the current crew count
+	 * @return crew
+	 */
+	public int getCrew()
+	{
+		return m_crew;
+	}
+	
+	/**
+	 * returns the current passenger count
+	 * @return passenger
+	 */
+	public int getPassengers()
+	{
+		return m_passengers;
+	}
+	
+	/**
+	 * returns the current authority of the train
+	 * @return authority
+	 */
+	public int getAuthority()
+	{
+		return m_authority;
+	}
+	
+	/**
+	 * sets the current authority of the train
+	 * @param authority
+	 */
+	public void setAuthority(int authority)
+	{
+		m_authority = authority;
+		m_log.append("Authority Updated To "+authority+"\n\n");
+		m_writeLog = true;
+	}
+	
+	/**
+	 * get the current temperature of the train
+	 * @return temperature
+	 */
+	public int getTemperature()
+	{
+		return m_temperature;
+	}
+	
+	/**
+	 * set the current temperature of the train
+	 * @param temperature
+	 */
+	public void setTemperature(int temperature)
+	{
+		m_temperature = temperature;
+	}
+	
+	/**
+	 * get the service brake status (engaged/disengaged)
+	 * @return service brake status
+	 */
+	public boolean getBrake()
+	{
+		return m_brake;
+	}
+	
+	/**
+	 * set the service brake status (engaged/disengaged)
+	 * @param service brake status
+	 */
+	public void setBrake(boolean brake)
+	{
+		m_brake = brake;
+	}
+	
+	/**
+	 * get the emergency brake status (engaged/disengaged)
+	 * @return emergency brake status
+	 */
+	public boolean getEmergencyBrake()
+	{
+		return m_emergencyBrake;
+	}
+	
+	/** get the current status of the lights (on/off)
+	 * @return light status
+	 */
+	public boolean getLights()
+	{
+		return m_lights;
+	}
+	
+	/**
+	 * get the current door status (open/closed)
+	 * @return door status
+	 */
+	public boolean getDoors()
+	{
+		return m_doors;
+	}
+	
+	/**
+	 * set the current power of the train
+	 * @param power
+	 */
 	public void setPower(double power)
 	{
 		m_power = power;
 	}
 	
+	/**
+	 * get the current power of the train
+	 * @return power
+	 */
 	public double getPower()
 	{
 		return m_power;
 	}
 	
+	/**
+	 * get engine status of the train
+	 * @return engine status
+	 */
 	public boolean getEngineStatus()
 	{
 		return m_engineFailure;
 	}
 	
+	/**
+	 * get signal status of the train
+	 * @return signal status
+	 */
 	public boolean getSignalStatus()
 	{
 		return m_signalFailure;
 	}
-	
+
+	/**
+	 * get brake status of the train
+	 * @return brake status
+	 */
 	public boolean getBrakeStatus()
 	{
 		return m_brakeFailure;
 	}
 	
+	/**
+	 * get current position of the train on the current block
+	 * @return position on the current block
+	 */
 	public double getPosition()
 	{
 		return m_position;
 	}
 	
+	/**
+	 * get current acceleration of the train
+	 * @return acceleration
+	 */
 	public double getAcceleration()
 	{
 		return m_accel;
 	}
 	
+	/**
+	 * get current setpoint speed of the train
+	 * @return setpoint speed
+	 */
 	public double getSetpointSpeed()
 	{
 		return m_setpointVelocity;
 	}
 	
+	/**
+	 * set current setpoint speed of the train
+	 * @param setpoint speed
+	 */
 	public void setSetpointSpeed(double speed)
 	{
 		m_setpointVelocity = speed;
 	}
+	
+	/**
+	 * get grade of the current block
+	 * @return grade
+	 */
 	public double getGrade()
 	{
 		return m_grade;
 	}
 	
+	/**
+	 * get log associated with THIS train
+	 * @return log
+	 */
 	public StringBuilder getLog()
 	{
 		return m_log;
 	}
 	
+	/**
+	 * get power limit of the train
+	 * @return power limit
+	 */
 	public int getPowerLimit()
 	{
 		return m_powerLimit;
 	}
 	
-	public int getCurrentBlock()
+	/* update passenger count and current mass*/
+	private void updatePassengers()
 	{
-		if(m_routeInfo == null)
-			return 0;
-		return m_routeInfo.get(m_blockIndex).getBlockNumber();
+		setPassengers((int)(Math.random()*m_passengersMax));
+		m_passengerTotal += m_passengers;
+		m_mass = m_massEmpty + (m_passengerTotal + m_crew) * PERSON_WEIGHT;
 	}
 }
 

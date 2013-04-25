@@ -1,7 +1,15 @@
+/*
+ * 	TMPanel.java
+ * 	Train Model Panel - Contains all GUI elements and handles all GUI interaction
+ * 	Author: Charles Musso
+ * 	Date Created: 04/07/13
+ * 	Date Last Updated: 4/25/13
+ * 
+ */
+
 package TrainModel;
 
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -16,11 +24,8 @@ import javax.swing.text.StyleConstants;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Color;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.Map;
