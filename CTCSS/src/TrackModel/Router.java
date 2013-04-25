@@ -34,8 +34,9 @@ public class Router {
 		route(r, start, end);
 		if(done)
 			train.setRouteInfo(r);
-		else if(!done && blocks.get(start).getType() == 3)
-			train.setRouteInfo(null);
+		else if(!done && blocks.get(start).getType() == 3){
+			r.add(blocks.get(start));
+			train.setRouteInfo(r);}
 	}
 	
 	/* recursive DFS for routing */

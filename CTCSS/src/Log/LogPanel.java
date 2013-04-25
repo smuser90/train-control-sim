@@ -89,6 +89,9 @@ public class LogPanel extends JPanel
 		textPane.setCharacterAttributes(aset, false);
 		textPane.replaceSelection(s); // there is no selection, so inserts at caret
 		textPane.setEditable(false);
+		textPane.selectAll();
+		int x = textPane.getSelectionEnd();
+		textPane.select(x,x);
 	}
 	
 	/**

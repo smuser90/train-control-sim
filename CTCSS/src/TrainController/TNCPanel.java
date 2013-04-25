@@ -73,6 +73,7 @@ public class TNCPanel extends JPanel {
 
 		// next station field
 		nextStation = new JTextArea();
+		nextStation.setEditable(false);
 		nextStation.setBounds(125, 56, 486, 22);
 		add(nextStation);
 		nextStation.setText("Wait for route info");
@@ -96,22 +97,22 @@ public class TNCPanel extends JPanel {
 		txtSetTemp.setColumns(10);
 
 		// buttons
-		JButton setSpeed = new JButton("Apply speed");
+		JButton setSpeed = new JButton("Apply Speed");
 		setSpeed.setBounds(151, 23, 117, 29);
 		panel_1.add(setSpeed);
 
-		JButton setTemp = new JButton("Apply temp");
+		JButton setTemp = new JButton("Apply Temp");
 		setTemp.setBounds(151, 51, 117, 29);
 		panel_1.add(setTemp);
 
 
 		// labels
 
-		JLabel lblSetSpeed = new JLabel("Set speed");
+		JLabel lblSetSpeed = new JLabel("Set Speed");
 		lblSetSpeed.setBounds(6, 28, 61, 16);
 		panel_1.add(lblSetSpeed);
 
-		JLabel lblNewLabel = new JLabel("Set temp");
+		JLabel lblNewLabel = new JLabel("Set Temp");
 		lblNewLabel.setBounds(6, 56, 61, 16);
 		panel_1.add(lblNewLabel);
 
@@ -119,7 +120,7 @@ public class TNCPanel extends JPanel {
 		lblSetLights.setBounds(6, 84, 67, 16);
 		panel_1.add(lblSetLights);
 
-		JLabel lblSetDoors = new JLabel("Set doors");
+		JLabel lblSetDoors = new JLabel("Set Doors");
 		lblSetDoors.setBounds(6, 117, 61, 16);
 		panel_1.add(lblSetDoors);
 
@@ -162,8 +163,9 @@ public class TNCPanel extends JPanel {
 				if (!comboBox.getSelectedItem().equals("Train List")){
 					if(tglbtnSetEmergencyBrake.isSelected() ){	
 						if(tnc!=null){
+							tnc.setEBrakeType(2);
 							tnc.setEBrake(true);
-							table.setValueAt("Pull", 6, 1);
+							table.setValueAt("Manually Pull", 6, 1);
 						}
 						else{
 							table.setValueAt("N/A", 6, 1);
@@ -171,8 +173,10 @@ public class TNCPanel extends JPanel {
 					}
 					else {
 						if (tnc!=null){
+							tnc.setSpeed(tnc.getSpeedLimit());
+							tnc.setEBrakeType(0);
 							tnc.setEBrake(false);
-							table.setValueAt("N/A", 6, 1);
+							table.setValueAt("Release", 6, 1);
 						}
 						else{
 							table.setValueAt("N/A", 6, 1);
@@ -189,8 +193,9 @@ public class TNCPanel extends JPanel {
 				if (!comboBox.getSelectedItem().equals("Train List")){
 					if(SetBrake.isSelected()){
 						if (tnc!=null){
+							tnc.setBrakeType(4);
 							tnc.setBrake(true);
-							table.setValueAt("Pull", 7, 1);
+							table.setValueAt("Manually Pull", 7, 1);
 						}
 						else{
 							table.setValueAt("N/A", 7, 1);
@@ -198,8 +203,9 @@ public class TNCPanel extends JPanel {
 					}
 					else {
 						if(tnc!=null){
+							tnc.setBrakeType(0);
 							tnc.setBrake(false);
-							table.setValueAt("N/A", 7, 1);
+							table.setValueAt("Release", 7, 1);
 						}
 						else{
 							table.setValueAt("N/A", 7, 1);
@@ -288,14 +294,14 @@ public class TNCPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!comboBox.getSelectedItem().equals("Train List")){
 					double setPointSpeed = Double.parseDouble(txtSetSpeed.getText());
-					System.out.println("setSpeed = " + setPointSpeed);
+	//				System.out.println("setSpeed = " + setPointSpeed);
 					if (tnc!=null){
 						tnc.setSpeed(setPointSpeed);
 					}
 					else {
 						setPointSpeed =0;
 					}
-					table.setValueAt(setPointSpeed, 1, 1);
+	//				table.setValueAt(setPointSpeed, 1, 1);
 				}
 			}
 		});
