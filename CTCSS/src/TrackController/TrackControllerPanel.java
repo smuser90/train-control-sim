@@ -36,10 +36,12 @@ import javax.swing.JComboBox;
 
 /**
  * Displays the information for selected track controller
+ * 
  * @author Zachary Shelhamer
- *
+ * 
  */
-public class TrackControllerPanel extends JPanel {
+public class TrackControllerPanel extends JPanel
+{
 
 	private JTextArea txtrCrossingAtBlock = new JTextArea();
 	private JTextArea txtrTrainId = new JTextArea();
@@ -64,12 +66,14 @@ public class TrackControllerPanel extends JPanel {
 	private String myCrossingList = "";
 	private String myBrokenRailList = "";
 	private boolean hasInfo = false;
+
 	/**
 	 * Create the panel.
 	 */
-	
-	/*Initialize the display*/
-	public TrackControllerPanel(TrackControllerModule tcm) {
+
+	/* Initialize the display */
+	public TrackControllerPanel(TrackControllerModule tcm)
+	{
 		setLayout(null);
 		_tcm = tcm;
 		numberSwitch = _tcm.getSwitchList();
@@ -80,8 +84,10 @@ public class TrackControllerPanel extends JPanel {
 
 		btnNewButton = new JButton("Prev TC");
 		btnNewButton.setEnabled(false);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnNewButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
 				currentController--;
 				displayChange();
 			}
@@ -91,8 +97,10 @@ public class TrackControllerPanel extends JPanel {
 
 		btnNewButton_1 = new JButton("Next TC");
 		btnNewButton_1.setEnabled(false);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		btnNewButton_1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
 				currentController++;
 				displayChange();
 			}
@@ -106,7 +114,6 @@ public class TrackControllerPanel extends JPanel {
 		scrollPane.setBounds(192, 28, 448, 45);
 		add(scrollPane);
 
-		
 		txtrTrainId.setEditable(false);
 		scrollPane.setViewportView(txtrTrainId);
 		scrollPane.getVerticalScrollBar().setValue(0);
@@ -117,7 +124,6 @@ public class TrackControllerPanel extends JPanel {
 		scrollPane_1.setBounds(192, 104, 448, 45);
 		add(scrollPane_1);
 
-		
 		txtrSwitchAtBlock.setEditable(false);
 		scrollPane_1.setViewportView(txtrSwitchAtBlock);
 		scrollPane_1.getVerticalScrollBar().setValue(0);
@@ -180,10 +186,12 @@ public class TrackControllerPanel extends JPanel {
 		JLabel lblSelectLine = new JLabel("Select Line");
 		lblSelectLine.setBounds(10, 11, 77, 14);
 		add(lblSelectLine);
-		
+
 		comboBox = new JComboBox();
-		comboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		comboBox.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 				displayChange();
 			}
 		});
@@ -193,101 +201,143 @@ public class TrackControllerPanel extends JPanel {
 
 	}
 
-	protected void displayChange() {
-			int tempPos = comboBox.getSelectedIndex();
-			reset();
-			comboBox.setSelectedIndex(tempPos);
-			if(comboBox.getSelectedItem().equals("Lines")) {
-				return;
-			} else {
-				blockList = _tcm.getBlockList((String)comboBox.getSelectedItem());
-				numberSwitch.clear();
-				for(int i = 0; i < blockList.size(); i++)
-				{
-					if(blockList.get(i).getType() == 1)
-						numberSwitch.add(i);
-				}
-				
-				crossingList.clear();
-				for(int i = 0; i < blockList.size(); i++)
-				{
-					if(blockList.get(i).getType() == 2)
-						crossingList.add(i);
-				}
-				trainList = _tcm.getTrainList();
-				trackControllerList = _tcm.getTrCList(comboBox.getSelectedIndex() - 1);
-				hasInfo = true;
-				if(trackControllerList.size() > 1) {
-					btnNewButton_1.setEnabled(true);
-					btnNewButton.setEnabled(true);
-				}
-				
-				if (currentController == trackControllerList.size())
-					currentController = 0;
-				else if(currentController == -1)
-					currentController = trackControllerList.size()-1;
-						lblNewLabel.setText("Controller: " + trackControllerList.get(currentController).getID());
-						lblNewLabel_2.setText("Blocks: " + trackControllerList.get(currentController).getNumBlocks());
-						lblNewLabel_1.setText("Trains: " + trackControllerList.get(currentController).getNumTrains());
-			
-						
-			if(trainList != null){
-				
-			 for(int index = 1; index < trainList.size()+1; index++){
-			 	if(trainList.get(index).getLine().equals(trackControllerList.get(currentController).getLine())){
-			 		
-			 		if(trackControllerList.get(currentController).blocksControlled.contains(trainList.get(index).getBlock()) && trainList.get(index).getBlock().getType() != 3){
-			 			myTrainList = myTrainList + "Train " + trainList.get(index).getTrainID() + " on Block: " + trainList.get(index).getBlock().getBlockNumber() + "\n";
-			 		}
-			 		else if(trackControllerList.get(currentController).blocksControlled.contains(trainList.get(index).getBlock()))
-			 		{
-			 			myTrainList = myTrainList + "Train " + trainList.get(index).getTrainID() + " at Station " + trainList.get(index).getBlock().getStationName() + "\n";
-			 		}
-			 	}
-			 }
-			}
-			 txtrTrainId.setText(myTrainList);
-			 myTrainList = "";
-						
-						
-						
-			for(int index = 0; index < trackControllerList.get(currentController).switchesControlled.size(); index++)
+	protected void displayChange()
+	{
+		int tempPos = comboBox.getSelectedIndex();
+		reset();
+		comboBox.setSelectedIndex(tempPos);
+		if (comboBox.getSelectedItem().equals("Lines"))
+		{
+			return;
+		}
+		else
+		{
+			blockList = _tcm.getBlockList((String) comboBox.getSelectedItem());
+			numberSwitch.clear();
+			for (int i = 0; i < blockList.size(); i++)
 			{
-				mySwitchList = mySwitchList + "Switch on Block " + numberSwitch.get(index).intValue() + " switched to Block " + trackControllerList.get(currentController).switchesControlled.get(index).getSwitchedTo() +"\n";
+				if (blockList.get(i).getType() == 1)
+					numberSwitch.add(i);
 			}
-			
-			
+
+			crossingList.clear();
+			for (int i = 0; i < blockList.size(); i++)
+			{
+				if (blockList.get(i).getType() == 2)
+					crossingList.add(i);
+			}
+			trainList = _tcm.getTrainList();
+			trackControllerList = _tcm
+					.getTrCList(comboBox.getSelectedIndex() - 1);
+			hasInfo = true;
+			if (trackControllerList.size() > 1)
+			{
+				btnNewButton_1.setEnabled(true);
+				btnNewButton.setEnabled(true);
+			}
+
+			if (currentController == trackControllerList.size())
+				currentController = 0;
+			else if (currentController == -1)
+				currentController = trackControllerList.size() - 1;
+			lblNewLabel.setText("Controller: "
+					+ trackControllerList.get(currentController).getID());
+			lblNewLabel_2
+					.setText("Blocks: "
+							+ trackControllerList.get(currentController)
+									.getNumBlocks());
+			lblNewLabel_1
+					.setText("Trains: "
+							+ trackControllerList.get(currentController)
+									.getNumTrains());
+
+			if (trainList != null)
+			{
+
+				for (int index = 1; index < trainList.size() + 1; index++)
+				{
+					if (trainList
+							.get(index)
+							.getLine()
+							.equals(trackControllerList.get(currentController)
+									.getLine()))
+					{
+
+						if (trackControllerList.get(currentController).blocksControlled
+								.contains(trainList.get(index).getBlock())
+								&& trainList.get(index).getBlock().getType() != 3)
+						{
+							myTrainList = myTrainList
+									+ "Train "
+									+ trainList.get(index).getTrainID()
+									+ " on Block: "
+									+ trainList.get(index).getBlock()
+											.getBlockNumber() + "\n";
+						}
+						else if (trackControllerList.get(currentController).blocksControlled
+								.contains(trainList.get(index).getBlock()))
+						{
+							myTrainList = myTrainList
+									+ "Train "
+									+ trainList.get(index).getTrainID()
+									+ " at Station "
+									+ trainList.get(index).getBlock()
+											.getStationName() + "\n";
+						}
+					}
+				}
+			}
+			txtrTrainId.setText(myTrainList);
+			myTrainList = "";
+
+			for (int index = 0; index < trackControllerList
+					.get(currentController).switchesControlled.size(); index++)
+			{
+				mySwitchList = mySwitchList
+						+ "Switch on Block "
+						+ numberSwitch.get(index).intValue()
+						+ " switched to Block "
+						+ trackControllerList.get(currentController).switchesControlled
+								.get(index).getSwitchedTo() + "\n";
+			}
+
 			txtrSwitchAtBlock.setText(mySwitchList);
 			mySwitchList = "";
-			
-			for(int index = 0; index < trackControllerList.get(currentController).crossingsControlled.size(); index++)
+
+			for (int index = 0; index < trackControllerList
+					.get(currentController).crossingsControlled.size(); index++)
 			{
-				if(blockList.get(crossingList.get(index)).getCrossing() == true)
-					myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is UP" ;
-				else if(blockList.get(crossingList.get(index)).getCrossing() == false)
-					myCrossingList = myCrossingList + "Crossing at Block " + crossingList.get(index) + " is DOWN" ;
+				if (blockList.get(crossingList.get(index)).getCrossing() == true)
+					myCrossingList = myCrossingList + "Crossing at Block "
+							+ crossingList.get(index) + " is UP";
+				else if (blockList.get(crossingList.get(index)).getCrossing() == false)
+					myCrossingList = myCrossingList + "Crossing at Block "
+							+ crossingList.get(index) + " is DOWN";
 			}
 			txtrCrossingAtBlock.setText(myCrossingList);
 			myCrossingList = "";
-			
-			
-			for(int i = 0; i < trackControllerList.get(currentController).brokenRails.size(); i++)
+
+			for (int i = 0; i < trackControllerList.get(currentController).brokenRails
+					.size(); i++)
 			{
-				myBrokenRailList = myBrokenRailList + "Broken Rail at Block " + trackControllerList.get(currentController).brokenRails.get(i) + "\n";
+				myBrokenRailList = myBrokenRailList
+						+ "Broken Rail at Block "
+						+ trackControllerList.get(currentController).brokenRails
+								.get(i) + "\n";
 			}
-			
+
 			txtrBrokenRailAt.setText(myBrokenRailList);
 			myBrokenRailList = "";
-			
-			
+
 			trackControllerList.get(currentController).isChanged = false;
-			}
-			
+		}
+
 	}
-	
-	private void reset() {
+
+	private void reset()
+	{
 		ArrayList<String> t = _tcm.getLineNames();
-		String [] temp = new String [t.size()];
+		String[] temp = new String[t.size()];
 		t.toArray(temp);
 		comboBox.setModel(new DefaultComboBoxModel(temp));
 		this.txtrCrossingAtBlock.setText("");
@@ -301,12 +351,14 @@ public class TrackControllerPanel extends JPanel {
 		btnNewButton.setEnabled(false);
 
 	}
-	
-	protected int getCC() {
+
+	protected int getCC()
+	{
 		return this.currentController;
 	}
-	
-	protected int getCL() {
+
+	protected int getCL()
+	{
 		return this.comboBox.getSelectedIndex() - 1;
 	}
 }
