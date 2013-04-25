@@ -561,9 +561,6 @@ public class PLC
 													.getBlockIndex() + 1)
 											.blockTrainID())
 							{
-								//System.out
-								//		.println("here we are trying to prevent a hit");
-								// trainList.get(i + 1).toggleEmergencyBrake();
 								if (trainList.get(i + 1).getAuthority() != 0)
 								{
 									trainList.get(i + 1).setAuthority(0);
@@ -601,7 +598,7 @@ public class PLC
 							i + 1).getRouteLength()
 							- trainList.get(i + 1).getBlockIndex() - 1)
 					{
-						// System.out.println("here in the top part of handle authority");
+						 //System.out.println("here in the top part of handle authority");
 						trainList.get(i + 1).setAuthority(
 								trainList.get(i + 1).getRouteLength()
 										- trainList.get(i + 1).getBlockIndex()
@@ -649,11 +646,13 @@ public class PLC
 													.getBlockIndex() + j)
 											.blockTrainID() && j > 0)
 							{
-								// System.out.println("here in the last part of handle authority");
+								 //System.out.println("here in the last part of handle authority");
 								if (trainList.get(i + 1).getAuthority() != (j - 1))
 								{
 									trainList.get(i + 1).setAuthority(j - 1);
+									break;
 								}
+								break;
 							}
 						}
 					}
