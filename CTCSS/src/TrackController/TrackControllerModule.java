@@ -25,7 +25,6 @@ import java.util.Map;
  */
 public class TrackControllerModule
 {
-
 	private TrackControllerPanel currentPanel;
 	private ArrayList<ArrayList<TrackController>> trackControllerList;
 	private ArrayList<String> lineNames;
@@ -36,7 +35,7 @@ public class TrackControllerModule
 	private ArrayList<Integer> crossingList;
 	private Simulator _sim;
 	private boolean hasTrack = false;
-
+	private long tickCount = 0;
 	/* Initialize the lists and setup the panel */
 	public TrackControllerModule()
 	{
@@ -88,9 +87,12 @@ public class TrackControllerModule
 	 */
 	public void receiveTick()
 	{
+		tickCount++;
 		if (hasTrack)
 		{
-			runPLC();
+			if(tickCount % 4 == 0) {
+				runPLC();
+			}
 		}
 	}
 
