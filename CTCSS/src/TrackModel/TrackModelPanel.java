@@ -78,6 +78,7 @@ public class TrackModelPanel extends JPanel
 	{
 		StringBuilder s = new StringBuilder();
 		String q = "";
+		String z = "";
 		txtpnTheTextPane.setEditable(true);
 		// format: ID | Type | Length | Grade | Speed Limit | Section |
 		// aboveGround | Station Name
@@ -91,13 +92,23 @@ public class TrackModelPanel extends JPanel
 		{
 			q = "Yes";
 		}
+
+		if (b.getFailure() == false)
+		{
+			z = "Block Open";
+		}
+		else
+		{
+			z = "Block Closed";
+		}
+
 		if (b.getStationName().equals("NULL"))
 		{
 			s.append("Block ID: " + b.getBlockNumber() + " | Type: "
 					+ b.getType() + " | Length: " + b.getLength() + " | Grade:"
 					+ b.getGrade() + " | Speed Limit: " + b.getSpeedLimit()
 					+ " | Section: " + b.getSection() + " | Underground? " + q
-					+ " ");
+					+ " \n" + z);
 		}
 		else
 		{
@@ -105,7 +116,7 @@ public class TrackModelPanel extends JPanel
 					+ b.getType() + " | Length: " + b.getLength() + " | Grade:"
 					+ b.getGrade() + " | Speed Limit: " + b.getSpeedLimit()
 					+ " | Section: " + b.getSection() + " | Underground? " + q
-					+ " | Station: " + b.getStationName());
+					+ " | Station: " + b.getStationName() + "\n" + z);
 		}
 
 		txtpnTheTextPane.setText(s.toString());
