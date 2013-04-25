@@ -1,3 +1,12 @@
+ /*
+ * TrainControllerModule.java
+ * Description: TrainController module
+ * Author: KE LUO
+ * Date Created: 07/04/2013
+ * Date Last Updated: 24/04/2013
+ * 
+ */
+
 package TrainController;
 
 import java.util.ArrayList;

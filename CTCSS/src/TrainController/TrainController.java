@@ -1,3 +1,14 @@
+/*
+ * TrainController.java
+ * Description: TrainController can regulate the train to run in legal status,
+ * as well as allow operator to operate the train.
+ * Author: KE LUO
+ * Date Created: 07/04/2013
+ * Date Last Updated: 24/04/2013
+ * 
+ */
+
+
 package TrainController;
 
 import java.util.ArrayList;
@@ -290,6 +301,7 @@ public class TrainController
 			return false;
 		}
 		else if (brakeType==2 && eBrakeType==1){
+			eBrakeType=0;
 			train.toggleEmergencyBrake();
 			setSpeed(train.getSpeedLimit());	// restart the train when ebrake release, set setpoint speed to speed limit
 			return true;
