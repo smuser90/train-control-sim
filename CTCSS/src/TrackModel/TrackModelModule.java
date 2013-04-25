@@ -1,3 +1,11 @@
+/*
+ *		TrackModelModule.java
+ *		This is the TrackModelModule, mainly used for setting up parts of the TrackModel. 
+ *		Author: Kai Manuel
+ *		Date Created: 04/07/2013
+ *		Date Last Updated: 04/25/2013
+ */
+
 package TrackModel;
 
 import java.io.BufferedReader;

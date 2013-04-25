@@ -1,3 +1,12 @@
+/*
+ *		TrackModelModuleTester.java
+ *		This is the standalone pane for testing without integration with other parts of the system. It can load the 
+ *		TrackModelPanel and Line files etc.
+ *		Author: Kai Manuel
+ *		Date Created: 04/07/2013
+ *		Date Last Updated: 04/25/2013
+ */
+
 package TrackModel;
 
 import java.awt.EventQueue;

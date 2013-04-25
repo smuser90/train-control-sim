@@ -1,3 +1,12 @@
+/*
+ *		Track.java
+ *		This is the file that creates and holds any and all Lines that are loaded. It also reads and parses the 
+ *		line file that the user loads. 
+ *		Author: Kai Manuel
+ *		Date Created: 04/07/2013
+ *		Date Last Updated: 04/23/2013
+ */
+
 // this will use the Line and Block classes to create the Red and Green Lines  
 package TrackModel;
 
