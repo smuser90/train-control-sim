@@ -59,7 +59,7 @@ public class TrackModelPanel extends JPanel {
 		txtpnTheTextPane.setEditable(true);
 		// format: ID | Type | Length | Grade | Speed Limit | Section | aboveGround | Station Name 
 		// bID nextB bType bLength bGrade bSpLim bSection belowGround stationName
-		txtpnTheTextPane.setText("Test");
+		txtpnTheTextPane.setText("Block ID: "+b.getBlockNumber()+" | Type: "+b.getType()+" | Length: "+b.getLength()+" | Grade:"+b.getGrade()+" | Speed Limit: "+b.getSpeedLimit()+" | Section: "+b.getSection()+" | Underground? "+b.isUnderground()+" | Station: "+b.getStationName());
 		txtpnTheTextPane.setEditable(false);
 	}
 	
