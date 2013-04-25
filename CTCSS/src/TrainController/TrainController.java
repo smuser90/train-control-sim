@@ -27,7 +27,7 @@ public class TrainController
 	private double authLen;		// authorized length
 	private double eBrakeDist;		// distance to stop with emergency brake
 	private Boolean tick;		// tick 
-	private int brakeType;		// 0-free 1-near station 2-auth check 3-speed check 4-manual
+	private int brakeType;		// 0-free 1-near station 2-auth check 3-speed check 4-manual 5-lower speed setpoint
 	private int eBrakeType;		// 0-free 1-auth check 2-manual 
 
 	public static final double INTEGRAL_INITIAL = 0.0f;		// integral initial
@@ -91,6 +91,7 @@ public class TrainController
 		else {
 			setPointSpeed = s/3.6;
 		}
+		// setpoint lower than currspeed
 		train.setSetpointSpeed(setPointSpeed*3.6);
 	}
 
@@ -288,8 +289,13 @@ public class TrainController
 		else if (authority == 0 && !currBlock.getStationName().equals(nextStation.getStationName()) && eBrakeType==1){
 			return false;
 		}
+		else if (brakeType==2 && eBrakeType==1){
+			train.toggleEmergencyBrake();
+			setSpeed(train.getSpeedLimit());	// restart the train when ebrake release, set setpoint speed to speed limit
+			return true;
+		}
 		// if authorized length less than distance need to make a stop by ebrake, pull brake
-		else if (authLen < eBrakeDist && eBrakeType!=4) {
+		else if (authLen < eBrakeDist && brakeType!=4) {
 			brakeType=2;		// set brake type to 2, auth check pull brake
 			train.setPower(0);
 			train.setBrake(true);
@@ -299,9 +305,7 @@ public class TrainController
 		else if (brakeType==2 && eBrakeType!=1){
 			brakeType=0;	// set brake type to free
 		}
-		else if (brakeType==2 && eBrakeType!=1){
-			setSpeed(train.getSpeedLimit());	// restart the train when ebrake release, set setpoint speed to speed limit
-		}
+		
 		return true;
 	}
 
@@ -327,6 +331,7 @@ public class TrainController
 		else if (brakeType==3){
 			brakeType=0;	// release brake	
 			train.setBrake(false);
+
 		}
 		return true;
 	}
@@ -387,6 +392,10 @@ public class TrainController
 				panel.SetBrake.setSelected(true);
 				panel.table.setValueAt("Manually Pull", 7, 1);
 			}
+			else if (brake==true && brakeType==5){
+				panel.SetBrake.setSelected(true);
+				panel.table.setValueAt("Low setpoint Pull", 7, 1);
+			}
 			else{
 				panel.SetBrake.setSelected(false);
 				panel.table.setValueAt("Release", 7, 1);
@@ -444,6 +453,13 @@ public class TrainController
 		else {
 			setPointSpeed = train.getSpeedLimit()/3.6;
 			train.setSetpointSpeed(speedLimit);
+		}
+		if (setPointSpeed<currSpeed){
+			brakeType = 5;
+			setBrake(true);
+		}
+		else if (brakeType==5){
+			setBrake(false);
 		}
 	}
 }
