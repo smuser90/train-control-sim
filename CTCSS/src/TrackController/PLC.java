@@ -219,7 +219,9 @@ public class PLC {
 				if(trackController.brokenRails.contains(trackController.blocksControlled.get(index).getBlockNumber())){
 					trackController.brokenRails.remove(trackController.brokenRails.indexOf(trackController.blocksControlled.get(index).getBlockNumber()));
 					trackController.isChanged = true;
+					handleFixedRail(trackController);
 				}
+
 			}
 			
 		}
@@ -227,6 +229,48 @@ public class PLC {
 		handleBrokenRail(trackController);
 	}
 	
+	private static void handleFixedRail(TrackController trackController)
+	{
+		//System.out.println("Here in handle fixed rail");
+		//for(int index = 0; index < trackController.brokenRails.size(); index++){
+			if(trainList != null)
+			{
+				for(int i = 0; i < trainList.size(); i++)
+				{
+					System.out.println("Here we are in route train on fixed block");
+					_sim.routeTrain(trainList.get(i + 1), trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteLength() - 1).getBlockNumber(), _sim.getLine(trainList.get(i + 1).getLine()));
+//					if(trainList.get(i + 1).getRouteInfo() != null)
+//					{
+//						for(int j = 0; j < trainList.get(i + 1).getRouteInfo().size(); j++)
+//						{
+//							if(trackController.brokenRails.contains(trainList.get(i + 1).getRouteInfo().get(j).getBlockNumber()))
+//							{
+//								if(trainList.get(i + 1).getBlockIndex() + 1 < trainList.get(i + 1).getRouteInfo().size())
+//								{
+//									//if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber() == trackController.brokenRails.get(index)) && !trainList.get(i + 1).getEmergencyBrake())
+//									if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber() == trackController.brokenRails.get(index))
+//									{
+//										//trainList.get(i + 1).toggleEmergencyBrake();
+//										if(trainList.get(i + 1).getAuthority() != 0)
+//										{
+//											trainList.get(i + 1).setAuthority(0);
+//										}
+//										
+//									}
+//									else
+//									{
+//										_sim.routeTrain(trainList.get(i + 1), trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteInfo().size() - 1).getBlockNumber(), _sim.getLine(trainList.get(i + 1).getLine()));
+//										//handleAuthority(trackController);
+//									}
+//								}
+//							}
+//						}
+//					}	
+//				}
+			}
+		}		
+	}
+
 	/**
 	 * Handles the broken rails on the track
 	 * @param trackController Current Track Controller
@@ -258,7 +302,7 @@ public class PLC {
 									else
 									{
 										_sim.routeTrain(trainList.get(i + 1), trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteInfo().size() - 1).getBlockNumber(), _sim.getLine(trainList.get(i + 1).getLine()));
-										handleAuthority(trackController);
+										//handleAuthority(trackController);
 									}
 								}
 							}
@@ -293,7 +337,9 @@ public class PLC {
 				if(trainList.get(i + 1).getRouteInfo() != null)
 				{
 					//through each block
-					for(int j =trainList.get(i + 1).getCurrentBlock() + 1; j < trainList.get(i + 1).getRouteInfo().size() - trainList.get(i + 1).getCurrentBlock() - 1; j++)
+					//for(int j = trainList.get(i + 1).getCurrentBlock() + 1; j < trainList.get(i + 1).getRouteInfo().size() - trainList.get(i + 1).getCurrentBlock() - 1; j++)
+					//for(int j = trainList.get(i + 1).getRouteInfo().get(trainList.get( i + 1).getBlockIndex() + 1); j < trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getRouteInfo().get(trainList.get( i + 1).getBlockIndex() + 1) - 1; j++)
+					for(int j = trainList.get(i + 1).getBlockIndex() + 1; j < trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1; j++)
 					{
 						//if a block is occupied
 						if(trainList.get(i + 1).getRouteInfo().get(j).getOccupied())
