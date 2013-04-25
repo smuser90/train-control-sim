@@ -1,3 +1,12 @@
+/*
+ *		Line.java
+ *		This is the Line representation of a set of blocks. It holds a list of the blocks in the Line both as
+ *		a graph of the block IDs and a list of the actual Block objects themselves.
+ *		Author: Kai Manuel
+ *		Date Created: 04/07/2013
+ *		Date Last Updated: 04/25/2013
+ */
+
 // this is the class to hold blocks in a directed graph, and also hold a list of the related blocks
 // the TrackModel.java class will hold multiple instances of this, red line green line etc.
 package TrackModel;

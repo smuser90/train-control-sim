@@ -1,3 +1,13 @@
+/*
+ *		Section.java
+ *		This is the Section representation of the loaded Line. The Sections are groups of blocks that
+ *		are part of the same section.		
+ *		Author: Kai Manuel
+ *		Date Created: 04/17/2013
+ *		Date Last Updated: 04/21/2013
+ */
+
+
 package TrackModel;
 
 import java.awt.Rectangle;

@@ -1,5 +1,5 @@
 /*
- * Rotuer.java
+ * Router.java
  * Class for routing trains
  * Author: Nikolas Parshook
  * Date Created: 04/18/2013

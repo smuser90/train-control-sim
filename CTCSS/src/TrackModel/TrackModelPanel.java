@@ -1,3 +1,11 @@
+/*
+ *		TrackModelPanel.java
+ *		This is the Panel for displaying the Track and Selected Block information.
+ *		Author: Kai Manuel
+ *		Date Created: 04/07/2013
+ *		Date Last Updated: 04/25/2013
+ */
+
 package TrackModel;
 
 import javax.swing.JFileChooser;

@@ -1,3 +1,10 @@
+/*
+ * Block.java
+ * This is the object representation for the Blocks on the line.
+ * Author: Kai Manuel
+ * Date Created: 04/07/2013
+ * Date Last Updated: 4/25/2013  
+ */
 package TrackModel;
 
 import TrackDisplay.BlockListener;
@@ -56,7 +63,21 @@ public class Block{
 	
 	// final: all this shit
 	
-	
+	/**
+	 * Constructor for Block object.
+	 * @param len
+	 * @param gr
+	 * @param bID
+	 * @param spLim
+	 * @param ty
+	 * @param sec
+	 * @param belGnd
+	 * @param statName
+	 * @param swiTo
+	 * @param ele
+	 * @param cele
+	 * @param dType
+	 */
 	public Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int swiTo, double ele, double cele, int dType)
 	{
 		this.number = bID;
@@ -73,40 +94,72 @@ public class Block{
 		this.dirType = dType;
 	}
 	
+	/**
+	 * Method to add a section to the block.
+	 * @param sec
+	 */
 	public void addSection(Section sec) {
 		s = sec;
 	}
 	
+	/**
+	 * Returns the length of this Block.
+	 * @return
+	 */
 	public int getLength()
 	{
 		return this.length;
 	}
 	
+	/**
+	 * Returns the Block ID(Number) of the block.
+	 * @return int
+	 */
 	public int getBlockNumber()
 	{
 		return this.number;
 	}
 	
+	/**
+	 * Returns the failure status of the block
+	 * @return boolean
+	 */
 	public boolean getFailure()
 	{
 		return this.failure;
 	}
 	
+	/**
+	 * Sets the block to broken or fixed
+	 * @param v
+	 */
 	public void setFailure(boolean v)
 	{
 		this.failure = v;
 	}
 	
+	/**
+	 * Returns the type of the block 
+	 * @return int
+	 */
 	public int getType()
 	{
 		return this.type;
 	}
 	
+	/**
+	 * Returns true if this block is occupied by a train
+	 * @return boolean
+	 */
 	public boolean getOccupied()
 	{
 		return this.occupied;
 	}
 	
+	/**
+	 * Sets this block's occupied status
+	 * @param g
+	 */
 	public void setOccupied(boolean g)
 	{
 		this.occupied = g;
