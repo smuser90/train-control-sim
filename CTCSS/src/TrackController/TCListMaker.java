@@ -1,3 +1,11 @@
+/*
+ * TC List Maker
+ * Makes the list of track controllers and which blocks they control
+ * Author: Zachary Shelhamer
+ * Date Created: 4/10/2013
+ * Date Last Updated: 4/14/2013
+ */
+
 package TrackController;
 
 import java.util.ArrayList;
@@ -5,11 +13,19 @@ import java.util.ArrayList;
 import TrackModel.Block;
 import TrackModel.Line;
 
-
+/**
+ * Makes the list of track controllers and which blocks they control
+ * @author Zachary Shelhamer
+ *
+ */
 public class TCListMaker {
 	
 	private static boolean[] marked;
-	
+	/**
+	 * Create the List of track controllers
+	 * @param myLine Line to create track controllers for
+	 * @return List of Track Controllers
+	 */
 	public static ArrayList<TrackController> makeTCList(Line myLine){
 		int id = 0;
 		ArrayList<TrackController> tcList = new ArrayList<TrackController>();

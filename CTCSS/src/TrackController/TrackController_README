@@ -1,0 +1,9 @@
+Track Controller Module handles the interaction with the simulator.
+
+Track Controller Panel displays the information gathered by the track controller.
+
+Track Controller holds the properties for each individual track controller and runs the PLC program.
+
+PLC handles the events of the track, such as detecting trains and broken blocks, operating switches and crossings and accident prevention.
+
+TC List Maker generates the list of track controllers and the blocks each controllers.

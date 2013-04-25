@@ -1,20 +1,26 @@
+/*
+ * Track Controller Module
+ * Interacts with the Simulator to attain track and on each tick of the clock, sends signal for each Track Controller to run it's PLC program
+ * Author: Zachary Shelhamer
+ * Date Created: 4/7/2013
+ * Date Last Updated: 4/24/2013
+ */
+
 package TrackController;
 
 import Simulator.Simulator;
 import TrackModel.Block;
 import TrackModel.Line;
 import TrainModel.TrainModel;
-/*************************************
- * For block.type
- * 0 regular
- * 1 switch
- * 2 crossing
- */
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Interacts with the Simulator to attain track and on each tick of the clock, sends signal for each Track Controller to run it's PLC program
+ * @author Zachary Shelhamer
+ *
+ */
 public class TrackControllerModule {
 	
 	private TrackControllerPanel currentPanel;
@@ -27,77 +33,72 @@ public class TrackControllerModule {
 	private ArrayList<Integer> crossingList;
 	private Simulator _sim;
 	private boolean hasTrack = false;
-	/**
-	 * Create the frame.
-	 */
+	
+	/*Initialize the lists and setup the panel*/
 	public TrackControllerModule() 
 	{
 		myBlocks = new ArrayList<Block>();
 		switchList = new ArrayList<Integer>();
 		crossingList = new ArrayList<Integer>();
 		trackControllerList = new ArrayList<ArrayList<TrackController>>();
-
 		lineNames = new ArrayList<String>();
 		lineNames.add("Lines");
 		currentPanel = new TrackControllerPanel(this);
 		lines = new ArrayList<Line>();
 	}
-	/************************************************************************************************
-	 CALL THIS TO WAKE ME UP************************************************************************/
+	/**
+	 * Track Controller Module receives track and adds a new Track Controller List
+	 * @param track Line that represents track
+	 * @param sim Instance of Simulator Class
+	 */
 	public void getTrack(Line track, Simulator sim){
-	//public void getTrack(Line track){
 		_sim = sim;
 		myBlocks = track.getBlocks();
 		trackControllerList.add(TCListMaker.makeTCList(track));
-		/*for(int i = 0; i < this.trackControllerList.size(); i++) {
-			System.out.print("TC # " + i + ":" + this.trackControllerList.get(i).getNumBlocks() + ":[");
-			for(Block b : this.trackControllerList.get(i).blocksControlled) {
-				System.out.print(b.getBlockNumber() + ", ");
-			}
-			System.out.println("]");
-		}*/
 		lineNames.add(track.getName());
-		//_sim = sim;
 		lines.add(track);
 		hasTrack = true;
 		currentPanel.displayChange();
 		PLC.setup(this,_sim, currentPanel);
-		//PLC.setup(this);
 		runPLC();
 
 	}
 
+	/**
+	 * Returns the Current Panel
+	 * @return Current Panel
+	 */
 	public TrackControllerPanel getPanel() {
 		return this.currentPanel;
 	}
-	
+	/**
+	 * Receives 'tick' from the system
+	 */
 	public void receiveTick() {
 		if(hasTrack) {
 			runPLC();
 		}
 	}
 	
+	/**
+	 * Receives list of all Trains and sets Track Controller Module's Train List
+	 * @param newTrainList List of all Trains on all Tracks
+	 */
 	public void receiveTrains(Map<Integer, TrainModel> newTrainList){
 		trainList = newTrainList;
 		currentPanel.displayChange();
 	}
 	
-	/**************************************************************************************
-	 * CALL ME ONCE PER TICK**************************************************************/
+	/**
+	 * Tells Track Controller class to run the PLC program
+	 */
 	public void runPLC(){
 		TrackController.runPLC(trackControllerList, lines);
-		/*for(int i = 0; i < trackControllerList.size(); i++) {
-			for(int j = 0; j < trackControllerList.get(i).size(); j++) {
-				for(int k = 0; k < trackControllerList.get(i).get(j).brokenRails.size(); k++) {
-					System.out.println(i+":"+j+":"+trackControllerList.get(i).get(j).brokenRails.get(k));
-				}
-			}
-		}*/
 		if(currentPanel.getCL() >= 0 && trackControllerList.get(currentPanel.getCL()).get(currentPanel.getCC()).isChanged) {
 			currentPanel.displayChange();
 		}
 	}
-
+	
 	protected ArrayList<Block> getBlockList(String line) {
 		for(Line l : lines) {
 			if(l.getName().equals(line))

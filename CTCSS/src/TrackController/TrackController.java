@@ -1,9 +1,24 @@
+/*
+ * Track Controller
+ * Holds properties for each track controller and runs PLC for the given track controller
+ * Author: Zachary Shelhamer
+ * Date Created: 4/7/2013
+ * Date Last Updated:4/24/2013
+ */
+
 package TrackController;
 
 import java.util.ArrayList;
 
 import TrackModel.Block;
 import TrackModel.Line;
+
+/**
+ * Holds properties for each track controller and runs PLC for the given track controller
+ * @author Zachary Shelhamer
+ *
+ */
+
 
 public class TrackController {
 	private int blocks;
@@ -17,10 +32,8 @@ public class TrackController {
 	protected ArrayList<Block> switchesControlled = new ArrayList<Block>();
 	protected String line;
 	protected ArrayList<Block> trainsControlled = new ArrayList<Block>();
-
-	static int index;
-	static int index_2;
 	
+	/*Initialize the properties for a given track controller*/
 	public TrackController(int tcIndex, ArrayList<Block> controlled, String lineName){
 		this.blocksControlled = controlled;
 		this.number = tcIndex;
@@ -30,7 +43,11 @@ public class TrackController {
 		line = lineName;
 	}
 	
-	//DOESNT HANDLE IF THERE ARE NO CROSSINGS
+	/**
+	 * Generates a list of crossings
+	 * @param blocks List of blocks
+	 * @return List of crossings
+	 */
 	public ArrayList<Block> buildCrossingList(ArrayList<Block> blocks){
 		ArrayList<Block> tempCrossingList = new ArrayList<Block>();
 		for(int x = 0; x < blocks.size(); x++)
@@ -42,7 +59,11 @@ public class TrackController {
 		return tempCrossingList;
 	}
 	
-	//DOESNT HANDLE IF THERE ARE NO SWITCHES
+	/**
+	 * Generates a list of switches
+	 * @param blocks List of blocks
+	 * @return List of switches
+	 */
 	public ArrayList<Block> buildSwitchList(ArrayList<Block> blocks){
 		ArrayList<Block> tempSwitchList = new ArrayList<Block>();
 		for(int x = 0; x < blocks.size(); x++)
@@ -53,62 +74,95 @@ public class TrackController {
 		}
 		return tempSwitchList;
 	}
-	
-	public static void reportBrokenRail(int blockNumber) {
-		//reportBrokenRailToCTC(blockNumber);
-	}
-	
+	/**
+	 * Runs the PLC for each track controller
+	 * @param trackControllerList List of Track Controllers
+	 * @param lines List of lines
+	 */
 	public static void runPLC(ArrayList<ArrayList<TrackController>> trackControllerList, ArrayList<Line> lines){
-		for(index = 0; index < trackControllerList.size(); index++)
+		for(int index = 0; index < trackControllerList.size(); index++)
 		{
-			for(index_2 = 0; index_2 < trackControllerList.get(index).size(); index_2++)
+			for(int index_2 = 0; index_2 < trackControllerList.get(index).size(); index_2++)
 			{	
 				PLC.runPLC(trackControllerList.get(index).get(index_2), lines.get(index).getBlocks());
 			}
 		}
 	}
-	
+	/**
+	 * Set the number of trains for this track controller
+	 * @param numTrains Number of trains
+	 */
 	public void setNumTrains(int numTrains) {
 		trains = numTrains;
 	}
-	
+	/**
+	 * Return the number of trains for this track controller
+	 * @return Number of trains for this track controller
+	 */
 	public int getNumTrains() {
 		return trains;
 	}
-	
+	/**
+	 * Set the number of blocks this track controller controls
+	 * @param numBlocks
+	 */
 	public void setNumBlocks(int numBlocks) {
 		blocks = numBlocks;
 	}
-	
+	/**
+	 * Return the number of blocks this track controller controls
+	 * @return Number of blocks this track controller controls
+	 */
 	public int getNumBlocks() {
 		return this.blocksControlled.size();
 	}
-	
+	/**
+	 * Return track number
+	 * @return Track Number
+	 */
 	public int getTrackNum() {
 		return 0;
 	}
-	
+	/**
+	 * Return Controller ID
+	 * @return Controller ID
+	 */
 	public int getID() {
 		return number;
 	}
-	
+	/**
+	 * Set the broken rail list
+	 * @param brokenRail ArrayList of broken rails
+	 */
 	public void setBrokenRail(ArrayList<Integer> brokenRail){
 		brokenRails = brokenRail;
 	}
-	
+	/**
+	 * Get list of broken rails
+	 * @return List of broken rails
+	 */
 	public ArrayList<Integer> getBrokenRail(){
 		return brokenRails;
 	}
-	
+	/**
+	 * Return the line name
+	 * @return Line name
+	 */
 	public String getLine(){
 		return line;
 	}
-	
+	/**
+	 * Set the trains controlled by this controller
+	 * @param _trainsControlled List of blocks controlled trains are on
+	 */
 	public void setTrainsControlled(ArrayList<Block> _trainsControlled)
 	{
 		trainsControlled = _trainsControlled;
 	}
-	
+	/**
+	 * Return the list of trains controlled by this controller
+	 * @return List of blocks controlled trains are on
+	 */
 	public ArrayList<Block> getTrainsControlled()
 	{
 		return trainsControlled;
