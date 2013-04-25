@@ -378,9 +378,15 @@ public class TrainModel
 	{
 		m_engineFailure = !m_engineFailure;
 		if(m_engineFailure)
+		{
 			m_log.append("Engine Failure. *Train Stopping*\n\n");
+			m_parent.writeLog(3, "Train:"+m_trainID+" has an engine failure\n");
+		}
 		else
+		{
 			m_log.append("Engine Functioning. *Train Restarting*\n\n");
+			m_parent.writeLog(1, "Train:"+m_trainID+" engine has been fixed\n");
+		}
 		m_writeLog = true;
 	}
 	
@@ -391,9 +397,15 @@ public class TrainModel
 	{
 		m_signalFailure = !m_signalFailure;
 		if(m_signalFailure)
+		{
 			m_log.append("Signal Failure. *Train Stopping*\n\n");
+			m_parent.writeLog(3, "Train:"+m_trainID+" has signal failure\n");
+		}
 		else
+		{
 			m_log.append("Signals Functioning. *Train Restarting*\n\n");
+			m_parent.writeLog(1, "Train:"+m_trainID+" signalling has been fixed\n");
+		}
 		m_writeLog = true;
 	}
 	
@@ -404,9 +416,15 @@ public class TrainModel
 	{
 		m_brakeFailure = !m_brakeFailure;
 		if(m_brakeFailure)
+		{
 			m_log.append("Brake Failure. *Train Stopping*\n\n");
+			m_parent.writeLog(3, "Train:"+m_trainID+" has brake failure\n");
+		}
 		else
+		{
 			m_log.append("Brakes Funnctioning. *Train Restarting*\n\n");
+			m_parent.writeLog(1, "Train:"+m_trainID+" brakes have been fixed\n");
+		}
 		m_writeLog = true;
 	}
 	
