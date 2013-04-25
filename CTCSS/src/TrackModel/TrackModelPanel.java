@@ -62,15 +62,40 @@ public class TrackModelPanel extends JPanel {
 
 	}
 	
+	/**
+	 * Displays the Block information for the selected Block
+	 * @param b
+	 */
 	public void displayBlockInfo(Block b)
 	{
+		StringBuilder s = new StringBuilder();
+		String q = "";
 		txtpnTheTextPane.setEditable(true);
 		// format: ID | Type | Length | Grade | Speed Limit | Section | aboveGround | Station Name 
 		// bID nextB bType bLength bGrade bSpLim bSection belowGround stationName
-		txtpnTheTextPane.setText("Block ID: "+b.getBlockNumber()+" | Type: "+b.getType()+" | Length: "+b.getLength()+" | Grade:"+b.getGrade()+" | Speed Limit: "+b.getSpeedLimit()+" | Section: "+b.getSection()+" | Underground? "+b.isUnderground()+" | Station: "+b.getStationName());
+		if (b.isUnderground() == false)
+		{
+			q = "No";
+		} else
+		{
+			q = "Yes";
+		}
+		if (b.getStationName().equals("NULL"))
+		{
+			s.append("Block ID: "+b.getBlockNumber()+" | Type: "+b.getType()+" | Length: "+b.getLength()+" | Grade:"+b.getGrade()+" | Speed Limit: "+b.getSpeedLimit()+" | Section: "+b.getSection()+" | Underground? "+q+" " );
+		}else{
+			s.append("Block ID: "+b.getBlockNumber()+" | Type: "+b.getType()+" | Length: "+b.getLength()+" | Grade:"+b.getGrade()+" | Speed Limit: "+b.getSpeedLimit()+" | Section: "+b.getSection()+" | Underground? "+q+" | Station: "+b.getStationName() );
+		}
+		
+		
+		txtpnTheTextPane.setText(s.toString());
 		txtpnTheTextPane.setEditable(false);
 	}
 	
+	/**
+	 * Adds a Line to the Panel 
+	 * @param l
+	 */
 	protected void addLine(Line l) {
 		if(tabbedPane == null) {
 			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -81,6 +106,11 @@ public class TrackModelPanel extends JPanel {
 		
 	}
 	
+	/**
+	 * Adds the Panel to the trackModelPanel display.
+	 * @param gp
+	 * @param name
+	 */
 	public void setPanel(GraphPanel gp, String name)
 	{
 		int temp = tabbedPane.getSelectedIndex();

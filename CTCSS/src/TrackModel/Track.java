@@ -31,6 +31,11 @@ public class Track {
 		lines = new ArrayList<Line>();
 	}
 	
+	/**
+	 * makes all of the Blocks and Lines etc. from a file
+	 * @param f
+	 * @return
+	 */
 	public boolean getLineFile(File f)
 	{
 		Log.Instance().append(1, "Track File: " + f.getName() + " selected\n");
@@ -103,7 +108,11 @@ public class Track {
 	protected Line getNewLine() {
 		return newLine;
 	}
-	
+	/**
+	 * Returns a Line
+	 * @param lName
+	 * @return
+	 */
 	public Line getLine(String lName)
 	{
 		for(int i = 0; i < lines.size(); i++)
@@ -116,10 +125,20 @@ public class Track {
 		return null;
 	}
 	
+	/**
+	 * Returns list of the lines held by the Track obj
+	 * @return
+	 */
 	public ArrayList<Line> getLines() {
 		return lines;
 	}
-	
+	/**
+	 * Routes a train on the line selected
+	 * @param train
+	 * @param start
+	 * @param end
+	 * @param l
+	 */
 	public void route(TrainModel train, int start, int end, Line l) {
 		Router.route(train, start, end, l);
 	}

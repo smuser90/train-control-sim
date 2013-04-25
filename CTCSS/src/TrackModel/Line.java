@@ -33,6 +33,12 @@ public class Line {
 	private TrackModelPanel tmp;
 	public Line() {}
 	
+	/**
+	 * Constructor for a Line
+	 * @param numBlocks
+	 * @param lName
+	 * @param tmp
+	 */
 	public Line(int numBlocks, String lName, TrackModelPanel tmp)
 	{
 		this.tmp = tmp;
@@ -49,23 +55,52 @@ public class Line {
 	}
 	
 	// these will be for testing, to make sure stuff loads I suppose
+	/**
+	 * Returns the number of blocks in the graph/blockList
+	 * @return int
+	 */
 	public int V() { return V; }
+	
 	protected int E() { return E; }
 	
 	public GraphPanel getPanel() {
 		return panel;
 	}
 	
+	/**
+	 * Returns the adjacency list
+	 * @param v
+	 * @return ArrayList<Integer>
+	 */
 	public ArrayList<Integer> adj(int v) {
 		return this.trackAdjList.get(v);
 	}
 	
-	
+	/**
+	 * this is the method to add an edge to the graph ArrayList<Block>
+	 * @param v
+	 * @param w
+	 */
 	public void addEdge(int v, int w) // adds a one-way reference from this block to another 
 	{
 		trackAdjList.get(v).add(w);
 	}
 	
+	/**
+	 * Adds a block to the Line, given by the file
+	 * @param bID
+	 * @param type
+	 * @param len
+	 * @param grade
+	 * @param speedLimit
+	 * @param sect
+	 * @param belowGnd
+	 * @param stationName
+	 * @param sw
+	 * @param elev
+	 * @param cElev
+	 * @param dt
+	 */
 	public void addBlock(int bID, int type, int len, double grade, int speedLimit, String sect, int belowGnd, String stationName, int sw, double elev, double cElev, int dt)
 	{
 		// Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int switchedTo, double elevation, double cumElevation)
@@ -94,14 +129,27 @@ public class Line {
 		Log.Instance().append(0, track.toString());
 	}
 	
+	/**
+	 * returns the Arraylist of Blocks
+	 * @return ArrayList<Block>
+	 */
 	public ArrayList<Block> getBlocks() {
 		return this.blockList;
 	}
 	
+	/**
+	 * Returns this Line's name
+	 * @return String
+	 */
 	public String getName() {
 		return this.lineName;
 	}
 	
+	/**
+	 * Returns the actual block object whose ID is the same as the one you pass into the method
+	 * @param blockID
+	 * @return Block
+	 */
 	public Block getBlock(int blockID){
 		return this.blockList.get(blockID);
 	}
@@ -174,6 +222,11 @@ public class Line {
 		}
 	}
 	
+	/**
+	 * Returns the section whose name you pass into the function
+	 * @param name
+	 * @return Section
+	 */
 	public Section getSection(String name) {
 		return sectionList.get(name);
 	}

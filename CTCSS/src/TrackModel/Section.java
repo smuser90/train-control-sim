@@ -35,6 +35,12 @@ public class Section {
 	private ArrayList<Section> secsGoing;
 	private TrackModelPanel tmp;
 	
+	/**
+	 * Constructor for the Section object.
+	 * @param n
+	 * @param tmp
+	 * @param ln
+	 */
 	public Section(String n, TrackModelPanel tmp, Line ln)
 	{
 		this.secName = n;
@@ -47,12 +53,19 @@ public class Section {
 		blocks = ln;
 	}
 	
+	/**
+	 * Adds a block to the Section
+	 * @param Block
+	 */
 	public void addBlock(Block b)
 	{
 		this.bList.add(b);
 		b.addSection(this);
 	}
 	
+	/**
+	 * Checks to see if it's occupied
+	 */
 	public void check() {
 		for(int i = 0; i < bList.size(); i++) {
 			if(bList.get(i).getOccupied()) {
@@ -67,12 +80,23 @@ public class Section {
 		}
 	}
 	
+	/**
+	 * Makes a new Panel Button
+	 * @param x
+	 * @param y
+	 */
 	public void makeButton(int x, int y) {
 		pb = new PanelButton(secName, x, y);
 		pbs.add(pb);
 		pb.addListener(new SectionListener(pb, tmp, this));
 	}
 	
+	/**
+	 * Gets the button at the x, y coordinates given to the method
+	 * @param x
+	 * @param y
+	 * @return PanelButton
+	 */
 	public PanelButton getButton(int x, int y) {
 		PanelButton p = new PanelButton(secName, x, y);
 		pbs.add(p);
@@ -80,14 +104,25 @@ public class Section {
 		return p;
 	}
 	
+	/**
+	 * Gets the button
+	 * @return
+	 */
 	public PanelButton getButton() {
 		return pb;
 	}
 	
+	/**
+	 * Returns a list of the Blocks in the section
+	 * @return ArrayList<Block>
+	 */
 	public ArrayList<Block> getBlocks() {
 		return bList;
 	}
 	
+	/**
+	 * This makes the Panel fot this section
+	 */
 	public void makePanel()
 	{
 		gp = new GraphPanel();
@@ -139,26 +174,46 @@ public class Section {
 		}
 	}
 	
+	/**
+	 * Returns this panel
+	 * @return GraphPanel
+	 */
 	public GraphPanel getPanel()
 	{
 		return gp;
 	}
 	
+	/**
+	 * Returns the name of this section  
+	 * @return String
+	 */
 	public String getName() 
 	{
 		return this.secName;
 	}
 	
+	/**
+	 * Add a section incoming to this section
+	 * @param s
+	 */
 	public void addComing(Section s) {
 		if(!s.getName().equals(secName))
 			secsComing.add(s);
 	}
 	
+	/**
+	 * Add a section that this section is going to
+	 * @param s
+	 */
 	public void addGoing(Section s) {
 		if(!s.getName().equals(secName))
 			secsGoing.add(s);
 	}
 	
+	/**
+	 * returns the blocks in this section
+	 * @return Line
+	 */
 	public Line getLine() {
 		return this.blocks;
 	}

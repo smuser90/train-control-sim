@@ -157,7 +157,7 @@ public class Block{
 	}
 	
 	/**
-	 * Sets this block's occupied status
+	 * Sets this block's occupied status.
 	 * @param g
 	 */
 	public void setOccupied(boolean g)
@@ -167,11 +167,19 @@ public class Block{
 		s.check();
 	}
 	
+	/**
+	 * Returns the status of the crossing.
+	 * @return boolean
+	 */
 	public boolean getCrossing()
 	{
 		return this.crossingUp;
 	}
 	
+	/**
+	 * Sets the crossing to up or down 
+	 * @param b
+	 */
 	public void setCrossing(boolean b)
 	{
 		this.crossingUp = b;
@@ -181,17 +189,29 @@ public class Block{
 	
 	
 
+	/**
+	 * Sets the speedLimit
+	 * @param s
+	 */
 	public void setSpeedLimit(int s)
 	{
 		this.speedLimit = s;
 		// print updated speed limit to the log
 	}
 	
+	/**
+	 * Gets the Speed Limit of the block
+	 * @return int
+	 */
 	public int getSpeedLimit()
 	{
 		return this.speedLimit;
 	}
 	
+	/**
+	 * Returns the ID of the train currently on the block
+	 * @return
+	 */
 	public int blockTrainID()
 	{
 		return this.trainID;
@@ -209,57 +229,96 @@ public class Block{
 		this.open = true;
 	} 
 	*/
+	
+	/**
+	 * This will break the block
+	 */
 	public void breakBlock()
 	{
 		this.failure = true;
 	}
 	
+	/**
+	 * This will fix the block
+	 */
 	public void fixBlock()
 	{
 		this.failure = false;
 	}
 	
+	/**
+	 * Sets this block to be occupied and gives the block the trainID
+	 * @param trainID
+	 */
 	public void trainOnBlock(int trainID)
 	{
 		this.occupied = true;
 		this.trainID = trainID;
 	}
 	
+	/**
+	 * Sets this block to be cleared, occupancy is false and trainID is 0
+	 */
 	public void trainOffBlock()
 	{
 		this.occupied = false;
 		this.trainID = 0;
 	}
 	
+	/**
+	 * Lets you know if the train is above or below ground
+	 * @return boolean
+	 */
 	public boolean isUnderground()
 	{
-		if (isBelowGround == 0)
+		if (this.isBelowGround == 0)
 		{
 			return false;
 		}
 		return true;
 	}
 	
+	/**
+	 * Returns the station name of this block if this is a station block
+	 * @return
+	 */
 	public String getStationName()
 	{
 		return this.stationName;
 	}
 	
+	/**
+	 * Returns what this block(if it is a switch block) is switched to
+	 * @return int
+	 */
 	public int getSwitchedTo()
 	{
 		return this.switchedTo;
 	}
 	
+	/**
+	 * Set this block switched to the ID passed to it. 
+	 * @param s
+	 */
 	public void setSwitchedTo(int s)
 	{
 		this.switchedTo = s;
 	}
 	
+	/**
+	 * Returns the Section that this is a part of
+	 * @return String
+	 */
 	public String getSection()
 	{
 		return this.section;
 	}
 	
+	/**
+	 * makes a button out of this Block with the parameters given to it
+	 * @param x
+	 * @param y
+	 */
 	public void makeButton(int x, int y)
 	{
 		pb = new PanelButton(""+this.number, x, y);
@@ -267,16 +326,28 @@ public class Block{
 		pb.setBlock(this);
 	}
 	
+	/**
+	 * Returns the button held by this block
+	 * @return PanelButton
+	 */
 	public PanelButton getButton()
 	{
 		return pb;
 	}
 	
+	/**
+	 * Returns 0 if this track allows trains to go in one direction, or 1 for two ways
+	 * @return
+	 */
 	public int getDirection()
 	{
 		return this.dirType;
 	}
 	
+	/**
+	 * returns the grade of this block
+	 * @return
+	 */
 	public double getGrade()
 	{
 		return this.grade;
