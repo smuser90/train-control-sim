@@ -561,8 +561,8 @@ public class PLC
 													.getBlockIndex() + 1)
 											.blockTrainID())
 							{
-								System.out
-										.println("here we are trying to prevent a hit");
+								//System.out
+								//		.println("here we are trying to prevent a hit");
 								// trainList.get(i + 1).toggleEmergencyBrake();
 								if (trainList.get(i + 1).getAuthority() != 0)
 								{

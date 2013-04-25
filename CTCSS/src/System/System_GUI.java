@@ -423,6 +423,7 @@ public class System_GUI {
 		frmCtcss.remove(tabbedPane);
 		mnFile.remove(0);
 		mnFile.insert(mntmLogin, 0);
+		mntmLogin.setEnabled(true);
 		frmCtcss.repaint();
 		loggedIn = false;
 		mnSimulation.setEnabled(false);

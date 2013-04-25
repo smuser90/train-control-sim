@@ -31,7 +31,7 @@ public class Login
 		Log.Instance().append(1, "Logged in as " + username + "\n");
 		uName = username;
 		
-		return true; //authenticate(password);
+		return authenticate(password);
 	}
 	
 	/**
