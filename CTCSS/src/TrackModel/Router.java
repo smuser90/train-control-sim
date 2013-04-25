@@ -40,6 +40,7 @@ public class Router {
 	
 	/* recursive DFS for routing */
 	private static void route(ArrayList<Block> r, int start, int end) {
+		//System.out.println("Start:" + start);
 		if(!marked[start] && !blocks.get(start).getFailure()) {
 			marked[start] = true;
 			if(start == end) 

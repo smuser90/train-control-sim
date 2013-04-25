@@ -25,11 +25,10 @@ public class Block{
 	private double elevation;
 	private double cumulativeElevation;
 	private Section s;
-	// maybe, in the switch block to alternate, i will just switch the two blocks in the arrayList, so that the default is the first on in the list?
-	// add an attribute to tell which switch a switch block is pointed towards
+	private int dirType; // 0 for one direction, 1 for two directions
 	/*
 	 * in text file:
-	 * bID nextB bType bLength bGrade bSpLim bSection belowGround stationName
+	 * bID nextB bType bLength bGrade bSpLim bSection belowGround stationName elevation cElevation
 	 */
 	
 	
@@ -58,7 +57,7 @@ public class Block{
 	// final: all this shit
 	
 	
-	public Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int swiTo, double ele, double cele)
+	public Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int swiTo, double ele, double cele, int dType)
 	{
 		this.number = bID;
 		this.type = ty;
@@ -71,6 +70,7 @@ public class Block{
 		this.switchedTo = swiTo;
 		this.elevation = ele;
 		this.cumulativeElevation = cele;
+		this.dirType = dType;
 	}
 	
 	public void addSection(Section sec) {

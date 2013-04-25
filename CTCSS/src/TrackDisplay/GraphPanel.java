@@ -20,6 +20,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 
 /**
@@ -90,10 +91,12 @@ public class GraphPanel extends JPanel
 			}
 		}
 
+		boolean highlight = false;
 		for (int j = 0; j < pbs.size(); j++) 
 		{
-			if (pbs.get(j).isHighLighted()) 
+			if (pbs.get(j).isHighLighted() && pbs.get(j).bb.getBevelType() == BevelBorder.LOWERED ) 
 			{
+				highlight = true;
 				PanelButton c1 = pbs.get(j);
 				g2.setColor(Color.ORANGE);
 				for (int k = 0; k < c1.goingTo().size(); k++) 
@@ -117,6 +120,37 @@ public class GraphPanel extends JPanel
 				break;
 			}
 
+		}
+		
+		if(!highlight) {
+			for (int j = 0; j < pbs.size(); j++) 
+			{
+				if (pbs.get(j).isHighLighted()) 
+				{
+					PanelButton c1 = pbs.get(j);
+					g2.setColor(Color.ORANGE);
+					for (int k = 0; k < c1.goingTo().size(); k++) 
+					{
+						if (c1.cameFrom().contains(c1.goingTo().get(k))) 
+						{
+							g2.setColor(Color.GREEN);
+						}
+						drawL(g2, c1, pbs.get(c1.goingTo().get(k)));
+						g2.setColor(Color.ORANGE);
+					}
+					g2.setColor(Color.BLUE);
+					for (int k = 0; k < c1.cameFrom().size(); k++) 
+					{
+						if (c1.goingTo().contains(c1.cameFrom().get(k))) {
+							g2.setColor(Color.GREEN);
+						}
+						drawL(g2, pbs.get(c1.cameFrom().get(k)), c1);
+						g2.setColor(Color.BLUE);
+					}
+					break;
+				}
+
+			}
 		}
 		g2.setStroke(new BasicStroke(1));
 	}

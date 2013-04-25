@@ -57,10 +57,10 @@ public class Line {
 		trackAdjList.get(v).add(w);
 	}
 	
-	public void addBlock(int bID, int type, int len, double grade, int speedLimit, String sect, int belowGnd, String stationName, int sw, double elev, double cElev)
+	public void addBlock(int bID, int type, int len, double grade, int speedLimit, String sect, int belowGnd, String stationName, int sw, double elev, double cElev, int dt)
 	{
 		// Block(int len, double gr, int bID, int spLim, int ty, String sec, int belGnd, String statName, int switchedTo, double elevation, double cumElevation)
-		Block t = new Block(len, grade, bID, speedLimit, type, sect, belowGnd, stationName, sw, elev, cElev);
+		Block t = new Block(len, grade, bID, speedLimit, type, sect, belowGnd, stationName, sw, elev, cElev, dt);
 		this.blockList.add(t);
 	}
 	

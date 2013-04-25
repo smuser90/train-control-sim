@@ -31,7 +31,7 @@ public class PanelButton extends JPanel
 {
 	// Fields
 	private JLabel lblNewLabel;
-	private BevelBorder bb;
+	protected BevelBorder bb;
 	private int xSize;
 	private int ySize = 20;
 	private boolean occupied = false;
@@ -96,11 +96,11 @@ public class PanelButton extends JPanel
 			parent.turnOffAll();
 			bb = new BevelBorder(BevelBorder.LOWERED, null, null, null, null);
 			setBorder(bb);
-			//isHighLighted = true;
+			isHighLighted = true;
 		} else {
 			bb = new BevelBorder(BevelBorder.RAISED, null, null, null, null);
 			setBorder(bb);
-			//isHighLighted = false;
+			isHighLighted = false;
 		}
 	}
 	
