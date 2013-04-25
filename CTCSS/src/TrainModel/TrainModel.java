@@ -432,7 +432,6 @@ public class TrainModel
 		if(m_emergencyBrake)
 		{
 			m_log.append("Emergency Brake Engaged. *Train Stopping*\n\n");
-			m_setpointVelocity = 0.0;
 		}
 		else
 		{
