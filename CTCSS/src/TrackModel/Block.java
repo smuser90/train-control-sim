@@ -218,4 +218,9 @@ public class Block{
 		return pb;
 	}
 	
+	public int getDirection()
+	{
+		return this.dirType;
+	}
+	
 }
