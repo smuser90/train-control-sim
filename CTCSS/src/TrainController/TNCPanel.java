@@ -73,6 +73,7 @@ public class TNCPanel extends JPanel {
 
 		// next station field
 		nextStation = new JTextArea();
+		nextStation.setEditable(false);
 		nextStation.setBounds(125, 56, 486, 22);
 		add(nextStation);
 		nextStation.setText("Wait for route info");

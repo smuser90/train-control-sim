@@ -76,6 +76,8 @@ public class TrainController
 			brake = tm.getBrake();
 			eBrake = tm.getEmergencyBrake();
 //			routeInfo = tm.getRouteInfo();
+			
+			// add new item into combo box
 			panel.comboBox.addItem(tm.getTrainID());
 		}
 
@@ -127,58 +129,59 @@ public class TrainController
 	
 	/******** tick action ***********/
 	public void tick(double time){
+		// tick enable
 		if (tick==true){
 			// update train attributes 
 			currSpeed = train.getVelocity();
 			speedLimit = train.getSpeedLimit();
 			authority = train.getAuthority();
-			if (currBlock!=null){
-				getAuthLen();
-			}
+			
 			temp = train.getTemperature();
 			currBlock = train.getBlock();
 			brake = train.getBrake();
 			eBrake = train.getEmergencyBrake();
 			routeInfo = train.getRouteInfo();
-			if (train.getSetpointSpeed()<=speedLimit){
-				setPointSpeed = train.getSetpointSpeed()/3.6;
+			
+			// regulate set point speed
+			regulateSpeed();
+			
 
-			}
-			else {
-				setPointSpeed = train.getSpeedLimit()/3.6;
-				train.setSetpointSpeed(speedLimit);
-			}
-
-			// check route info 
+			// route info reset if no route
 			if (routeInfo==null || panel.comboBox.getSelectedItem().equals("Train List")){
 				nextStationName = "N/A";
 			}
 
-			// check block
+			// update destination
 			if (currBlock!=null){
 				getNextStation();
-
 			}
 
+			// check authority
 			if (checkAuth()){
+				// check station approach, and slow down when approaching a station
 				if (currBlock!=null && nextStation!=null){
 					stationApproachCheck();
 				}
-
+				// speed check make sure speed is legal
 				if (speedIsSafe()){
-					if (currSpeed < 3 && setPointSpeed > 0 && !brake && !eBrake){
+					// initial power
+					if (currSpeed == 0 && setPointSpeed > 0 && !brake && !eBrake){
 						train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.1);
 					}
+					// update power 
 					else if (!brake && !eBrake){		
 						train.setPower(nextPower(setPointSpeed, currSpeed, time));
 					}
 				}
 			}
 		}
+		// tick disable 
 		else{
-			train.setPower(0);
-			setBrake(false);
+			train.setPower(0);		// tick disable, stop output power
+//			setBrake(false);
 		}
+		
+		// update gui
 		if(tickCounter==0){
 			updateGui();
 
@@ -221,6 +224,7 @@ public class TrainController
 	/******** get next station ***********/
 	public void getNextStation(){
 		nextStation = routeInfo.get(routeInfo.size()-1);
+		nextStationName = nextStation.getStationName();
 	}
 
 	/******** check if approach a station ***********/
@@ -292,6 +296,11 @@ public class TrainController
 
 	/******** check authority ***********/
 	public Boolean checkAuth(){
+		// update authorized length
+		if (currBlock!=null){
+			getAuthLen();
+		}
+		
 		if (authority == 0 && !currBlock.getStationName().equals(nextStation.getStationName()) && eBrakeType!=1 && eBrakeType!=2){
 			eBrakeType=1;
 			train.setPower(0);
@@ -330,25 +339,15 @@ public class TrainController
 	/******** set tick method ***********/
 	public void setTick(Boolean t){
 		tick = t;
-		if (tick){			
-			brakeType=0;
-			train.setPower(0);
-			brake=false;
-			train.setBrake(brake);
-			panel.SetBrake.setSelected(false);
-			panel.table.setValueAt("Release", 7, 1);
-		}
-		else{
+		if (!tick){			
 			System.out.println("Stop ticking");
-	//		currSpeed = 0;
-			panel.table.setValueAt(String.format("%3.3f", 0) + " KPH", 0, 1);
+			panel.table.setValueAt(String.format("%3.3f", train.getVelocity()) + " KPH", 0, 1);
 			brakeType=0;
-			train.setPower(0);
+//			train.setPower(0);
 			train.setBrake(brake);
 			panel.SetBrake.setSelected(false);
 			panel.table.setValueAt("Release", 7, 1);
 		}
-
 	}
 
 	/******** check if speed is safe to run ***********/
@@ -412,5 +411,17 @@ public class TrainController
 	/******** get speed limit ***********/
 	public double getSpeedLimit(){
 		return train.getSpeedLimit();
+	}
+	
+	/******** regulate set point speed ***********/
+	public void regulateSpeed(){
+		if (train.getSetpointSpeed()<=speedLimit){
+			setPointSpeed = train.getSetpointSpeed()/3.6;
+
+		}
+		else {
+			setPointSpeed = train.getSpeedLimit()/3.6;
+			train.setSetpointSpeed(speedLimit);
+		}
 	}
 }
