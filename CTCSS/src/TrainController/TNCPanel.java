@@ -162,8 +162,9 @@ public class TNCPanel extends JPanel {
 				if (!comboBox.getSelectedItem().equals("Train List")){
 					if(tglbtnSetEmergencyBrake.isSelected() ){	
 						if(tnc!=null){
+							tnc.setEBrakeType(2);
 							tnc.setEBrake(true);
-							table.setValueAt("Pull", 6, 1);
+							table.setValueAt("Manually Pull", 6, 1);
 						}
 						else{
 							table.setValueAt("N/A", 6, 1);
@@ -171,8 +172,10 @@ public class TNCPanel extends JPanel {
 					}
 					else {
 						if (tnc!=null){
+							tnc.setSpeed(tnc.getSpeedLimit());
+							tnc.setEBrakeType(0);
 							tnc.setEBrake(false);
-							table.setValueAt("N/A", 6, 1);
+							table.setValueAt("Release", 6, 1);
 						}
 						else{
 							table.setValueAt("N/A", 6, 1);
@@ -189,8 +192,9 @@ public class TNCPanel extends JPanel {
 				if (!comboBox.getSelectedItem().equals("Train List")){
 					if(SetBrake.isSelected()){
 						if (tnc!=null){
+							tnc.setBrakeType(4);
 							tnc.setBrake(true);
-							table.setValueAt("Pull", 7, 1);
+							table.setValueAt("Manually Pull", 7, 1);
 						}
 						else{
 							table.setValueAt("N/A", 7, 1);
@@ -198,8 +202,9 @@ public class TNCPanel extends JPanel {
 					}
 					else {
 						if(tnc!=null){
+							tnc.setBrakeType(0);
 							tnc.setBrake(false);
-							table.setValueAt("N/A", 7, 1);
+							table.setValueAt("Release", 7, 1);
 						}
 						else{
 							table.setValueAt("N/A", 7, 1);
@@ -288,14 +293,14 @@ public class TNCPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!comboBox.getSelectedItem().equals("Train List")){
 					double setPointSpeed = Double.parseDouble(txtSetSpeed.getText());
-					System.out.println("setSpeed = " + setPointSpeed);
+	//				System.out.println("setSpeed = " + setPointSpeed);
 					if (tnc!=null){
 						tnc.setSpeed(setPointSpeed);
 					}
 					else {
 						setPointSpeed =0;
 					}
-					table.setValueAt(setPointSpeed, 1, 1);
+	//				table.setValueAt(setPointSpeed, 1, 1);
 				}
 			}
 		});

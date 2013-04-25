@@ -7,60 +7,65 @@ import TrackModel.Block;
 
 public class TrainController 
 {
-	public TrainModel train;
-	public int trainID;
-	public double currSpeed;
-	public double output;
-	public double speedLimit;
-	public double setPointSpeed;		
-	public int authority;
-	public Boolean lights = false;
-	public Boolean doors = false;
-	public int temp;
-	public Boolean brake;
-	public Boolean eBrake;
-	private TNCPanel panel;
-	private ArrayList<Block> routeInfo = null;
-	private Block currBlock;
-	private String nextStationName = "N/A";
-	private Block nextStation = null;
-	private double distToNextStation;
-	private Boolean stationApproach=false;
-	private double authLen=0;
-	private double eBrakeDist;
-	private Boolean tick=true;
-	private int brakeType = 0;	// 0-free 1-near station 2-auth check 3-speed check 4-manual
-	private int eBrakeType = 0;;	// 0-free 1-auth 2-manually press 3-manually release
+	public TrainModel train;		// train model 
+	public int trainID;				// train ID
+	public double currSpeed;		// current speed	
+	public double speedLimit;		// speed limit
+	public double setPointSpeed;	// set point speed	
+	public int authority;			// authority
+	public Boolean lights;	// lights ON: true OFF: false
+	public Boolean doors;	// doors  Open: true Close: false
+	public int temp;				// temperature
+	public Boolean brake;			// brake 
+	public Boolean eBrake;			// emergency brake 
+	private TNCPanel panel;			// Gui 
+	private ArrayList<Block> routeInfo = null;	// route information
+	private Block currBlock;		// current clock the train occupied
+	private String nextStationName = "N/A";		// station name
+	private Block nextStation;			// station block 
+	private double distToNextStation;			// distance to next station		
+	private double authLen;		// authorized length
+	private double eBrakeDist;		// distance to stop with emergency brake
+	private Boolean tick;		// tick 
+	private int brakeType;		// 0-free 1-near station 2-auth check 3-speed check 4-manual
+	private int eBrakeType;;	// 0-free 1-auth check 2-manual 
 	private int tickCounter=0;
 
+	public static final double INTEGRAL_INITIAL = 0.0f;		// integral initial
+	public static final double ERROR_INITIAL = 0.0f;		// error initial
+	public static final double PROPORTIONAL_GAIN = 10000f;	// set proportional gain 10000
+	public static final double INTEGRAL_GAIN = 2f;			// set integral gain 2
+	private double integralLast = INTEGRAL_INITIAL;			// track last integral
+	private double errorLast = ERROR_INITIAL;				// track last error
 
-	public static final double INTEGRAL_INITIAL = 0.0f;
-	public static final double ERROR_INITIAL = 0.0f;
-	public static final double PROPORTIONAL_GAIN = 10000f;
-	public static final double INTEGRAL_GAIN = 2f;
-	private double integralLast = INTEGRAL_INITIAL;
-	private double errorLast = ERROR_INITIAL;
-	//	private double powerCommand; 
-
-
+	/******** constructor ***********/
 	public TrainController(TNCPanel gui){
-		panel = gui;
-		currSpeed = 0;
-		speedLimit = 0;
-		authority = 0;
-		lights = false;
-		doors = false;
-		temp = 0;		
-		brake = false;
+		panel = gui;						// reference gui
+		// initialize train status
+		currSpeed = 0;						
+		speedLimit = 0;						
+		authority = 0;						
+		lights = false;						
+		doors = false;						
+		temp = 0;							
+		brake = false;					
 		eBrake = false;
-		eBrakeDist = getEBrakeDist();
+		eBrakeDist = 0;
+		brakeType = 0;
+		eBrakeType = 0;
+		authLen = 0;
 		currBlock = null;
+		nextStationName = "N/A";
+		nextStation = null;
+		tick = true;
 	}
 
+	/******** set train model ***********/
 	public void setTrainModel(TrainModel tm)
 	{
 		train = tm;
 		if (train!=null){
+			// update train status to specific train model
 			trainID = tm.getTrainID();
 			currSpeed = tm.getVelocity();
 			speedLimit = tm.getSpeedLimit();
@@ -70,66 +75,60 @@ public class TrainController
 			temp = tm.getTemperature();		
 			brake = tm.getBrake();
 			eBrake = tm.getEmergencyBrake();
-			routeInfo = tm.getRouteInfo();
-
-
-			//			currBlock = tm.getBlock();
+//			routeInfo = tm.getRouteInfo();
 			panel.comboBox.addItem(tm.getTrainID());
-
-
 		}
 
 	}
 
+	/******** set speed  ***********/
 	public void setSpeed(double s){
-		if (setPointSpeed>train.getSpeedLimit()){
-			setPointSpeed = train.getSpeedLimit()/3.6;	 // check speed limit 
-
+		// if set point speed is over speed limit, set to set point speed to speed limit
+		if (train.getSetpointSpeed()>train.getSpeedLimit()){	
+			setPointSpeed = train.getSpeedLimit()/3.6;	 		
 		}
 		else {
 			setPointSpeed = s/3.6;
 		}
-		train.setSetpointSpeed(setPointSpeed);
-
+		train.setSetpointSpeed(setPointSpeed*3.6);
 	}
 
-	public double getSetPointSpeed(){
-		return setPointSpeed;
-	}
-
+	/******** set lights ***********/
 	public void setLights(Boolean l){
 		lights = l;
-		System.out.println("lights: "+ l);
 		train.toggleLights();
 	}
-
+	
+	/******** set doors ***********/
 	public void setDoors(Boolean d){
 		doors = d;
 		train.toggleDoors();
 	}
 
+	/******** set temperature ***********/
 	public void setTemp(int t){
 		temp = t;
 		train.setTemperature(temp);
 	}
 
+	/******** set brake ***********/
 	public void setBrake(Boolean b){
 		brake = b;
-		//	train.setBrake();
+		train.setBrake(brake);
 	}
 
+	/******** set emergency brake ***********/
 	public void setEBrake(Boolean eb){
 		eBrake = eb;
-		//		train.setEBrake();
+		train.setPower(0);
+		train.toggleEmergencyBrake();
 	}
 
-	public void log(){
-	}
-
+	
+	/******** tick action ***********/
 	public void tick(double time){
-
 		if (tick==true){
-			/* update train attributes */
+			// update train attributes 
 			currSpeed = train.getVelocity();
 			speedLimit = train.getSpeedLimit();
 			authority = train.getAuthority();
@@ -160,36 +159,23 @@ public class TrainController
 				getNextStation();
 
 			}
-			// update nextstation field
 
-
-			//			System.out.println("currBlock: " + currBlock.getStationName());
-			//			System.out.println("nextStation: " + nextStation.getStationName());
 			if (checkAuth()){
 				if (currBlock!=null && nextStation!=null){
 					stationApproachCheck();
-					panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 				}
 
-				/* set power command */
-				//			System.out.println("currSpeed: "+currSpeed);
-				//			System.out.println("setPointSpeed: "+setPointSpeed);
-				//			System.out.println("brake: "+brake);
 				if (speedIsSafe()){
-					if (currSpeed < 3 && setPointSpeed > 0 && !brake ){
+					if (currSpeed < 3 && setPointSpeed > 0 && !brake && !eBrake){
 						train.setPower(nextPower(setPointSpeed, currSpeed, time)*0.1);
-						//			panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 					}
-					else if (!brake){		
-						//				System.out.println("Set power ");
+					else if (!brake && !eBrake){		
 						train.setPower(nextPower(setPointSpeed, currSpeed, time));
-						//			panel.table.setValueAt(String.format("%3.3f", train.getPower()) + " W", 9, 1);
 					}
 				}
 			}
 		}
 		else{
-			//			System.out.println("tick1: " + tick);
 			train.setPower(0);
 			setBrake(false);
 		}
@@ -197,11 +183,12 @@ public class TrainController
 			updateGui();
 
 		}
-		tickCounter++;
-		tickCounter = tickCounter % 5;
+//		tickCounter++;
+//		tickCounter = tickCounter % 5;
 		//		System.out.println("tick counter " + tickCounter);
 	}
 
+	/******** output power ***********/
 	public double nextPower(double setpoint, double currentSpeed, double millis) {
 
 		double integral; /* integral used for PID control */
@@ -231,52 +218,39 @@ public class TrainController
 
 	}
 
+	/******** get next station ***********/
 	public void getNextStation(){
-/*		for (int i=routeInfo.indexOf(currBlock); i<routeInfo.size()-1;i++){
-			if (!routeInfo.get(i+1).getStationName().equals(null)){
-				nextStation = routeInfo.get(i+1);
-				nextStationName = routeInfo.get(i+1).getStationName();
-
-			}
-		}*/
 		nextStation = routeInfo.get(routeInfo.size()-1);
 	}
 
-
-
+	/******** check if approach a station ***********/
 	public void stationApproachCheck(){
 		double slowDownDist =0;		
 		getDistToNextStation();
-		//			System.out.println("Distance to next station = "+distToNextStation);
 		slowDownDist = currSpeed*currSpeed/2/1.2;
-		//			System.out.println("slow down dist = "+ slowDownDist);
-
 
 		if (distToNextStation <= slowDownDist){
 			train.setPower(0);
 			train.setBrake(true);
-			//			stationApproach=true;
 			brakeType=1;
 
 
 			panel.SetBrake.setSelected(true);
-			panel.table.setValueAt("Applied", 7, 1);
+			panel.table.setValueAt("Near Station Pull", 7, 1);
 
 			if (currSpeed==0){
 				brakeType=0;
-				//				stationApproach=false;
-				//		System.out.println("Shit happen");
 				brake=false;
 				train.setBrake(brake);
 				panel.SetBrake.setSelected(false);
-				panel.table.setValueAt("Unapplied", 7, 1);
-				//			tick=false;
+				panel.table.setValueAt("Release", 7, 1);
 			}
 		}
 
 
 	}
 
+	/******** get the distance to next station ***********/
 	public void getDistToNextStation(){
 		double distBetween=0;
 
@@ -294,6 +268,7 @@ public class TrainController
 		}
 	}
 
+	/******** get authorized length ***********/
 	public void getAuthLen(){
 		authLen += currBlock.getLength() - train.getPosition();
 		if (authority <= routeInfo.indexOf(nextStation)-routeInfo.indexOf(currBlock)){
@@ -308,12 +283,14 @@ public class TrainController
 		}
 	}
 
+	/******** get distance required to make a emergency brake ***********/
 	public double getEBrakeDist(){
 		double dist;
 		dist = currSpeed*currSpeed/2/2.73;
 		return dist;
 	}
 
+	/******** check authority ***********/
 	public Boolean checkAuth(){
 		if (authority == 0 && !currBlock.getStationName().equals(nextStation.getStationName()) && eBrakeType!=1 && eBrakeType!=2){
 			eBrakeType=1;
@@ -326,7 +303,6 @@ public class TrainController
 			return false;
 		}
 		else if (authLen < eBrakeDist && eBrakeType!=4) {
-			System.out.println("Authority brake");
 			brakeType=2;
 			train.setPower(0);
 			train.setBrake(true);
@@ -335,37 +311,47 @@ public class TrainController
 			return false;
 		}
 
-		else if (brakeType==2){
+		else if (brakeType==2 && eBrakeType!=1){
 			brakeType=0;
 			panel.SetBrake.setSelected(false);
-			panel.table.setValueAt("unapplied", 7, 1);
-			panel.table.setValueAt("unapplied", 6, 1);
+			panel.table.setValueAt("Release", 7, 1);
+			panel.table.setValueAt("Release", 6, 1);
+			panel.tglbtnSetEmergencyBrake.setSelected(false);
+		}
+		else if (brakeType==2 && eBrakeType!=1){
+			setSpeed(train.getSpeedLimit());
+//			train.setSetpointSpeed(train.getSpeedLimit());
+			panel.table.setValueAt("Release", 6, 1);
 			panel.tglbtnSetEmergencyBrake.setSelected(false);
 		}
 		return true;
 	}
 
+	/******** set tick method ***********/
 	public void setTick(Boolean t){
 		tick = t;
-		if (tick){
+		if (tick){			
 			brakeType=0;
 			train.setPower(0);
 			brake=false;
 			train.setBrake(brake);
 			panel.SetBrake.setSelected(false);
-			panel.table.setValueAt("Unapplied", 7, 1);
+			panel.table.setValueAt("Release", 7, 1);
 		}
 		else{
+			System.out.println("Stop ticking");
+	//		currSpeed = 0;
+			panel.table.setValueAt(String.format("%3.3f", 0) + " KPH", 0, 1);
 			brakeType=0;
 			train.setPower(0);
-			stationApproach=false;
 			train.setBrake(brake);
 			panel.SetBrake.setSelected(false);
-			panel.table.setValueAt("Unapplied", 7, 1);
+			panel.table.setValueAt("Release", 7, 1);
 		}
 
 	}
 
+	/******** check if speed is safe to run ***********/
 	public Boolean speedIsSafe(){
 		if (currSpeed>(speedLimit/3.6)){
 			brakeType=3;
@@ -373,21 +359,22 @@ public class TrainController
 			brake=true;
 			train.setBrake(brake);
 			panel.SetBrake.setSelected(true);
-			panel.table.setValueAt("Applied", 7, 1);
+			panel.table.setValueAt("Overspeed Brake", 7, 1);
 			return false;
 		}
 		else if (brakeType==3){
+			brakeType=0;
 			brake=false;
 			train.setBrake(brake);
 			panel.SetBrake.setSelected(false);
-			panel.table.setValueAt("Unapplied", 7, 1);
+			panel.table.setValueAt("Release", 7, 1);
 			return true;
 		}
 		return true;
 	}
 
+	/******** update gui ***********/
 	public void updateGui(){
-		//		System.out.println("update gui");
 		/* update table */
 		if (!panel.comboBox.getSelectedItem().equals("Train List")){
 			panel.table.setValueAt(String.format("%3.3f", currSpeed*3.6) + " KPH", 0, 1);
@@ -402,11 +389,28 @@ public class TrainController
 		}
 	}
 	
+	/******** get brake type ***********/
 	public int getBrakeType(){
-		return 0;
+		return brakeType;
 	}
 	
+	/******** get emergency brake type ***********/
 	public int getEBrakeType(){
-		return 0;
+		return eBrakeType;
+	}
+	
+	/******** set brake type ***********/
+	public void setBrakeType(int t){
+		brakeType = t;
+	}
+	
+	/******** set emergency brake type ***********/
+	public void setEBrakeType(int t){
+		eBrakeType = t;
+	}
+	
+	/******** get speed limit ***********/
+	public double getSpeedLimit(){
+		return train.getSpeedLimit();
 	}
 }
