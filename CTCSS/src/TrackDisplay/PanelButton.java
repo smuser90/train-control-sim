@@ -39,7 +39,7 @@ public class PanelButton extends JPanel
 	private ArrayList<Integer> goingTo;
 	private ArrayList<Integer> cameFrom;
 	private GraphPanel parent = null;
-	
+	private TrackModel.TrackModelPanel thePanel;
 	/**
 	 * Creates the button
 	 * @param label String to be displayed on the button
@@ -96,6 +96,7 @@ public class PanelButton extends JPanel
 			parent.turnOffAll();
 			bb = new BevelBorder(BevelBorder.LOWERED, null, null, null, null);
 			setBorder(bb);
+			//thePanel.displayBlockInfo(b);
 			isHighLighted = true;
 		} else {
 			bb = new BevelBorder(BevelBorder.RAISED, null, null, null, null);

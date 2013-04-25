@@ -73,6 +73,7 @@ public class TNCPanel extends JPanel {
 
 		// next station field
 		nextStation = new JTextArea();
+		nextStation.setEditable(false);
 		nextStation.setBounds(125, 56, 486, 22);
 		add(nextStation);
 		nextStation.setText("Wait for route info");
@@ -96,22 +97,22 @@ public class TNCPanel extends JPanel {
 		txtSetTemp.setColumns(10);
 
 		// buttons
-		JButton setSpeed = new JButton("Apply speed");
+		JButton setSpeed = new JButton("Apply Speed");
 		setSpeed.setBounds(151, 23, 117, 29);
 		panel_1.add(setSpeed);
 
-		JButton setTemp = new JButton("Apply temp");
+		JButton setTemp = new JButton("Apply Temp");
 		setTemp.setBounds(151, 51, 117, 29);
 		panel_1.add(setTemp);
 
 
 		// labels
 
-		JLabel lblSetSpeed = new JLabel("Set speed");
+		JLabel lblSetSpeed = new JLabel("Set Speed");
 		lblSetSpeed.setBounds(6, 28, 61, 16);
 		panel_1.add(lblSetSpeed);
 
-		JLabel lblNewLabel = new JLabel("Set temp");
+		JLabel lblNewLabel = new JLabel("Set Temp");
 		lblNewLabel.setBounds(6, 56, 61, 16);
 		panel_1.add(lblNewLabel);
 
@@ -119,7 +120,7 @@ public class TNCPanel extends JPanel {
 		lblSetLights.setBounds(6, 84, 67, 16);
 		panel_1.add(lblSetLights);
 
-		JLabel lblSetDoors = new JLabel("Set doors");
+		JLabel lblSetDoors = new JLabel("Set Doors");
 		lblSetDoors.setBounds(6, 117, 61, 16);
 		panel_1.add(lblSetDoors);
 
