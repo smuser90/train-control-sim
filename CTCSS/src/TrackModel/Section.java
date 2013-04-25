@@ -124,6 +124,9 @@ public class Section {
 			}
 		});
 		gp.add(but);
+		for(int i = 0; i < bList.size(); i++) {
+			bList.get(i).getButton().setTMP(tmp);
+		}
 	}
 	
 	public GraphPanel getPanel()

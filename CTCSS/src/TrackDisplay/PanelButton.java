@@ -22,6 +22,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.UIManager;
 
+import TrackModel.Block;
+import TrackModel.TrackModelPanel;
+
 /**
  * Custom button for use in GraphPanel
  * @author Nikolas Parshook
@@ -39,7 +42,9 @@ public class PanelButton extends JPanel
 	private ArrayList<Integer> goingTo;
 	private ArrayList<Integer> cameFrom;
 	private GraphPanel parent = null;
-	private TrackModel.TrackModelPanel thePanel;
+	private TrackModelPanel thePanel;
+	private Block b;
+	
 	/**
 	 * Creates the button
 	 * @param label String to be displayed on the button
@@ -96,7 +101,7 @@ public class PanelButton extends JPanel
 			parent.turnOffAll();
 			bb = new BevelBorder(BevelBorder.LOWERED, null, null, null, null);
 			setBorder(bb);
-			//thePanel.displayBlockInfo(b);
+			thePanel.displayBlockInfo(this.b);
 			isHighLighted = true;
 		} else {
 			bb = new BevelBorder(BevelBorder.RAISED, null, null, null, null);
@@ -148,5 +153,13 @@ public class PanelButton extends JPanel
 	{
 		if(parent != null)
 			parent.repaint();
+	}
+	
+	public void setTMP(TrackModelPanel tmp) {
+		thePanel = tmp;
+	}
+	
+	public void setBlock(Block b) {
+		this.b = b;
 	}
 }

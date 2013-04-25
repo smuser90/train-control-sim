@@ -211,6 +211,7 @@ public class Block{
 	{
 		pb = new PanelButton(""+this.number, x, y);
 		pb.addMouseListener(new BlockListener(pb));
+		pb.setBlock(this);
 	}
 	
 	public PanelButton getButton()
@@ -221,6 +222,11 @@ public class Block{
 	public int getDirection()
 	{
 		return this.dirType;
+	}
+	
+	public double getGrade()
+	{
+		return this.grade;
 	}
 	
 }
