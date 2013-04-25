@@ -327,8 +327,8 @@ public class TrainController
 		// if stop ticking, release brake
 		if (!tick){			
 			brakeType=0;	// free brake type
-			train.setPower(0);		
-			train.setBrake(brake);
+//			train.setPower(0);		
+			train.setBrake(false);
 		}
 	}
 
