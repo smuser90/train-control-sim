@@ -228,7 +228,10 @@ public class PLC {
 		
 		handleBrokenRail(trackController);
 	}
-	
+	/**
+	 * Handles when a rail is fixed
+	 * @param trackController Current Track Controller
+	 */
 	private static void handleFixedRail(TrackController trackController)
 	{
 		//System.out.println("Here in handle fixed rail");
@@ -237,7 +240,7 @@ public class PLC {
 			{
 				for(int i = 0; i < trainList.size(); i++)
 				{
-					System.out.println("Here we are in route train on fixed block");
+					//System.out.println("Here we are in route train on fixed block");
 					_sim.routeTrain(trainList.get(i + 1), trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteLength() - 1).getBlockNumber(), _sim.getLine(trainList.get(i + 1).getLine()));
 //					if(trainList.get(i + 1).getRouteInfo() != null)
 //					{
@@ -352,8 +355,10 @@ public class PLC {
 									if(trainList.get(i + 1).getRouteInfo().get(k).getType() == 1)
 									{
 										trainList.get(i + 1).getRouteInfo().get(k + 1).setFailure(true);
+										Block temp = trainList.get(i + 1).getRouteInfo().get(k + 1);
 										_sim.routeTrain(trainList.get(i + 1), trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteInfo().size() - 1).getBlockNumber(), _sim.getLine(trainList.get(i + 1).getLine()));
-										trainList.get(i + 1).getRouteInfo().get(k + 1).setFailure(false);
+										temp.setFailure(false);
+										//trainList.get(i + 1).getRouteInfo().get(k + 1).setFailure(false);
 										break;
 									}
 								}
