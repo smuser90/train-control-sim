@@ -11,24 +11,40 @@ package TrainController;
 
 import java.util.ArrayList;
 
-import TrainModel.TrainModel;
 
+/**
+ * train controller module
+ * @author keluo
+ *
+ */
 public class TrainControllerModule {
 	
-private TNCPanel gui = null;
-private ArrayList<TrainController> controllers;
-private TrainController tnc, tnc1;
+private TNCPanel gui = null;	// gui
+//arraylist to store train controller list
+private ArrayList<TrainController> controllers;		
+
+	/**
+	 * train controller constructor
+	 */
 	public TrainControllerModule()
 	{
 		controllers = new ArrayList<TrainController> ();
 		gui = new TNCPanel(this, controllers);
 	}
 	
+	/**
+	 * get GUI
+	 * @return
+	 */
 	public TNCPanel getPanel()
 	{
 		return gui;
 	}
 	
+	/**
+	 * get train controller
+	 * @return
+	 */
 	public TrainController getTrainController() {	
 		TrainController tnc = new TrainController(gui);
 		controllers.add(tnc);

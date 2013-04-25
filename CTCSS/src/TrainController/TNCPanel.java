@@ -37,7 +37,6 @@ public class TNCPanel extends JPanel {
 	private JTextField txtSetSpeed;
 	private JTextField txtSetTemp;
 	public JTable table;
-	private String setSpeedInput;
 	private String temp;
 	public TrainController tnc;
 	private TrainControllerModule _tcm;
@@ -47,10 +46,13 @@ public class TNCPanel extends JPanel {
 	private JPanel panel;
 	private JPanel panel_1;
 	public JTextArea nextStation;
-
+	public int ID;
 
 	/**
-	 * Create the panel.
+	 * tnc panel contain gui components
+	 * @ author Ke Luo
+	 * @param tcm
+	 * @param l
 	 */
 	public TNCPanel(TrainControllerModule tcm, ArrayList<TrainController> l) {
 		_tcm = tcm;
@@ -62,7 +64,8 @@ public class TNCPanel extends JPanel {
 		setBounds(100, 100, 650, 350);
 
 		panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Control Panel", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBorder(new TitledBorder(null, "Control Panel", 
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.setBounds(347, 95, 274, 220);
 		add(panel_1);
 		panel_1.setLayout(null);
@@ -149,12 +152,12 @@ public class TNCPanel extends JPanel {
 		panel_1.add(SetBrake);
 
 
-		/* emergency toggle */
+		// emergency toggle 
 		tglbtnSetEmergencyBrake = new JToggleButton("Set Emergency Brake");
 		tglbtnSetEmergencyBrake.setBounds(79, 171, 189, 29);
 		panel_1.add(tglbtnSetEmergencyBrake);
 
-		/* emergency toggle listener */
+		// emergency toggle listener 
 		tglbtnSetEmergencyBrake.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!comboBox.getSelectedItem().equals("Train List")){
@@ -184,7 +187,7 @@ public class TNCPanel extends JPanel {
 			}
 		});
 
-		/* service brake toggle */
+		// service brake toggle 
 		SetBrake.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!comboBox.getSelectedItem().equals("Train List")){
@@ -213,10 +216,11 @@ public class TNCPanel extends JPanel {
 			}
 		});
 
-		/* door toggle listener */
+		// door toggle listener 
 		doorToggle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (!comboBox.getSelectedItem().equals("Train List") && tnc.getDoorType()!=1){
+				if (!comboBox.getSelectedItem().equals("Train List") 
+						&& tnc.getDoorType()!=1){
 					if(doorToggle.isSelected()){
 						if (tnc!=null){
 							tnc.setDoorType(2);
@@ -243,10 +247,11 @@ public class TNCPanel extends JPanel {
 			}
 		});
 
-		/* light toggle listener */
+		// light toggle listener 
 		lightToggle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (!comboBox.getSelectedItem().equals("Train List") && tnc.getLightType()!=1){
+				if (!comboBox.getSelectedItem().equals("Train List") 
+						&& tnc.getLightType()!=1){
 					if(lightToggle.isSelected()){
 						if (tnc!=null){
 							tnc.setLightType(2);
@@ -273,7 +278,7 @@ public class TNCPanel extends JPanel {
 		});
 
 
-		/* set temp listener */
+		// set temp listener 
 		setTemp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!comboBox.getSelectedItem().equals("Train List")){
@@ -290,24 +295,22 @@ public class TNCPanel extends JPanel {
 			}
 		});
 
-		/* set speed listener */
+		// set speed listener 
 		setSpeed.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (!comboBox.getSelectedItem().equals("Train List")){
 					double setPointSpeed = Double.parseDouble(txtSetSpeed.getText());
-	//				System.out.println("setSpeed = " + setPointSpeed);
 					if (tnc!=null){
 						tnc.setSpeed(setPointSpeed);
 					}
 					else {
 						setPointSpeed =0;
 					}
-	//				table.setValueAt(setPointSpeed, 1, 1);
 				}
 			}
 		});
 
-		/* attributes overview border */
+		// attributes overview border 
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Attribute Overview", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBounds(25, 95, 313, 220);
@@ -316,7 +319,7 @@ public class TNCPanel extends JPanel {
 
 
 
-		/* table */
+		// table 
 		table = new JTable();
 		table.setBounds(6, 22, 301, 192);
 		panel.add(table);
@@ -378,55 +381,12 @@ public class TNCPanel extends JPanel {
 							table.setValueAt("N/A", i, 1);
 						}
 					}
-
-
-
 					else if (!list.isEmpty()){
-						int ID;
+						
 						ID = comboBox.getSelectedIndex();
-
+					
 						tnc = list.get(ID-1);
 
-
-
-						table.setValueAt(tnc.currSpeed, 0, 1);
-						table.setValueAt(tnc.setPointSpeed, 1, 1);
-						table.setValueAt(tnc.authority, 2, 1);
-						if (tnc.lights == false){
-							lightToggle.setSelected(false);
-							table.setValueAt("Off", 3, 1);
-						}
-						else {
-							lightToggle.setSelected(true);
-							table.setValueAt("On", 3, 1);
-						}
-						if (tnc.doors == false){
-							doorToggle.setSelected(false);
-							table.setValueAt("Close", 4, 1);
-						}
-						else {
-							doorToggle.setSelected(true);
-							table.setValueAt("Open", 4, 1);
-						}
-						table.setValueAt(tnc.temp, 5, 1);
-
-						if (tnc.brake == false){			
-							SetBrake.setSelected(false);
-							table.setValueAt("N/A", 6, 1);
-						}
-						else {
-							SetBrake.setSelected(true);
-							table.setValueAt("Pull", 6, 1);
-						}
-
-						if (tnc.eBrake == false){
-							tglbtnSetEmergencyBrake.setSelected(false);
-							table.setValueAt("N/A", 7, 1);
-						}
-						else {
-							tglbtnSetEmergencyBrake.setSelected(true);
-							table.setValueAt("Pull", 7, 1);
-						}
 					}
 
 
