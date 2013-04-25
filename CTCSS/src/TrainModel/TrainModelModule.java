@@ -105,7 +105,7 @@ public class TrainModelModule
 		}
 		
 		m_tickCount++;
-		m_tickCount = m_tickCount % 5;
+		m_tickCount = m_tickCount % 2;
 		if(m_tickCount == 0)
 			m_gui.update();
 	}

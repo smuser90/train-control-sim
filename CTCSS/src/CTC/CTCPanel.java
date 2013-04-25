@@ -330,7 +330,7 @@ public class CTCPanel extends JPanel
 			{
 				if(i == 0) {
 					t2.add("Blocks");
-					t3.add(t.get(i).getStationName());
+					t3.add(t.get(i).getStationName() + ":" + t.get(i).getBlockNumber());
 				} 
 				else 
 				{

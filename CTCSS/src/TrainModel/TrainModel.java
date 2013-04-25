@@ -58,6 +58,7 @@ public class TrainModel
 	private boolean				m_printFlag;
 	private boolean 			m_writeLog = true;
 	private boolean				m_atStation = true;
+	private boolean 			m_advised = false;
 	private int 				m_passengerTotal = 0;
 	private long 				m_time = 0;
 	
@@ -97,6 +98,15 @@ public class TrainModel
 		m_printFlag = true;
 	}
 	
+	public boolean hasBeenAdvised()
+	{
+		return m_advised;
+	}
+	
+	public void advise()
+	{
+		m_advised = true;
+	}
 	
 	public void setTrainController()
 	{
@@ -212,6 +222,7 @@ public class TrainModel
 			if(m_authority > 0) m_authority--;
 			
 			m_log.append("Entering Block" + m_routeInfo.get(m_blockIndex).getBlockNumber()+"\n\n");
+			m_writeLog = true;
 			m_routeInfo.get(m_blockIndex).setOccupied(true);
 			m_routeInfo.get(m_blockIndex).trainOnBlock(m_trainID);
 			m_speedLimit = m_routeInfo.get(m_blockIndex).getSpeedLimit();
@@ -431,7 +442,10 @@ public class TrainModel
 			m_setpointVelocity = 0.0;
 		}
 		else
+		{
 			m_log.append("Emergency Brake Disengaged. *Train Restarting*\n\n");
+			m_advised = false;
+		}
 		m_writeLog = true;
 	}
 	

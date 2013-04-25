@@ -300,6 +300,9 @@ public class TMPanel extends JPanel
 			StyleConstants.setBold(set, false);
 			StyleConstants.setItalic(set, false);
 			logText.insertString(0, log, set);
+			logPane.selectAll();
+			int x = logPane.getSelectionEnd();
+			logPane.select(x,x);
 		} catch (BadLocationException e) {
 		}
 		writeLog = false;
