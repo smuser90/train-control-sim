@@ -11,13 +11,11 @@
 package TrainController;
 
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
+
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -25,25 +23,14 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.JToggleButton;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JPopupMenu;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JList;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.awt.SystemColor;
 import java.util.ArrayList;
 
-import javax.swing.border.SoftBevelBorder;
+
 import javax.swing.UIManager;
-import Log.Log;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
-import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 
 public class TNCPanel extends JPanel {
@@ -229,9 +216,10 @@ public class TNCPanel extends JPanel {
 		/* door toggle listener */
 		doorToggle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (!comboBox.getSelectedItem().equals("Train List")){
+				if (!comboBox.getSelectedItem().equals("Train List") && tnc.getDoorType()!=1){
 					if(doorToggle.isSelected()){
 						if (tnc!=null){
+							tnc.setDoorType(2);
 							tnc.setDoors(true);
 							table.setValueAt("Open", 4, 1);
 						}
@@ -241,6 +229,7 @@ public class TNCPanel extends JPanel {
 					}
 					else {
 						if (tnc!=null){
+							tnc.setDoorType(2);
 							tnc.setDoors(false);
 							table.setValueAt("Close", 4, 1);
 						}
@@ -257,9 +246,10 @@ public class TNCPanel extends JPanel {
 		/* light toggle listener */
 		lightToggle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (!comboBox.getSelectedItem().equals("Train List")){
+				if (!comboBox.getSelectedItem().equals("Train List") && tnc.getLightType()!=1){
 					if(lightToggle.isSelected()){
 						if (tnc!=null){
+							tnc.setLightType(2);
 							tnc.setLights(true);
 							table.setValueAt("On", 3, 1);
 						}
@@ -269,6 +259,7 @@ public class TNCPanel extends JPanel {
 					}
 					else {
 						if(tnc!=null){
+							tnc.setLightType(2);
 							tnc.setLights(false);
 							table.setValueAt("Off", 3, 1);
 						}
