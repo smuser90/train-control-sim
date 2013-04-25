@@ -295,6 +295,7 @@ public class PLC {
 									//if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber() == trackController.brokenRails.get(index)) && !trainList.get(i + 1).getEmergencyBrake())
 									if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getBlockNumber() == trackController.brokenRails.get(index))
 									{
+										System.out.println("here in broken rail");
 										//trainList.get(i + 1).toggleEmergencyBrake();
 										if(trainList.get(i + 1).getAuthority() != 0)
 										{
@@ -304,6 +305,7 @@ public class PLC {
 									}
 									else
 									{
+										//System.out.println("here we are in handle broken rail");
 										_sim.routeTrain(trainList.get(i + 1), trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteInfo().size() - 1).getBlockNumber(), _sim.getLine(trainList.get(i + 1).getLine()));
 										//handleAuthority(trackController);
 									}
@@ -345,7 +347,7 @@ public class PLC {
 					for(int j = trainList.get(i + 1).getBlockIndex() + 1; j < trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1; j++)
 					{
 						//if a block is occupied
-						if(trainList.get(i + 1).getRouteInfo().get(j).getOccupied())
+						if(trainList.get(i + 1).getRouteInfo().get(j).getOccupied() && trainList.get(i + 1).getTrainID() != trainList.get(i + 1).getRouteInfo().get(j).blockTrainID())
 						{
 							//if we are not at the last block in the train's route
 							if((j + 1) < trainList.get(i + 1).getRouteInfo().size())
@@ -368,8 +370,9 @@ public class PLC {
 						//If two trains are about to collide, we need to hit the E-Brake
 						if(trainList.get(i + 1).getBlock() != trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getRouteLength() - 1))
 						{
-							if((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied()))
+							if((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied()) && trainList.get(i + 1).getTrainID() != trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).blockTrainID() )
 							{
+								System.out.println("here we are trying to prevent a hit");
 								//trainList.get(i + 1).toggleEmergencyBrake();
 								if(trainList.get(i + 1).getAuthority() != 0)
 								{
@@ -399,14 +402,16 @@ public class PLC {
 				{
 					if(trainList.get(i + 1).getAuthority() != trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1)
 					{
+						System.out.println("here in the top part of handle authority");
 						trainList.get(i + 1).setAuthority(trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1);
 						break;
 					}
 				}
 				if(trainList.get(i + 1).getRouteLength() > 1 && trainList.get(i + 1).getBlockIndex() < trainList.get(i + 1).getRouteLength() - 1)
 				{
-					if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied() || trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getFailure())
+					if((trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getOccupied() && trainList.get(i + 1).getTrainID() != (trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1)).blockTrainID()) || trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + 1).getFailure())
 					{
+						System.out.println("here in middle part of handle authority");
 						if(trainList.get(i + 1).getAuthority() != 0)
 						{
 							trainList.get(i + 1).setAuthority(0);
@@ -417,8 +422,9 @@ public class PLC {
 					{
 						for(int j = 0; j < trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1; j++)
 						{
-							if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + j).getOccupied() && j > 0)
+							if(trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + j).getOccupied() && trainList.get(i + 1).getTrainID() != trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex() + j).blockTrainID() && j > 0)
 							{
+								System.out.println("here in the last part of handle authority");
 								if(trainList.get(i + 1).getAuthority() != (j-1))
 								{
 									trainList.get(i + 1).setAuthority(j - 1);
