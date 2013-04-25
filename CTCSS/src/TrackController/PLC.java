@@ -345,7 +345,7 @@ public class PLC {
 					for(int j = trainList.get(i + 1).getBlockIndex() + 1; j < trainList.get(i + 1).getRouteLength() - trainList.get(i + 1).getBlockIndex() - 1; j++)
 					{
 						//if a block is occupied
-						if(trainList.get(i + 1).getRouteInfo().get(j).getOccupied())
+						if(trainList.get(i + 1).getRouteInfo().get(j).getOccupied() && trainList.get(i + 1).getRouteInfo().get(j).getDirection() == 1 && trainList.get(i + 1).getRouteInfo().get(trainList.get(i + 1).getBlockIndex()).getDirection() == 1)
 						{
 							//if we are not at the last block in the train's route
 							if((j + 1) < trainList.get(i + 1).getRouteInfo().size())
