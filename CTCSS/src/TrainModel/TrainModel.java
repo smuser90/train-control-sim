@@ -277,11 +277,14 @@ public class TrainModel
 		if(m_routeInfo.size() > 1 )
 		{
 			System.out.println("Routed to legit");
-			m_log.append("Route Data Received. *Train Starting*\n\n");
+			if(m_emergencyBrake) 
+				toggleEmergencyBrake();
+			m_log.append("Route Data Received. *Train Departing*\n\n");
 			m_writeLog = true;
 			m_atStation = false;
 			m_trainController.setTick(true);
 		}
+		
 		for(int i = 0; i < m_routeInfo.size(); i++) {
 			System.out.println(m_routeInfo.get(i).getBlockNumber());
 		}
